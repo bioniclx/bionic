@@ -1,5 +1,17 @@
+/*
+
+!!!IMPORTANT!!!
+THIS IS A REUSEABLE WIDGET ANY CHANGE WILL BE INCLUDED IN ALL VIEW
+*/
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+/*
+Custom Text with poppins fonts style
+how to use : 
+  call CustomText and customize text,size,color,weight from context view
+*/
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -28,6 +40,14 @@ class CustomText extends StatelessWidget {
     );
   }
 }
+
+/*
+Custom Text and Text Field you can use for all condition
+how to use : (Ntar dulu)
+
+*NOTE : Not yet added function for showing and hiding password
+
+*/
 
 class CustomTextField extends StatelessWidget {
   final String textTitle;
@@ -83,6 +103,46 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/*
+Custom Button with rounded corner
+How to use : 
+  you can customize height and widthin views
+  make on tap function and put your code there
+*/
+
+class CustomButton extends StatelessWidget {
+  final String buttonText;
+  final double buttonWidth;
+  final double? buttonHeight;
+  final Function()? onTap;
+  const CustomButton({
+    super.key,
+    required this.onTap,
+    required this.buttonText,
+    required this.buttonWidth,
+    this.buttonHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: buttonWidth,
+      height: buttonHeight,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          backgroundColor: const Color.fromRGBO(54, 183, 189, 1),
+          foregroundColor: Colors.white,
+        ),
+        onPressed: onTap,
+        child: Text(buttonText),
+      ),
     );
   }
 }
