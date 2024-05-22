@@ -5,8 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-
-func Rimport cloud_firestore
+import cloud_firestore
 import firebase_auth
 import firebase_core
 
