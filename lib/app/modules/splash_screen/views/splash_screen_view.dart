@@ -24,10 +24,11 @@ class SplashScreenView extends GetView<SplashScreenController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: CustomText(
-                    text: controller.text,
-                    textSize: 20,
-                    textColor: Colors.black,
-                    textWeight: FontWeight.w500),
+                  text: controller.text,
+                  textSize: 20,
+                  textColor: Colors.black,
+                  textWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
