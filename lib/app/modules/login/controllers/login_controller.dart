@@ -1,3 +1,4 @@
+import 'package:bionic/app/routes/app_pages.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -20,5 +21,9 @@ class LoginController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void textRegisClicked() {
+    Get.toNamed(Routes.REGISTER);
   }
 }

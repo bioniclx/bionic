@@ -1,5 +1,6 @@
 import 'package:bionic/app/components/custom_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 
@@ -75,21 +76,26 @@ class LoginView extends GetView<LoginController> {
                             buttonHeight: 50,
                           ),
                           const SizedBox(height: 10),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CustomText(
+                              const CustomText(
                                 text: 'Anda Belum Memiliki Akun?',
                                 textSize: 11,
                                 textColor: Colors.black,
                                 textWeight: FontWeight.w400,
                               ),
-                              SizedBox(width: 8),
-                              CustomText(
-                                text: 'Daftar',
-                                textSize: 14,
-                                textColor: Color.fromRGBO(15, 155, 71, 1),
-                                textWeight: FontWeight.w400,
+                              const SizedBox(width: 8),
+                              GestureDetector(
+                                child: const CustomText(
+                                  text: 'Daftar',
+                                  textSize: 14,
+                                  textColor: Color.fromRGBO(15, 155, 71, 1),
+                                  textWeight: FontWeight.w400,
+                                ),
+                                onTap: () {
+                                  controller.textRegisClicked();
+                                },
                               ),
                             ],
                           ),

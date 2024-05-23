@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -14,9 +15,16 @@ class RegisterView extends GetView<RegisterController> {
         centerTitle: true,
       ),
       body: const Center(
-        child: Text(
-          'RegisterView is working',
-          style: TextStyle(fontSize: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomButtonWithIcon(
+              buttonText: 'Laporan \nPenjualan',
+              buttonIcon: Icons.add,
+              buttonHeight: 120,
+              buttonWidth: 120,
+            ),
+          ],
         ),
       ),
     );
