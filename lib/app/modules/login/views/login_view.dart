@@ -62,7 +62,7 @@ class LoginView extends GetView<LoginController> {
                           SizedBox(
                             width: 266,
                             child: CustomTextField(
-                              textTitle: 'Email',
+                              textTitle: 'Password',
                               textFieldController: controller.emailController,
                               textFieldType: TextInputType.name,
                               obsecureText: false,
