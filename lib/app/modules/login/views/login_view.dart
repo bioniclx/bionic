@@ -1,6 +1,6 @@
 import 'package:bionic/app/components/custom_widget.dart';
+import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 
@@ -20,14 +20,16 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: spaceMedium,
+              vertical: spaceSmall,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const CustomText(
                   text: 'HELLO!',
-                  textSize: 64,
+                  textSize: textExtraLarge,
                   textColor: Colors.black,
                   textWeight: FontWeight.w400,
                 ),
@@ -35,7 +37,7 @@ class LoginView extends GetView<LoginController> {
                   alignment: Alignment.center,
                   child: CustomText(
                     text: 'Selamat Datang,',
-                    textSize: 16,
+                    textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w400,
                   ),
@@ -50,7 +52,7 @@ class LoginView extends GetView<LoginController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 266,
+                            width: textFieldWidthLarge,
                             child: CustomTextField(
                               textTitle: 'Email',
                               textFieldController: controller.emailController,
@@ -58,9 +60,9 @@ class LoginView extends GetView<LoginController> {
                               obsecureText: false,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: spaceSmall),
                           SizedBox(
-                            width: 266,
+                            width: textFieldWidthLarge,
                             child: CustomTextField(
                               textTitle: 'Email',
                               textFieldController: controller.emailController,
@@ -68,7 +70,7 @@ class LoginView extends GetView<LoginController> {
                               obsecureText: false,
                             ),
                           ),
-                          const SizedBox(height: 80),
+                          const SizedBox(height: spaceExtraLarge),
                           CustomButton(
                             onTap: () {},
                             buttonText: 'Submit',

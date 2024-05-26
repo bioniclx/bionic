@@ -1,12 +1,16 @@
-import 'package:bionic/app/utils/utility.dart';
+import 'package:bionic/app/routes/app_pages.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
-  final statusColor = getStatusColor(0);
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   void onInit() {
     super.onInit();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
   }
 
   @override
@@ -17,5 +21,9 @@ class RegisterController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void textLoginclicked() {
+    Get.offNamed(Routes.AUTH);
   }
 }

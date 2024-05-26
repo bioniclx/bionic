@@ -6,6 +6,7 @@ THIS IS A REUSEABLE WIDGET ANY CHANGE WILL BE INCLUDED IN ALL VIEW
 
 */
 
+import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -208,7 +209,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spaceVerySmall),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: Align(
@@ -271,7 +272,10 @@ class CustomListItem extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+          padding: const EdgeInsets.symmetric(
+            vertical: spaceVerySmall,
+            horizontal: paddingMedium,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
