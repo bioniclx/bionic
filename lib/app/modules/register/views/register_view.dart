@@ -63,38 +63,45 @@ class RegisterView extends GetView<RegisterController> {
                         SizedBox(
                           width: textFieldWidthLarge,
                           child: CustomTextField(
-                            textTitle: 'Email',
-                            textFieldController: controller.emailController,
+                            textTitle: 'Password',
+                            textFieldController: controller.passwordController,
                             textFieldType: TextInputType.name,
-                            obsecureText: false,
+                            obsecureText: true,
                           ),
                         ),
                         const SizedBox(height: spaceSmall),
                         SizedBox(
                           width: textFieldWidthLarge,
                           child: CustomTextField(
-                            textTitle: 'Email',
-                            textFieldController: controller.emailController,
+                            textTitle: 'Confirm Password',
+                            textFieldController:
+                                controller.confirmPasswordController,
                             textFieldType: TextInputType.name,
-                            obsecureText: false,
+                            obsecureText: true,
                           ),
                         ),
                         const SizedBox(height: spaceSmall),
                         SizedBox(
                           width: textFieldWidthLarge,
                           child: CustomTextField(
-                            textTitle: 'Email',
-                            textFieldController: controller.emailController,
+                            textTitle: '???',
+                            textFieldController: controller.testController,
                             textFieldType: TextInputType.name,
                             obsecureText: false,
                           ),
                         ),
                         const SizedBox(height: spaceExtraLarge),
                         CustomButton(
-                          onTap: () {},
-                          buttonText: 'Submit',
+                          buttonText: 'Register',
                           buttonWidth: 150,
                           buttonHeight: 50,
+                          onTap: () {
+                            controller.registerAccouhnt(
+                              controller.emailController.text,
+                              controller.passwordController.text,
+                              controller.confirmPasswordController.text,
+                            );
+                          },
                         ),
                         const SizedBox(height: spaceVerySmall),
                         Row(

@@ -64,18 +64,21 @@ class LoginView extends GetView<LoginController> {
                           SizedBox(
                             width: textFieldWidthLarge,
                             child: CustomTextField(
-                              textTitle: 'Email',
-                              textFieldController: controller.emailController,
+                              textTitle: 'Password',
+                              textFieldController:
+                                  controller.passwordController,
                               textFieldType: TextInputType.name,
-                              obsecureText: false,
+                              obsecureText: true,
                             ),
                           ),
                           const SizedBox(height: spaceExtraLarge),
                           CustomButton(
-                            onTap: () {},
-                            buttonText: 'Submit',
+                            buttonText: 'Login',
                             buttonWidth: 150,
                             buttonHeight: 50,
+                            onTap: () {
+                              controller.signUserIn();
+                            },
                           ),
                           const SizedBox(height: 10),
                           Row(
