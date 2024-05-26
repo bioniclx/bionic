@@ -1,31 +1,139 @@
 import 'package:bionic/app/components/custom_widget.dart';
+import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('RegisterView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return CustomListItem(
-              itemName: 'Endriardi',
-              itemDate: '20 Mei 2024',
-              itemPrice: 'Rp. 2.400.00',
-              itemColor: controller.statusColor,
-            );
-          },
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login-background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: spaceMedium,
+            vertical: spaceSmall,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomText(
+                text: 'WELCOME!',
+                textSize: textExtraLarge,
+                textColor: Colors.black,
+                textWeight: FontWeight.w400,
+              ),
+              const Align(
+                alignment: Alignment.center,
+                child: CustomText(
+                  text: 'SELAMAT BERGABUNG,',
+                  textSize: textMedium,
+                  textColor: Colors.black,
+                  textWeight: FontWeight.w400,
+                ),
+              ),
+              const Divider(
+                color: Color.fromRGBO(183, 183, 183, 1),
+              ),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: textFieldWidthLarge,
+                          child: CustomTextField(
+                            textTitle: 'Email',
+                            textFieldController: controller.emailController,
+                            textFieldType: TextInputType.name,
+                            obsecureText: false,
+                          ),
+                        ),
+                        const SizedBox(height: spaceSmall),
+                        SizedBox(
+                          width: textFieldWidthLarge,
+                          child: CustomTextField(
+                            textTitle: 'Password',
+                            textFieldController: controller.passwordController,
+                            textFieldType: TextInputType.name,
+                            obsecureText: true,
+                          ),
+                        ),
+                        const SizedBox(height: spaceSmall),
+                        SizedBox(
+                          width: textFieldWidthLarge,
+                          child: CustomTextField(
+                            textTitle: 'Confirm Password',
+                            textFieldController:
+                                controller.confirmPasswordController,
+                            textFieldType: TextInputType.name,
+                            obsecureText: true,
+                          ),
+                        ),
+                        const SizedBox(height: spaceSmall),
+                        SizedBox(
+                          width: textFieldWidthLarge,
+                          child: CustomTextField(
+                            textTitle: '???',
+                            textFieldController: controller.testController,
+                            textFieldType: TextInputType.name,
+                            obsecureText: false,
+                          ),
+                        ),
+                        const SizedBox(height: spaceExtraLarge),
+                        CustomButton(
+                          buttonText: 'Register',
+                          buttonWidth: 150,
+                          buttonHeight: 50,
+                          onTap: () {
+                            controller.registerAccouhnt(
+                              controller.emailController.text,
+                              controller.passwordController.text,
+                              controller.confirmPasswordController.text,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: spaceVerySmall),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CustomText(
+                              text: 'Anda Belum Memiliki Akun?',
+                              textSize: 11,
+                              textColor: Colors.black,
+                              textWeight: FontWeight.w400,
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              child: const CustomText(
+                                text: 'Daftar',
+                                textSize: 14,
+                                textColor: Color.fromRGBO(15, 155, 71, 1),
+                                textWeight: FontWeight.w400,
+                              ),
+                              onTap: () {
+                                controller.textLoginclicked();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

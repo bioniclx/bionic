@@ -1,9 +1,10 @@
+import 'package:bionic/app/utils/utility.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final statusColor = getStatusColor(0);
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +20,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void logoutAccount() {
+    FirebaseAuth.instance.signOut();
+  }
 }
