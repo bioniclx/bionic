@@ -143,7 +143,7 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          backgroundColor: const Color.fromRGBO(54, 183, 189, 1),
+          backgroundColor: primary,
           foregroundColor: Colors.white,
         ),
         onPressed: onTap,
