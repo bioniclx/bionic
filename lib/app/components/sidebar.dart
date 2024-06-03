@@ -3,19 +3,8 @@
 Widget drawer for sidebar
 How to use : 
   - call this widget on your context drawer
-  - create key for scaffold
-  - use this method to open or close drawer
-    
-    //open
-    void openDrawer() {
-    scaffoldKey.currentState!.openDrawer();
-    }
-
-    //close
-    void closeDrawer() {
-    scaffoldKey.currentState!.openEndDrawer();
-    }
-
+  - open drawer by calling a scaffold context and open drawer
+    Scaffold.of(context).openDrawer();
 */
 import 'package:bionic/app/components/custom_widget.dart';
 import 'package:bionic/app/utils/utility.dart';
@@ -34,16 +23,25 @@ class NavigationSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: const [
-          DrawerHeader(
+        children: [
+          const DrawerHeader(
             child: Center(
               child: CustomText(
-                text: 'L O G O',
+                text: 'P R O F I L E',
                 textSize: textMedium,
                 textColor: Colors.grey,
                 textWeight: FontWeight.w800,
               ),
             ),
+          ),
+          ListTile(
+            tileColor: Colors.blue[100],
+            title: const Text('Page 1'),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text('Page 2'),
+            onTap: () {},
           ),
         ],
       ),
