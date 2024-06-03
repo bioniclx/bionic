@@ -1,4 +1,4 @@
-import 'package:bionic/app/components/custom_widget.dart';
+import 'package:bionic/app/components/custom_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';

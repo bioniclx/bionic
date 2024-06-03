@@ -1,4 +1,5 @@
-import 'package:bionic/app/components/custom_widget.dart';
+import 'package:bionic/app/components/custom_button.dart';
+import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,11 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: Icon(Icons.list)),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: const Icon(Icons.list),
+          ),
         ),
         title: const Text('HomeView'),
         centerTitle: true,

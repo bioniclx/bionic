@@ -1,4 +1,6 @@
-import 'package:bionic/app/components/custom_widget.dart';
+import 'package:bionic/app/components/custom_button.dart';
+import 'package:bionic/app/components/custom_text.dart';
+import 'package:bionic/app/components/custom_text_field.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
