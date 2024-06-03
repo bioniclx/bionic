@@ -12,13 +12,13 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const NavigationSidebar(),
-      key: controller.scaffoldKey,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            controller.openDrawer();
-          },
-          icon: Icon(Icons.list),
+        leading: Builder(
+          builder: (context) => IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.list)),
         ),
         title: const Text('HomeView'),
         centerTitle: true,
@@ -48,7 +48,7 @@ class HomeView extends GetView<HomeController> {
               buttonText: 'Logout',
               buttonWidth: 100,
               onTap: () {
-                controller.openDrawer();
+                controller.logoutAccount();
               },
             ),
           ],

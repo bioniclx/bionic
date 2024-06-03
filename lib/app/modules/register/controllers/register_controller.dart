@@ -9,7 +9,8 @@ class RegisterController extends GetxController {
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
   late TextEditingController testController;
-  CollectionReference ref = FirebaseFirestore.instance.collection('user');
+  CollectionReference ref = FirebaseFirestore.instance.collection('store');
+  var auth = FirebaseAuth.instance;
 
   @override
   void onInit() {
@@ -47,16 +48,20 @@ class RegisterController extends GetxController {
       try {
         String dateNow = DateTime.now().toString();
 
+        final newStore =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
         var data = {
+          'uid': newStore.user!.uid,
           'email': email,
           'register_at': dateNow,
         };
 
-        await ref.doc(email).set(data);
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+        await ref.doc(data['uid']).set(data);
+
         Get.snackbar('Success', 'User created');
         Get.offAndToNamed(Routes.AUTH);
       } catch (e) {
