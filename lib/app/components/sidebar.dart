@@ -36,14 +36,75 @@ class NavigationSidebar extends StatelessWidget {
             ),
           ),
           ListTile(
-            tileColor: Colors.blue[100],
-            title: const Text('Page 1'),
+            title: const CustomText(
+              text: 'Profile',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
             onTap: () {},
           ),
+          const Divider(),
           ListTile(
-            title: const Text('Page 2'),
+            title: const CustomText(
+              text: 'Home',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
             onTap: () {},
           ),
+          const Divider(),
+          ListTile(
+            title: const CustomText(
+              text: 'Katalog',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const CustomText(
+              text: 'History',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const CustomText(
+              text: 'Laporan',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const CustomText(
+              text: 'Penjualan',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const CustomText(
+              text: 'Tambah Produk',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
         ],
       ),
     );

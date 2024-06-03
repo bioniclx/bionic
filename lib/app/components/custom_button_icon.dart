@@ -25,6 +25,7 @@ class CustomButtonWithIcon extends StatelessWidget {
   final IconData buttonIcon;
   final double buttonHeight;
   final double buttonWidth;
+  final double? buttonTextPaddingVertical;
   final double? buttonElevation;
   final double? buttonIconSize;
   final Function()? onTap;
@@ -37,6 +38,7 @@ class CustomButtonWithIcon extends StatelessWidget {
     this.buttonElevation,
     this.buttonIconSize,
     this.onTap,
+    this.buttonTextPaddingVertical,
   });
 
   @override
@@ -55,7 +57,7 @@ class CustomButtonWithIcon extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                padding: EdgeInsets.symmetric(vertical: 15.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Icon(
@@ -67,7 +69,8 @@ class CustomButtonWithIcon extends StatelessWidget {
               ),
               const SizedBox(height: spaceVerySmall),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                padding: EdgeInsets.symmetric(
+                    vertical: buttonTextPaddingVertical ?? 15.0),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
