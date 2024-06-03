@@ -9,9 +9,12 @@ import 'package:flutter/material.dart';
 
 /*
 
-Custom size
+Custom 
 
 */
+
+//color
+const Color primary = Color.fromRGBO(54, 183, 189, 1);
 
 //text Size
 const double textSmall = 8.0;
