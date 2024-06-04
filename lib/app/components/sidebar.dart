@@ -8,8 +8,10 @@ How to use :
 */
 
 import 'package:bionic/app/components/custom_text.dart';
+import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NavigationSidebar extends StatelessWidget {
   final Color? isActived1;
@@ -35,6 +37,18 @@ class NavigationSidebar extends StatelessWidget {
               ),
             ),
           ),
+          ListTile(
+            title: const CustomText(
+              text: 'Example',
+              textSize: textMedium,
+              textColor: primary,
+              textWeight: FontWeight.w500,
+            ),
+            onTap: () {
+              Get.toNamed(Routes.EXAMPLE);
+            },
+          ),
+          const Divider(),
           ListTile(
             title: const CustomText(
               text: 'Profile',

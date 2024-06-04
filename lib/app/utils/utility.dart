@@ -54,3 +54,15 @@ Color getStatusColor(int status) {
     return Colors.green;
   }
 }
+
+Color setReportBorderColor(int type) {
+  if (type == 0) {
+    return primary;
+  } else if (type == 1) {
+    return Colors.green;
+  } else if (type == 2) {
+    return const Color.fromRGBO(34, 182, 228, 1);
+  } else {
+    return const Color.fromRGBO(163, 188, 249, 1);
+  }
+}

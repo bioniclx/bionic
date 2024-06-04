@@ -1,10 +1,13 @@
 import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_cart_item.dart';
 import 'package:bionic/app/components/custom_list.dart';
+import 'package:bionic/app/components/custom_report_card.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/components/sidebar.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 
@@ -118,6 +121,51 @@ class ExampleView extends GetView<ExampleController> {
               onTap: () {
                 Get.snackbar('Value', '${controller.itemCount}');
               },
+            ),
+            const Divider(),
+            const CustomText(
+              text: 'Report Card',
+              textSize: textLarge,
+              textColor: Colors.black,
+              textWeight: FontWeight.w400,
+            ),
+            /*
+            when use it in row make sure use a expanded
+            this because default width are infinity
+            */
+            Row(
+              children: [
+                Expanded(
+                  child: CustomReportCard(
+                    reportTitle: 'Total Penjualan',
+                    reportDetail: 32,
+                    reportBorderColor: setReportBorderColor(1),
+                  ),
+                ),
+                Expanded(
+                  child: CustomReportCard(
+                    reportTitle: 'Total Penjualan',
+                    reportDetail: 32,
+                    reportBorderColor: setReportBorderColor(2),
+                  ),
+                ),
+              ],
+            ),
+            /*
+            Outside outside row
+            */
+            CustomReportCard(
+              reportTitle: 'Total Penjualan',
+              reportDetail: 32,
+              reportBorderColor: setReportBorderColor(0),
+            ),
+            //or you can set width if you needed
+            CustomReportCard(
+              reportTitle: 'Total Penjualan',
+              reportDetail: 32,
+              reportBorderColor: setReportBorderColor(4),
+              //add this nullable variable
+              reportCardWidth: 200,
             ),
           ],
         ),
