@@ -17,7 +17,7 @@ Custom
 const Color primary = Color.fromRGBO(54, 183, 189, 1);
 
 //text Size
-const double textSmall = 8.0;
+const double textSmall = 10.0;
 const double textMedium = 16.0;
 const double textLarge = 32.0;
 const double textExtraLarge = 64.0;

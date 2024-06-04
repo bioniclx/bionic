@@ -1,5 +1,6 @@
 import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_cart_item.dart';
+import 'package:bionic/app/components/custom_catalog_item.dart';
 import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_report_card.dart';
 import 'package:bionic/app/components/custom_text.dart';
@@ -166,6 +167,28 @@ class ExampleView extends GetView<ExampleController> {
               reportBorderColor: setReportBorderColor(4),
               //add this nullable variable
               reportCardWidth: 200,
+            ),
+            const SizedBox(height: spaceMedium),
+
+            const Divider(),
+
+            const CustomText(
+              text: 'Catalog Item',
+              textSize: textLarge,
+              textColor: Colors.black,
+              textWeight: FontWeight.w400,
+            ),
+
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: spaceSmall),
+              child: Column(
+                children: [
+                  CustomCatalogItem(),
+                  SizedBox(height: spaceSmall),
+                  CustomCatalogItem(),
+                  SizedBox(height: spaceMedium),
+                ],
+              ),
             ),
           ],
         ),

@@ -1,6 +1,22 @@
+/*
+
+!!!IMPORTANT!!!
+THIS IS A REUSEABLE WIDGET ANY CHANGE WILL BE INCLUDED IN ALL VIEW
+
+
+*/
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
+
+/*
+
+Report card for showing detail income or prduk available
+how to use : 
+  When class called width are set infinity there you musrt call it using expanded
+  or you can set width manually by using reportCardWidth variable
+  for border color is set for 4 type of color you can get that by using setReportBorderColor()
+*/
 
 class CustomReportCard extends StatelessWidget {
   final String reportTitle;
