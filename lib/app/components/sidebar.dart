@@ -76,7 +76,9 @@ class NavigationSidebar extends StatelessWidget {
               textColor: primary,
               textWeight: FontWeight.w500,
             ),
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(Routes.CATALOG_PRODUCT);
+            },
           ),
           const Divider(),
           ListTile(
