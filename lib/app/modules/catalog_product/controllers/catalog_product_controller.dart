@@ -12,6 +12,7 @@ class CatalogProductController extends GetxController {
 
   //Get the current user id from auth
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  CollectionReference ref = FirebaseFirestore.instance.collection('product');
 
   @override
   void onInit() {
@@ -40,5 +41,25 @@ class CatalogProductController extends GetxController {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
+  }
+
+  Future updateProduct(
+    String id,
+    String productName,
+    String productCategory,
+    int productStock,
+    int productPrice,
+  ) async {
+    try {
+      final refDoc = ref.doc(id);
+      final data = {
+        'name': productName,
+        'price': productPrice,
+        'stock': productStock,
+        'category': productCategory,
+      };
+      refDoc.update(data);
+      Get.back();
+    } catch (e) {}
   }
 }

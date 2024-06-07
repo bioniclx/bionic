@@ -92,6 +92,15 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             "${snapshot.data?[index].productCategory}",
                       ),
                       onTap: () {
+                        //Change text field text by product index value
+                        controller.updateProductNameController.text =
+                            "${snapshot.data?[index].productName}";
+                        controller.updateProductPrice.text =
+                            "${snapshot.data?[index].productPrice}";
+                        controller.updateProductStock.text =
+                            "${snapshot.data?[index].productStock}";
+                        controller.updateProductCategory.text =
+                            "${snapshot.data?[index].productCategory}";
                         Get.dialog(
                           CustomAddProductDialog(
                             productName: controller.updateProductNameController,
@@ -99,10 +108,12 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             productPrice: controller.updateProductPrice,
                             productStock: controller.updateProductStock,
                             onTap: () {
-                              Get.back();
-                              Get.snackbar(
+                              controller.updateProduct(
+                                snapshot.data![index].id.toString(),
                                 controller.updateProductNameController.text,
-                                'message',
+                                controller.updateProductCategory.text,
+                                int.parse(controller.updateProductStock.text),
+                                int.parse(controller.updateProductPrice.text),
                               );
                             },
                           ),
