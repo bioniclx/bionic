@@ -183,9 +183,19 @@ class ExampleView extends GetView<ExampleController> {
               padding: EdgeInsets.symmetric(horizontal: spaceSmall),
               child: Column(
                 children: [
-                  CustomCatalogItem(),
+                  CustomCatalogItem(
+                    productName: '',
+                    productPrice: 1000,
+                    productCategory: '',
+                    productStock: 2,
+                  ),
                   SizedBox(height: spaceSmall),
-                  CustomCatalogItem(),
+                  CustomCatalogItem(
+                    productName: 'Mawar',
+                    productPrice: 2000,
+                    productCategory: 'Rose',
+                    productStock: 2,
+                  ),
                   SizedBox(height: spaceMedium),
                 ],
               ),

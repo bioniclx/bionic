@@ -10,6 +10,7 @@ How to use :
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -118,7 +119,9 @@ class NavigationSidebar extends StatelessWidget {
               textColor: primary,
               textWeight: FontWeight.w500,
             ),
-            onTap: () {},
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
           ),
           const Divider(),
         ],

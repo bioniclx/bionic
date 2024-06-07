@@ -80,8 +80,8 @@ class AddProductView extends GetView<AddProductController> {
                     onTap: () {
                       controller.addProduct(
                         controller.productNameController.text,
-                        controller.productPriceController.text,
-                        controller.productCountController.text,
+                        int.parse(controller.productPriceController.text),
+                        int.parse(controller.productCountController.text),
                         controller.productCategoryController.text,
                       );
                     },

@@ -1,5 +1,6 @@
 import 'package:bionic/app/components/custom_add_product_dialog.dart';
 import 'package:bionic/app/components/custom_catalog_item.dart';
+import 'package:bionic/app/models/product.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -58,35 +59,64 @@ class CatalogProductView extends GetView<CatalogProductController> {
             ),
           ),
         ],
-        body: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: paddingSmall,
-                horizontal: paddingMedium,
-              ),
-              child: GestureDetector(
-                child: const CustomCatalogItem(),
-                onTap: () {
-                  Get.dialog(
-                    CustomAddProductDialog(
-                      productName: controller.updateProductNameController,
-                      productCategory: controller.updateProductCategory,
-                      productPrice: controller.updateProductPrice,
-                      productStock: controller.updateProductStock,
+        body: StreamBuilder<List<Product>>(
+          stream: controller.getProductItem(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("Error"),
+              );
+            }
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: paddingSmall,
+                      horizontal: paddingMedium,
+                    ),
+                    child: GestureDetector(
+                      child: CustomCatalogItem(
+                        productName: "${snapshot.data?[index].productName}",
+                        productPrice:
+                            int.parse("${snapshot.data?[index].productPrice}"),
+                        productStock:
+                            int.parse("${snapshot.data?[index].productStock}"),
+                        productCategory:
+                            "${snapshot.data?[index].productCategory}",
+                      ),
                       onTap: () {
-                        Get.back();
-                        Get.snackbar(
-                          controller.updateProductNameController.text,
-                          'message',
+                        Get.dialog(
+                          CustomAddProductDialog(
+                            productName: controller.updateProductNameController,
+                            productCategory: controller.updateProductCategory,
+                            productPrice: controller.updateProductPrice,
+                            productStock: controller.updateProductStock,
+                            onTap: () {
+                              Get.back();
+                              Get.snackbar(
+                                controller.updateProductNameController.text,
+                                'message',
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
                   );
                 },
-              ),
-            );
+              );
+            } else {
+              return const Center(
+                child: Text('Has No Data'),
+              );
+            }
           },
         ),
       ),

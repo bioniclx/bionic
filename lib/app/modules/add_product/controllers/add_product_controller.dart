@@ -9,6 +9,7 @@ class AddProductController extends GetxController {
   late TextEditingController productCategoryController;
   late TextEditingController productCountController;
 
+  //Inisialisasi firebase
   final FirebaseAuth auth = FirebaseAuth.instance;
   CollectionReference ref = FirebaseFirestore.instance.collection('product');
 
@@ -31,15 +32,16 @@ class AddProductController extends GetxController {
     super.onClose();
   }
 
+  //Add product method
   Future<void> addProduct(
     String name,
-    String price,
-    String stock,
+    int price,
+    int stock,
     String category,
   ) async {
     if (name.isNotEmpty &&
-        price.isNotEmpty &&
-        stock.isNotEmpty &&
+        productPriceController.text.isNotEmpty &&
+        productCountController.text.isNotEmpty &&
         category.isNotEmpty) {
       final User? user = auth.currentUser;
       final uid = user!.uid;

@@ -3,7 +3,17 @@ import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class CustomCatalogItem extends StatelessWidget {
-  const CustomCatalogItem({super.key});
+  final String productName;
+  final int productPrice;
+  final String productCategory;
+  final int productStock;
+  const CustomCatalogItem({
+    super.key,
+    required this.productName,
+    required this.productPrice,
+    required this.productCategory,
+    required this.productStock,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +48,8 @@ class CustomCatalogItem extends StatelessWidget {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
+          Padding(
+            padding: const EdgeInsets.symmetric(
               horizontal: paddingSmall,
               vertical: paddingMedium,
             ),
@@ -48,20 +58,20 @@ class CustomCatalogItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: 'Product Name',
+                    text: productName,
                     textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w600,
                   ),
-                  SizedBox(height: paddingVerySmall),
+                  const SizedBox(height: paddingVerySmall),
                   CustomText(
-                    text: 'Product Price',
+                    text: '$productPrice',
                     textSize: textSmall,
                     textColor: Colors.black,
                     textWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: paddingSmall),
-                  SizedBox(
+                  const SizedBox(height: paddingSmall),
+                  const SizedBox(
                     width: 150,
                     height: 60,
                     child: CustomText(
