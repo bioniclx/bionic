@@ -75,9 +75,16 @@ class AddProductView extends GetView<AddProductController> {
               children: [
                 Expanded(
                   child: CustomButton(
-                    onTap: () {},
                     buttonText: 'Test',
                     buttonWidth: 1,
+                    onTap: () {
+                      controller.addProduct(
+                        controller.productNameController.text,
+                        controller.productPriceController.text,
+                        controller.productCountController.text,
+                        controller.productCategoryController.text,
+                      );
+                    },
                   ),
                 ),
               ],

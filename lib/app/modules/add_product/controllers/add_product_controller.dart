@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +9,9 @@ class AddProductController extends GetxController {
   late TextEditingController productCategoryController;
   late TextEditingController productCountController;
 
-  final count = 0.obs;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  CollectionReference ref = FirebaseFirestore.instance.collection('product');
+
   @override
   void onInit() {
     super.onInit();
@@ -27,5 +31,37 @@ class AddProductController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<void> addProduct(
+    String name,
+    String price,
+    String stock,
+    String category,
+  ) async {
+    if (name.isNotEmpty &&
+        price.isNotEmpty &&
+        stock.isNotEmpty &&
+        category.isNotEmpty) {
+      final User? user = auth.currentUser;
+      final uid = user!.uid;
+      try {
+        String dateNow = DateTime.now().toString();
+        final refDoc = ref.doc();
+        final data = {
+          'id': refDoc.id,
+          'store_id': uid,
+          'name': name,
+          'price': price,
+          'stock': stock,
+          'category': category,
+          'created_at': dateNow,
+        };
+        refDoc.set(data);
+        Get.back();
+      } catch (e) {
+        Get.snackbar('Fail', 'Somthing went wrong');
+      }
+    } else {
+      Get.snackbar('Error', 'missing parameter');
+    }
+  }
 }
