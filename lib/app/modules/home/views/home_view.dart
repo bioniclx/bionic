@@ -16,7 +16,24 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavigationSidebar(),
+      drawer: FutureBuilder(
+        future: controller.getStoreProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
+            Map<String, dynamic>? store = snapshot.data!.data();
+            return NavigationSidebar(
+              storeName: "${store!['store_name']}",
+              role: getRoleAccount(store['role']),
+            );
+          } else {
+            return const Text('Has no data');
+          }
+        },
+      ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(

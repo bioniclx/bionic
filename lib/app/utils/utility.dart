@@ -57,6 +57,16 @@ Color getStatusColor(int status) {
   }
 }
 
+String getRoleAccount(String role) {
+  if (role == "1") {
+    return "Owner";
+  } else if (role == "2") {
+    return "Karyawan";
+  } else {
+    return "Invalid";
+  }
+}
+
 Color setReportBorderColor(int type) {
   if (type == 0) {
     return primary;

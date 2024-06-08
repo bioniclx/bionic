@@ -103,6 +103,7 @@ class RegisterView extends GetView<RegisterController> {
                               controller.storeNameController.text,
                               controller.passwordController.text,
                               controller.confirmPasswordController.text,
+                              "1",
                             );
                           },
                         ),

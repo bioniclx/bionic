@@ -40,6 +40,7 @@ class RegisterController extends GetxController {
     String storeName,
     String password,
     String confirmPassword,
+    String role,
   ) async {
     if (email.isEmpty ||
         password.isEmpty ||
@@ -63,6 +64,7 @@ class RegisterController extends GetxController {
           'email': email,
           'store_name': storeName,
           'register_at': dateNow,
+          'role': role,
         };
 
         await ref.doc(data['uid']).set(data);

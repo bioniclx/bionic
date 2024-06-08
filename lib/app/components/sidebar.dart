@@ -19,10 +19,14 @@ import 'package:get/get.dart';
 class NavigationSidebar extends StatelessWidget {
   final Color? isActived1;
   final Color? isActived2;
+  final String storeName;
+  final String role;
   const NavigationSidebar({
     super.key,
     this.isActived1,
     this.isActived2,
+    required this.storeName,
+    required this.role,
   });
 
   @override
@@ -33,7 +37,7 @@ class NavigationSidebar extends StatelessWidget {
           Flexible(
             child: ListView(
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 150,
                   child: DrawerHeader(
                     child: Row(
@@ -44,20 +48,21 @@ class NavigationSidebar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText(
-                              text: 'Agus Darmanto',
+                              text: storeName,
                               textSize: textMedium,
                               textColor: Colors.black,
                               textWeight: FontWeight.w600,
                             ),
+                            const SizedBox(height: paddingVerySmall),
                             CustomText(
-                              text: 'Owner',
+                              text: role,
                               textSize: textSmall,
                               textColor: primary,
                               textWeight: FontWeight.w600,
                             ),
                           ],
                         ),
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 32,
                           backgroundColor: Colors.grey,
                         ),
