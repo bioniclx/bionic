@@ -90,6 +90,10 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             int.parse("${snapshot.data?[index].productStock}"),
                         productCategory:
                             "${snapshot.data?[index].productCategory}",
+                        onTap: () {
+                          controller
+                              .deleteProduct("${snapshot.data?[index].id}");
+                        },
                       ),
                       onTap: () {
                         //Change text field text by product index value

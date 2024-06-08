@@ -62,4 +62,27 @@ class CatalogProductController extends GetxController {
       Get.back();
     } catch (e) {}
   }
+
+  Future<void> deleteProduct(String id) async {
+    Get.dialog(AlertDialog(
+      title: const Text('Delete'),
+      content: const Text('Are you sure'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text('No'),
+        ),
+        TextButton(
+          onPressed: () {
+            ref.doc(id).delete();
+            Get.back();
+            Get.snackbar('Deleted', "Your data has been removed");
+          },
+          child: const Text('Yes'),
+        ),
+      ],
+    ));
+  }
 }
