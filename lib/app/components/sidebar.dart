@@ -88,17 +88,19 @@ class NavigationSidebar extends StatelessWidget {
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'Katalog',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
+                              text: 'Katalog',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -110,17 +112,19 @@ class NavigationSidebar extends StatelessWidget {
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'History',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
+                              text: 'History',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -130,17 +134,19 @@ class NavigationSidebar extends StatelessWidget {
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'Laporan',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
+                              text: 'Laporan',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -150,17 +156,19 @@ class NavigationSidebar extends StatelessWidget {
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'Penjualan',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
+                              text: 'Penjualan',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -170,23 +178,23 @@ class NavigationSidebar extends StatelessWidget {
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'Tambah Produk',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
+                              text: 'Tambah Produk',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -198,25 +206,24 @@ class NavigationSidebar extends StatelessWidget {
               GestureDetector(
                 child: const SizedBox(
                   height: tileNormal,
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomText(
                             text: 'Tambah Karyawan',
                             textSize: textMedium,
                             textColor: primary,
                             textWeight: FontWeight.w500,
                           ),
-                          Icon(
-                            Icons.person_add,
-                            color: primary,
-                          ),
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          Icons.person_add,
+                          color: primary,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -226,29 +233,30 @@ class NavigationSidebar extends StatelessWidget {
               GestureDetector(
                 child: const SizedBox(
                   height: tileNormal,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomText(
                             text: 'Keluar',
                             textSize: textMedium,
                             textColor: primary,
                             textWeight: FontWeight.w500,
                           ),
-                          Icon(
-                            Icons.login_outlined,
-                            color: primary,
-                          ),
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          Icons.login_outlined,
+                          color: primary,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                },
               ),
               const Divider(color: primary, height: 2.0),
               const Padding(
