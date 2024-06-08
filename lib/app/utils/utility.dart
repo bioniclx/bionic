@@ -16,6 +16,8 @@ Custom
 //color
 const Color primary = Color.fromRGBO(54, 183, 189, 1);
 
+//List tile height
+const double tileNormal = 30.0;
 //text Size
 const double textSmall = 10.0;
 const double textMedium = 16.0;

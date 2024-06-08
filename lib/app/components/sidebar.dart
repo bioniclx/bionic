@@ -11,7 +11,9 @@ import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class NavigationSidebar extends StatelessWidget {
@@ -26,104 +28,261 @@ class NavigationSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
-          const DrawerHeader(
-            child: Center(
-              child: CustomText(
-                text: 'P R O F I L E',
-                textSize: textMedium,
-                textColor: Colors.grey,
-                textWeight: FontWeight.w800,
+          Flexible(
+            child: ListView(
+              children: [
+                const SizedBox(
+                  height: 150,
+                  child: DrawerHeader(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: 'Agus Darmanto',
+                              textSize: textMedium,
+                              textColor: Colors.black,
+                              textWeight: FontWeight.w600,
+                            ),
+                            CustomText(
+                              text: 'Owner',
+                              textSize: textSmall,
+                              textColor: primary,
+                              textWeight: FontWeight.w600,
+                            ),
+                          ],
+                        ),
+                        CircleAvatar(
+                          radius: 32,
+                          backgroundColor: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'Example',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'Katalog',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    Get.toNamed(Routes.CATALOG_PRODUCT);
+                  },
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'History',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'Laporan',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'Penjualan',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingMedium),
+                        child: CustomText(
+                          text: 'Tambah Produk',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                ),
+              ],
+            ),
+          ),
+          ListView(
+            shrinkWrap: true,
+            children: [
+              const Divider(color: primary, height: 2.0),
+              GestureDetector(
+                child: const SizedBox(
+                  height: tileNormal,
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: 'Tambah Karyawan',
+                            textSize: textMedium,
+                            textColor: primary,
+                            textWeight: FontWeight.w500,
+                          ),
+                          Icon(
+                            Icons.person_add,
+                            color: primary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () {},
               ),
-            ),
+              const Divider(),
+              GestureDetector(
+                child: const SizedBox(
+                  height: tileNormal,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: 'Keluar',
+                            textSize: textMedium,
+                            textColor: primary,
+                            textWeight: FontWeight.w500,
+                          ),
+                          Icon(
+                            Icons.login_outlined,
+                            color: primary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () {},
+              ),
+              const Divider(color: primary, height: 2.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingMedium),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        CircleAvatar(),
+                        CustomText(
+                          text: 'Bionic, Inc.',
+                          textSize: textSmall,
+                          textColor: Colors.grey,
+                          textWeight: FontWeight.w400,
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        CircleAvatar(),
+                        CustomText(
+                          text: 'Rohand, Co.',
+                          textSize: textSmall,
+                          textColor: Colors.grey,
+                          textWeight: FontWeight.w400,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-          ListTile(
-            title: const CustomText(
-              text: 'Example',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              Get.toNamed(Routes.EXAMPLE);
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Profile',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Home',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Katalog',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              Get.toNamed(Routes.CATALOG_PRODUCT);
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'History',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Laporan',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Penjualan',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {},
-          ),
-          const Divider(),
-          ListTile(
-            title: const CustomText(
-              text: 'Tambah Produk',
-              textSize: textMedium,
-              textColor: primary,
-              textWeight: FontWeight.w500,
-            ),
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-            },
-          ),
-          const Divider(),
         ],
       ),
     );
