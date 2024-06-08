@@ -65,6 +65,16 @@ class RegisterView extends GetView<RegisterController> {
                         SizedBox(
                           width: textFieldWidthLarge,
                           child: CustomTextField(
+                            textTitle: 'Nama Toko',
+                            textFieldController: controller.storeNameController,
+                            textFieldType: TextInputType.name,
+                            obsecureText: false,
+                          ),
+                        ),
+                        const SizedBox(height: spaceSmall),
+                        SizedBox(
+                          width: textFieldWidthLarge,
+                          child: CustomTextField(
                             textTitle: 'Password',
                             textFieldController: controller.passwordController,
                             textFieldType: TextInputType.name,
@@ -82,16 +92,6 @@ class RegisterView extends GetView<RegisterController> {
                             obsecureText: true,
                           ),
                         ),
-                        const SizedBox(height: spaceSmall),
-                        SizedBox(
-                          width: textFieldWidthLarge,
-                          child: CustomTextField(
-                            textTitle: '???',
-                            textFieldController: controller.testController,
-                            textFieldType: TextInputType.name,
-                            obsecureText: false,
-                          ),
-                        ),
                         const SizedBox(height: spaceExtraLarge),
                         CustomButton(
                           buttonText: 'Register',
@@ -100,6 +100,7 @@ class RegisterView extends GetView<RegisterController> {
                           onTap: () {
                             controller.registerAccouhnt(
                               controller.emailController.text,
+                              controller.storeNameController.text,
                               controller.passwordController.text,
                               controller.confirmPasswordController.text,
                             );

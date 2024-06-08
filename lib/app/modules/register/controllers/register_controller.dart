@@ -8,7 +8,7 @@ class RegisterController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
-  late TextEditingController testController;
+  late TextEditingController storeNameController;
   CollectionReference ref = FirebaseFirestore.instance.collection('store');
   var auth = FirebaseAuth.instance;
 
@@ -18,7 +18,7 @@ class RegisterController extends GetxController {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
-    testController = TextEditingController();
+    storeNameController = TextEditingController();
   }
 
   @override
@@ -37,10 +37,14 @@ class RegisterController extends GetxController {
 
   void registerAccouhnt(
     String email,
+    String storeName,
     String password,
     String confirmPassword,
   ) async {
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty ||
+        storeName.isEmpty) {
       Get.snackbar('Error', 'Data can\'t be empty');
     } else if (password != confirmPassword) {
       Get.snackbar('Error', 'Password didn\'t match');
@@ -57,6 +61,7 @@ class RegisterController extends GetxController {
         var data = {
           'uid': newStore.user!.uid,
           'email': email,
+          'store_name': storeName,
           'register_at': dateNow,
         };
 
