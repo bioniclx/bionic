@@ -99,6 +99,31 @@ class NavigationSidebar extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomText(
+                              text: 'Profile',
+                              textSize: textMedium,
+                              textColor: primary,
+                              textWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    Get.toNamed(Routes.PROFILE);
+                    ;
+                  },
+                ),
+                const Divider(),
+                GestureDetector(
+                  child: const SizedBox(
+                    height: tileNormal,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomText(
                               text: 'Katalog',
                               textSize: textMedium,
                               textColor: primary,

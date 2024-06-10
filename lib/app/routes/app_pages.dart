@@ -16,6 +16,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart' as profile_view;
 
 part 'app_routes.dart';
 
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.ADD_PRODUCT,
       page: () => const AddProductView(),
       binding: AddProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => profile_view.ProfileView(),
+      binding: ProfileBinding(),
     ),
   ];
 }
