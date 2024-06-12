@@ -39,35 +39,40 @@ class NavigationSidebar extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 150,
-                  child: DrawerHeader(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              text: storeName,
-                              textSize: textMedium,
-                              textColor: Colors.black,
-                              textWeight: FontWeight.w600,
-                            ),
-                            const SizedBox(height: paddingVerySmall),
-                            CustomText(
-                              text: role,
-                              textSize: textSmall,
-                              textColor: primary,
-                              textWeight: FontWeight.w600,
-                            ),
-                          ],
-                        ),
-                        const CircleAvatar(
-                          radius: 32,
-                          backgroundColor: Colors.grey,
-                        ),
-                      ],
+                  child: GestureDetector(
+                    child: DrawerHeader(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: storeName,
+                                textSize: textMedium,
+                                textColor: Colors.black,
+                                textWeight: FontWeight.w600,
+                              ),
+                              const SizedBox(height: paddingVerySmall),
+                              CustomText(
+                                text: role,
+                                textSize: textSmall,
+                                textColor: primary,
+                                textWeight: FontWeight.w600,
+                              ),
+                            ],
+                          ),
+                          const CircleAvatar(
+                            radius: 32,
+                            backgroundColor: Colors.grey,
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Get.toNamed(Routes.PROFILE);
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -88,31 +93,6 @@ class NavigationSidebar extends StatelessWidget {
                     ),
                   ),
                   onTap: () {},
-                ),
-                const Divider(),
-                GestureDetector(
-                  child: const SizedBox(
-                    height: tileNormal,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomText(
-                              text: 'Profile',
-                              textSize: textMedium,
-                              textColor: primary,
-                              textWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(Routes.PROFILE);
-                    ;
-                  },
                 ),
                 const Divider(),
                 GestureDetector(
