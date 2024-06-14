@@ -1,18 +1,26 @@
+import 'package:bionic/app/routes/app_pages.dart';
+import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bionic/app/modules/profile/controllers/profile_controller.dart';
 import 'package:bionic/app/components/custom_button.dart';
+import 'package:bionic/app/components/custom_report_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileView extends GetView<ProfileController> {
   static const primaryColor = Color(0xFF36B7BD);
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.toNamed(Routes.HOME); // Navigate to the home page
+          },
         ),
         backgroundColor: primaryColor,
         elevation: 0,
@@ -21,6 +29,7 @@ class ProfileView extends GetView<ProfileController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Profile header
             Container(
               color: primaryColor,
               child: Column(
@@ -55,6 +64,8 @@ class ProfileView extends GetView<ProfileController> {
                 ],
               ),
             ),
+
+            // Profile body
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -79,58 +90,45 @@ class ProfileView extends GetView<ProfileController> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          buildStatCard(
-                              'Total Penjualan', '32 Penjualan', Colors.pink),
-                          buildStatCard('Total Pendapatan', 'Rp 11.231.000,-',
-                              Colors.blue),
-                          buildStatCard('...', '...', Colors.green),
+                          CustomReportCard(
+                            reportTitle: 'Penjualan Minggu Ini',
+                            reportDetail: 1500,
+                            reportBorderColor: Colors.blue,
+                            reportCardWidth: 150, // Set a default width
+                          ),
+                          SizedBox(width: 10), // Add spacing between cards
+                          CustomReportCard(
+                            reportTitle: 'Penjualan Bulan Ini',
+                            reportDetail: 5000,
+                            reportBorderColor: Colors.green,
+                            reportCardWidth: 150, // Set a default width
+                          ),
+                          SizedBox(width: 10), // Add spacing between cards
+                          CustomReportCard(
+                            reportTitle: 'Penjualan Tahun Ini',
+                            reportDetail: 60000,
+                            reportBorderColor: Colors.orange,
+                            reportCardWidth: 150, // Set a default width
+                          ),
                         ],
                       ),
                     ),
                     SizedBox(height: 40),
+                    buildButton('Karyawan', primaryColor, () {
+                      Get.toNamed(Routes.KARYAWAN);
+                    }),
                     buildButton('Edit Profile', primaryColor, () {
                       showEditProfileDialog(context);
                     }),
                     buildButton('Ganti Kata Sandi', primaryColor, () {
                       showChangePasswordDialog(context);
                     }),
-                    buildButton('Logout', Colors.red, () {}),
+                    buildButton('Logout', Colors.red, () {
+                      _auth.signOut();
+                    }),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildStatCard(String title, String value, Color color) {
-    return Card(
-      color: Colors.white,
-      child: Container(
-        width: 150,
-        height: 150,
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -143,16 +141,21 @@ class ProfileView extends GetView<ProfileController> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        TextEditingController emailController = TextEditingController();
+        TextEditingController storeNameController = TextEditingController();
+
         return AlertDialog(
           title: Text('Edit Profile'),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 TextField(
-                  decoration: InputDecoration(labelText: 'Nama'),
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
                 ),
                 TextField(
-                  decoration: InputDecoration(labelText: 'Email'),
+                  controller: storeNameController,
+                  decoration: InputDecoration(labelText: 'Store Name'),
                 ),
               ],
             ),
@@ -165,7 +168,9 @@ class ProfileView extends GetView<ProfileController> {
               child: Text('Batal'),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                await _updateProfile(
+                    emailController.text, storeNameController.text);
                 Navigator.of(context).pop();
               },
               child: Text('Simpan'),
@@ -176,9 +181,22 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  // Metode untuk menampilkan dialog ganti kata sandi
+  Future<void> _updateProfile(String newEmail, String newStoreName) async {
+    try {
+      await _auth.currentUser!.updateEmail(newEmail);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .update({
+        'email': newEmail,
+        'store_name': newStoreName,
+      });
+    } catch (e) {
+      print('Error updating profile: $e');
+    }
+  }
+
   void showChangePasswordDialog(BuildContext context) {
-    // Implementasi dialog ganti kata sandi
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -222,7 +240,6 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  // Metode untuk membangun tombol kustom
   Widget buildButton(String text, Color color, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
