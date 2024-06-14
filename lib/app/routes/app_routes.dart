@@ -12,6 +12,7 @@ class Routes {
   static const PROFILE = '/profile';
   static const REPORT = '/report';
   static const SALES = '/sales';
+  static const KARYAWAN = '/karyawan';
 }
 
 class _Paths {
@@ -26,4 +27,5 @@ class _Paths {
   static const PROFILE = Routes.PROFILE;
   static const REPORT = Routes.REPORT;
   static const SALES = Routes.SALES;
+  static const KARYAWAN = Routes.KARYAWAN;
 }

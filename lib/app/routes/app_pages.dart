@@ -1,3 +1,5 @@
+import 'package:bionic/app/modules/karyawan/bindings/KaryawanBinding.dart';
+import 'package:bionic/app/modules/karyawan/views/KaryawanView.dart';
 import 'package:get/get.dart';
 
 import '../modules/add_product/bindings/add_product_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.SALES,
       page: () => const SalesView(),
       binding: SalesBinding(),
+    ),
+    GetPage(
+      name: _Paths.KARYAWAN,
+      page: () => const KaryawanView(),
+      binding: KaryawanBinding(),
     ),
   ];
 }
