@@ -71,11 +71,14 @@ class HomeView extends GetView<HomeController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CustomButtonWithIcon(
+                      CustomButtonWithIcon(
                         buttonText: 'Penjualan',
                         buttonIcon: Icons.arrow_right_alt_outlined,
                         buttonHeight: 110,
                         buttonWidth: 110,
+                        onTap: () {
+                          Get.toNamed(Routes.SALES);
+                        },
                       ),
                       CustomButtonWithIcon(
                         buttonText: 'Tambah Produk',
@@ -117,11 +120,14 @@ class HomeView extends GetView<HomeController> {
                   shrinkWrap: true,
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return CustomListItem(
-                      itemName: 'Endriardi',
-                      itemDate: '20 Mei 2024',
-                      itemPrice: 'Rp. 2.400.00',
-                      itemColor: controller.statusColor,
+                    return Padding(
+                      padding: const EdgeInsets.all(paddingSmall),
+                      child: CustomListItem(
+                        itemName: 'Endriardi',
+                        itemDate: '20 Mei 2024',
+                        itemPrice: 'Rp. 2.400.00',
+                        itemColor: controller.statusColor,
+                      ),
                     );
                   },
                 ),

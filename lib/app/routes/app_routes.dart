@@ -10,6 +10,8 @@ class Routes {
   static const CATALOG_PRODUCT = '/catalog-product';
   static const ADD_PRODUCT = '/add-product';
   static const PROFILE = '/profile';
+  static const REPORT = '/report';
+  static const SALES = '/sales';
 }
 
 class _Paths {
@@ -22,4 +24,6 @@ class _Paths {
   static const CATALOG_PRODUCT = Routes.CATALOG_PRODUCT;
   static const ADD_PRODUCT = Routes.ADD_PRODUCT;
   static const PROFILE = Routes.PROFILE;
+  static const REPORT = Routes.REPORT;
+  static const SALES = Routes.SALES;
 }

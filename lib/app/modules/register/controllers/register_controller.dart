@@ -72,7 +72,7 @@ class RegisterController extends GetxController {
         Get.snackbar('Success', 'User created');
         Get.offAndToNamed(Routes.AUTH);
       } catch (e) {
-        Get.snackbar('title', 'message');
+        Get.snackbar('Error', 'Terjadi Kesalahan ${e.toString()}');
       }
     }
   }
