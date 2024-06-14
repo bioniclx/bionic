@@ -33,7 +33,7 @@ class HomeController extends GetxController {
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getStoreProfile() {
-    return FirebaseFirestore.instance.collection('store').doc(storeId).get();
+    return FirebaseFirestore.instance.collection('user').doc(storeId).get();
   }
 
   void logoutAccount() {

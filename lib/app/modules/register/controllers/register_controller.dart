@@ -9,7 +9,7 @@ class RegisterController extends GetxController {
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
   late TextEditingController storeNameController;
-  CollectionReference ref = FirebaseFirestore.instance.collection('store');
+  CollectionReference ref = FirebaseFirestore.instance.collection('user');
   var auth = FirebaseAuth.instance;
 
   @override

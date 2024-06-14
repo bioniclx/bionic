@@ -44,15 +44,18 @@ class KaryawanController extends GetxController {
       return;
     }
     try {
+      String dateNow = DateTime.now().toString();
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       String uid = userCredential.user!.uid;
 
-      await _firestore.collection('karyawan').doc(uid).set({
+      await _firestore.collection('user').doc(uid).set({
         'email': email,
-        'fullName': fullName,
-        'position': position,
-        'role': 2,
+        'store_name': fullName,
+        // 'position': position,
+        'register_at': dateNow,
+        'role': '2',
+        'uid': uid,
       });
 
       fetchKaryawanList();

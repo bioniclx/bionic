@@ -3,7 +3,6 @@ import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bionic/app/modules/profile/controllers/profile_controller.dart';
-import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_report_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
