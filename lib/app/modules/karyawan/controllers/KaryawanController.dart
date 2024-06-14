@@ -7,6 +7,7 @@ class KaryawanController extends GetxController {
   var karyawanList = <Map<String, dynamic>>[].obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var storeId = FirebaseAuth.instance.currentUser?.uid;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
@@ -52,7 +53,7 @@ class KaryawanController extends GetxController {
       await _firestore.collection('user').doc(uid).set({
         'email': email,
         'store_name': fullName,
-        // 'position': position,
+        'store_id': storeId,
         'register_at': dateNow,
         'role': '2',
         'uid': uid,

@@ -61,6 +61,7 @@ class RegisterController extends GetxController {
 
         var data = {
           'uid': newStore.user!.uid,
+          'store_id': newStore.user!.uid,
           'email': email,
           'store_name': storeName,
           'register_at': dateNow,
