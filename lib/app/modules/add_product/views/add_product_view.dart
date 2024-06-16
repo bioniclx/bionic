@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_text_field.dart';
 import 'package:bionic/app/utils/utility.dart';
@@ -43,6 +45,45 @@ class AddProductView extends GetView<AddProductController> {
         child: ListView(
           children: [
             const SizedBox(height: spaceLarge),
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  controller.image.value.path == ""
+                      ? GestureDetector(
+                          onTap: () async {
+                            await controller.getImage(true);
+                          },
+                          child: Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: primary),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.add_a_photo,
+                                color: primary,
+                                size: 52,
+                              ),
+                            ),
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.file(
+                            File(controller.image.value.path),
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                ],
+              ),
+            ),
+            const SizedBox(height: spaceMedium),
             CustomTextField(
               textTitle: 'Nama Barang',
               textFieldController: controller.productNameController,

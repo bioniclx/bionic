@@ -3,12 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CatalogProductController extends GetxController {
   late TextEditingController updateProductNameController;
   late TextEditingController updateProductStock;
   late TextEditingController updateProductCategory;
   late TextEditingController updateProductPrice;
+
+  //image picker setup
+  var image = XFile('').obs;
 
   //Get the current user id from auth
   final userId = FirebaseAuth.instance.currentUser!.uid;
@@ -84,5 +88,24 @@ class CatalogProductController extends GetxController {
         ),
       ],
     ));
+  }
+
+  Future getImage(bool gallery) async {
+    //Instanisation variable for image picker
+    ImagePicker picker = ImagePicker();
+    XFile? pickedFile;
+
+    if (gallery) {
+      pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+      );
+    } else {
+      pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+      );
+    }
+    if (pickedFile != null) {
+      image.value = pickedFile;
+    }
   }
 }

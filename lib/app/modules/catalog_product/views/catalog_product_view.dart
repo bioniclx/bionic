@@ -107,6 +107,7 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             "${snapshot.data?[index].productCategory}";
                         Get.dialog(
                           CustomAddProductDialog(
+                            image: controller.image,
                             productName: controller.updateProductNameController,
                             productCategory: controller.updateProductCategory,
                             productPrice: controller.updateProductPrice,
@@ -119,6 +120,9 @@ class CatalogProductView extends GetView<CatalogProductController> {
                                 int.parse(controller.updateProductStock.text),
                                 int.parse(controller.updateProductPrice.text),
                               );
+                            },
+                            getImage: () async {
+                              await controller.getImage(true);
                             },
                           ),
                         );
