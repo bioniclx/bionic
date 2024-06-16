@@ -2,12 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProductController extends GetxController {
   late TextEditingController productNameController;
   late TextEditingController productPriceController;
   late TextEditingController productCategoryController;
   late TextEditingController productCountController;
+
+  //Image picker setup
+  var image = XFile("").obs;
 
   //Inisialisasi firebase
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -64,6 +68,25 @@ class AddProductController extends GetxController {
       }
     } else {
       Get.snackbar('Error', 'missing parameter');
+    }
+  }
+
+  Future getImage(bool gallery) async {
+    //Instanisation variable for image picker
+    ImagePicker picker = ImagePicker();
+    XFile? pickedFile;
+
+    if (gallery) {
+      pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+      );
+    } else {
+      pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+      );
+    }
+    if (pickedFile != null) {
+      image.value = pickedFile;
     }
   }
 }
