@@ -61,14 +61,15 @@ class CustomCatalogItem extends StatelessWidget {
                 width: 150,
                 height: 150,
                 child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8.0),
-                      bottomLeft: Radius.circular(8.0),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: productImage,
-                      fit: BoxFit.cover,
-                    )),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: productImage,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               const SizedBox(width: spaceVerySmall),
               Expanded(

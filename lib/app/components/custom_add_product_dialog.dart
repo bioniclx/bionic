@@ -4,6 +4,7 @@ import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/components/custom_text_field.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,7 @@ class CustomAddProductDialog extends StatelessWidget {
   final TextEditingController productStock;
   final TextEditingController productCategory;
   final TextEditingController productPrice;
+  final String productImage;
   final Rx<XFile> image;
   final Function()? onTap;
   final Function()? getImage;
@@ -25,6 +27,7 @@ class CustomAddProductDialog extends StatelessWidget {
     required this.image,
     this.onTap,
     this.getImage,
+    required this.productImage,
   });
 
   @override
@@ -59,18 +62,18 @@ class CustomAddProductDialog extends StatelessWidget {
                         image.value.path == ""
                             ? GestureDetector(
                                 onTap: getImage,
-                                child: Container(
+                                child: SizedBox(
                                   width: 150,
                                   height: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(color: primary),
-                                  ),
-                                  child: const Icon(
-                                    Icons.add_a_photo_outlined,
-                                    color: primary,
-                                    size: 48,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(8.0),
+                                      bottomLeft: Radius.circular(8.0),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: productImage,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               )
@@ -84,6 +87,22 @@ class CustomAddProductDialog extends StatelessWidget {
                                 ),
                               ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: spaceSmall),
+                  Obx(
+                    () => Center(
+                      child: image.value.path == ""
+                          ? const SizedBox()
+                          : GestureDetector(
+                              onTap: () {
+                                image.value = XFile("");
+                              },
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: spaceSmall),

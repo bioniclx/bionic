@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bionic/app/components/custom_add_product_dialog.dart';
 import 'package:bionic/app/components/custom_catalog_item.dart';
 import 'package:bionic/app/models/product.dart';
@@ -108,6 +110,8 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             "${snapshot.data?[index].productCategory}";
                         Get.dialog(
                           CustomAddProductDialog(
+                            productImage:
+                                "${snapshot.data?[index].productImage}",
                             image: controller.image,
                             productName: controller.updateProductNameController,
                             productCategory: controller.updateProductCategory,
@@ -120,6 +124,7 @@ class CatalogProductView extends GetView<CatalogProductController> {
                                 controller.updateProductCategory.text,
                                 int.parse(controller.updateProductStock.text),
                                 int.parse(controller.updateProductPrice.text),
+                                File(controller.image.value.path),
                               );
                             },
                             getImage: () async {
