@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,14 +45,17 @@ class AddProductController extends GetxController {
     int price,
     int stock,
     String category,
+    File image,
   ) async {
     if (name.isNotEmpty &&
         productPriceController.text.isNotEmpty &&
         productCountController.text.isNotEmpty &&
-        category.isNotEmpty) {
+        category.isNotEmpty &&
+        image.path.isNotEmpty) {
       final User? user = auth.currentUser;
       final uid = user!.uid;
       try {
+        String imageUrl = await uploadFile(image);
         String dateNow = DateTime.now().toString();
         final refDoc = ref.doc();
         final data = {
@@ -60,6 +66,7 @@ class AddProductController extends GetxController {
           'stock': stock,
           'category': category,
           'created_at': dateNow,
+          'image': imageUrl,
         };
         refDoc.set(data);
         Get.back();
@@ -89,4 +96,17 @@ class AddProductController extends GetxController {
       image.value = pickedFile;
     }
   }
+}
+
+Future<String> uploadFile(File image) async {
+  final storageRef =
+      FirebaseStorage.instance.ref().child('Product/${image.path}');
+  await storageRef.putFile(image);
+  String returnURL = "";
+  await storageRef.getDownloadURL().then(
+    (fileURL) {
+      returnURL = fileURL;
+    },
+  );
+  return returnURL;
 }
