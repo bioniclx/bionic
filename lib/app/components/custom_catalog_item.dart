@@ -1,5 +1,6 @@
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CustomCatalogItem extends StatelessWidget {
@@ -7,6 +8,7 @@ class CustomCatalogItem extends StatelessWidget {
   final int productPrice;
   final String productCategory;
   final int productStock;
+  final String productImage;
   final Function()? onTap;
   const CustomCatalogItem({
     super.key,
@@ -15,6 +17,7 @@ class CustomCatalogItem extends StatelessWidget {
     required this.productCategory,
     required this.productStock,
     this.onTap,
+    required this.productImage,
   });
 
   @override
@@ -62,8 +65,8 @@ class CustomCatalogItem extends StatelessWidget {
                     topLeft: Radius.circular(8.0),
                     bottomLeft: Radius.circular(8.0),
                   ),
-                  child: Image.asset(
-                    'assets/images/produk-1.jpg',
+                  child: CachedNetworkImage(
+                    imageUrl: productImage,
                     fit: BoxFit.cover,
                   ),
                 ),

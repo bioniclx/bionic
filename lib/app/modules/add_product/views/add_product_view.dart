@@ -6,6 +6,7 @@ import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../controllers/add_product_controller.dart';
 
@@ -83,6 +84,19 @@ class AddProductView extends GetView<AddProductController> {
                 ],
               ),
             ),
+            const SizedBox(height: spaceSmall),
+            Obx(
+              () => Center(
+                child: controller.image.value.path == ""
+                    ? const SizedBox()
+                    : GestureDetector(
+                        child: const Icon(Icons.delete, color: Colors.red),
+                        onTap: () async {
+                          controller.image.value = XFile("");
+                        },
+                      ),
+              ),
+            ),
             const SizedBox(height: spaceMedium),
             CustomTextField(
               textTitle: 'Nama Barang',
@@ -116,7 +130,7 @@ class AddProductView extends GetView<AddProductController> {
               children: [
                 Expanded(
                   child: CustomButton(
-                    buttonText: 'Test',
+                    buttonText: 'Tambah Produk',
                     buttonWidth: 1,
                     onTap: () {
                       controller.addProduct(
@@ -124,6 +138,7 @@ class AddProductView extends GetView<AddProductController> {
                         int.parse(controller.productPriceController.text),
                         int.parse(controller.productCountController.text),
                         controller.productCategoryController.text,
+                        File(controller.image.value.path),
                       );
                     },
                   ),

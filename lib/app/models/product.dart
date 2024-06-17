@@ -7,6 +7,7 @@ class Product with CustomDropdownListFilter {
   final int productPrice;
   final int productStock;
   final String productCategory;
+  final String productImage;
 
   Product({
     this.id = "",
@@ -15,6 +16,7 @@ class Product with CustomDropdownListFilter {
     required this.productPrice,
     required this.productStock,
     required this.productCategory,
+    required this.productImage,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class Product with CustomDropdownListFilter {
       productPrice: json['price'],
       productStock: json['stock'],
       productCategory: json['category'],
+      productImage: json['image'],
     );
   }
 

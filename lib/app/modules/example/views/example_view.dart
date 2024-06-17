@@ -191,6 +191,7 @@ class ExampleView extends GetView<ExampleController> {
                     productPrice: 1000,
                     productCategory: '',
                     productStock: 2,
+                    productImage: 'sss',
                   ),
                   SizedBox(height: spaceSmall),
                   CustomCatalogItem(
@@ -198,6 +199,7 @@ class ExampleView extends GetView<ExampleController> {
                     productPrice: 2000,
                     productCategory: 'Rose',
                     productStock: 2,
+                    productImage: 'ss',
                   ),
                   SizedBox(height: spaceMedium),
                 ],
