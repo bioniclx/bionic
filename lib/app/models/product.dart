@@ -1,6 +1,4 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
-
-class Product with CustomDropdownListFilter {
+class Product {
   String id;
   final String storeId;
   final String productName;
@@ -29,10 +27,5 @@ class Product with CustomDropdownListFilter {
       productCategory: json['category'],
       productImage: json['image'],
     );
-  }
-
-  @override
-  bool filter(String query) {
-    return productName.toLowerCase().contains(query.toLowerCase());
   }
 }
