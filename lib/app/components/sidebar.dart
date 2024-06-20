@@ -159,7 +159,9 @@ class NavigationSidebar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.HISTORY);
+                  },
                 ),
                 const Divider(),
                 GestureDetector(

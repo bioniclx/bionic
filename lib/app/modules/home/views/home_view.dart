@@ -1,18 +1,17 @@
 import 'package:bionic/app/components/custom_button_icon.dart';
-import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/components/sidebar.dart';
+import 'package:bionic/app/modules/history/views/historypage.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:get/get.dart';
-
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  const HomeView({Key? key})
+      : super(key: key); // Perbaiki super.key menjadi Key? key
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +55,8 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
         scrollDirection: Axis.vertical,
-        body: ListView(
-          padding: const EdgeInsets.all(0),
+        body: Column(
+          // Mengubah ListView menjadi Column
           children: [
             Stack(
               alignment: Alignment.topCenter,
@@ -114,24 +113,8 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Expanded(
-              child: Center(
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(paddingSmall),
-                      child: CustomListItem(
-                        itemName: 'Endriardi',
-                        itemDate: '20 Mei 2024',
-                        itemPrice: 'Rp. 2.400.00',
-                        itemColor: controller.statusColor,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // Menggunakan Expanded untuk memastikan HistoryPage mengambil sebanyak mungkin ruang vertikal
+              child: HistoryPage(),
             ),
           ],
         ),

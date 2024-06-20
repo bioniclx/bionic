@@ -1,3 +1,5 @@
+import 'package:bionic/app/modules/history/bindings/history_binding.dart';
+import 'package:bionic/app/modules/history/views/historypage.dart';
 import 'package:bionic/app/modules/karyawan/bindings/KaryawanBinding.dart';
 import 'package:bionic/app/modules/karyawan/views/KaryawanView.dart';
 import 'package:get/get.dart';
@@ -79,11 +81,6 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
-      name: _Paths.REPORT,
-      page: () => const ReportView(),
-      binding: ReportBinding(),
-    ),
-    GetPage(
       name: _Paths.SALES,
       page: () => const SalesView(),
       binding: SalesBinding(),
@@ -92,6 +89,11 @@ class AppPages {
       name: _Paths.KARYAWAN,
       page: () => const KaryawanView(),
       binding: KaryawanBinding(),
+    ),
+    GetPage(
+      name: '/history',
+      page: () => HistoryPage(),
+      binding: HistoryBinding(),
     ),
   ];
 }
