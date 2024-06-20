@@ -1,39 +1,18 @@
 import 'package:bionic/app/components/custom_button_icon.dart';
-import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_text.dart';
-import 'package:bionic/app/components/sidebar.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/detail_sale_controller.dart';
 
-class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+class DetailSaleView extends GetView<DetailSaleController> {
+  const DetailSaleView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: FutureBuilder(
-        future: controller.getStoreProfile(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            Map<String, dynamic>? store = snapshot.data!.data();
-            return NavigationSidebar(
-              storeName: "${store!['store_name']}",
-              role: getRoleAccount(store['role']),
-            );
-          } else {
-            return const Text('Has no data');
-          }
-        },
-      ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
@@ -43,9 +22,20 @@ class HomeView extends GetView<HomeController> {
             leading: Builder(
               builder: (context) => IconButton(
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  Get.back();
                 },
-                icon: Image.asset('assets/images/side-bar-icon.png'),
+                icon: Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_ios_sharp,
+                    color: primary,
+                  ),
+                ),
               ),
             ),
             title: Row(
@@ -108,24 +98,6 @@ class HomeView extends GetView<HomeController> {
                 textSize: textMedium,
                 textColor: Colors.black,
                 textWeight: FontWeight.w500,
-              ),
-            ),
-            Center(
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return CustomListItem(
-                    itemName: 'Endriardi',
-                    itemDate: '20 Mei 2024',
-                    itemPrice: 'Rp. 2.400.00',
-                    itemColor: controller.statusColor,
-                    onTap: () {
-                      Get.toNamed(Routes.DETAIL_SALE);
-                    },
-                  );
-                },
               ),
             ),
           ],

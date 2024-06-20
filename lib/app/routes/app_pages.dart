@@ -6,6 +6,8 @@ import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
 import '../modules/catalog_product/bindings/catalog_product_binding.dart';
 import '../modules/catalog_product/views/catalog_product_view.dart';
+import '../modules/detail_sale/bindings/detail_sale_binding.dart';
+import '../modules/detail_sale/views/detail_sale_view.dart';
 import '../modules/example/bindings/example_binding.dart';
 import '../modules/example/views/example_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.ADD_PRODUCT,
       page: () => const AddProductView(),
       binding: AddProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_SALE,
+      page: () => const DetailSaleView(),
+      binding: DetailSaleBinding(),
     ),
   ];
 }
