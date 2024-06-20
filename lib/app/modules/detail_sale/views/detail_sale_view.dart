@@ -1,4 +1,5 @@
 import 'package:bionic/app/components/custom_button_icon.dart';
+import 'package:bionic/app/components/custom_grid_item.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
@@ -47,6 +48,7 @@ class DetailSaleView extends GetView<DetailSaleController> {
         ],
         scrollDirection: Axis.vertical,
         body: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(0),
           children: [
             Stack(
@@ -88,16 +90,62 @@ class DetailSaleView extends GetView<DetailSaleController> {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 horizontal: paddingLarge,
                 vertical: paddingMedium,
               ),
-              child: CustomText(
-                text: 'History Penjualan',
-                textSize: textMedium,
-                textColor: Colors.black,
-                textWeight: FontWeight.w500,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CustomText(
+                    text: 'History Penjualan',
+                    textSize: textMedium,
+                    textColor: Colors.black,
+                    textWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: spaceMedium),
+                  CustomText(
+                    text: 'Nama Pembeli : ${controller.namaPembeli}',
+                    textSize: textMedium,
+                    textColor: Colors.black,
+                    textWeight: FontWeight.w400,
+                  ),
+                  const SizedBox(height: spaceVerySmall),
+                  CustomText(
+                    text: 'Tanggal Pembelian : ${controller.tanggalPembelian}',
+                    textSize: textMedium,
+                    textColor: Colors.black,
+                    textWeight: FontWeight.w400,
+                  ),
+                  const SizedBox(height: spaceMedium),
+                  const CustomText(
+                    text: 'History Penjualan',
+                    textSize: textMedium,
+                    textColor: Colors.black,
+                    textWeight: FontWeight.w600,
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: GridView.builder(
+                      itemCount: 6,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        return const CustomGridItem(
+                          name: "Tes",
+                          price: "2000",
+                          stock: "2",
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
           ],
