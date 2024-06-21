@@ -8,8 +8,13 @@ import 'package:get/get.dart';
 class SalesController extends GetxController {
   late TextEditingController productNameController;
   late TextEditingController totalAmountController;
+  late TextEditingController nameTextFieldController;
+  late TextEditingController adressTextFieldController;
+  late TextEditingController phoneTextFieldController;
+  late TextEditingController diskonTextFieldController;
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  final storeId = Get.arguments;
   CollectionReference refProduct =
       FirebaseFirestore.instance.collection('product');
   List<ProductDropdown> productDropdown = [];
@@ -40,7 +45,8 @@ class SalesController extends GetxController {
       isLoading(true);
       var snapshot = await FirebaseFirestore.instance
           .collection('product')
-          .where("store_id", isEqualTo: userId)
+          .where("store_id", isEqualTo: storeId)
+          .where("stock", isGreaterThan: 0)
           .get();
       var data = snapshot.docs.map((doc) {
         return ProductDropdown(
@@ -112,7 +118,15 @@ class SalesController extends GetxController {
   void updateProductQuantity(String id, int newQty) {
     var product = cartProducts.firstWhere((product) => product.id == id);
     if (newQty > 0) {
+      print('Product quantity ${product.qty} updated to $newQty');
+      if (newQty > product.totalStock) {
+        Get.snackbar(
+            'Error', 'Stock produk ${product.productName} tidak mencukupi');
+        newQty = product.totalStock;
+        return;
+      }
       product.qty = newQty;
+
       cartProducts.refresh();
     } else {
       removeProduct(id);
@@ -135,6 +149,49 @@ class SalesController extends GetxController {
       totalAmount += product.productPrice * product.qty;
     });
     totalAmountController.text = totalAmount.toString();
+    update();
+  }
+
+  Future<void> storeSale() async {
+    var saleData = {
+      'name': nameTextFieldController.text,
+      'address': adressTextFieldController.text,
+      'phone': phoneTextFieldController.text,
+      'discount': diskonTextFieldController.text,
+      'total': totalAmountController.text,
+      'products': cartProducts.map((product) => product.toJson()).toList(),
+      'created_at': FieldValue.serverTimestamp(),
+      'store_id': storeId,
+    };
+    print(saleData);
+    try {
+      await FirebaseFirestore.instance.collection('sales').add(saleData);
+      Get.snackbar('Success', 'Penjualan berhasil disimpan');
+      cartProducts.forEach((product) {
+        updateProductStock(product.id, product.totalStock);
+      });
+      clearAllProduct();
+      nameTextFieldController.clear();
+      adressTextFieldController.clear();
+      phoneTextFieldController.clear();
+      diskonTextFieldController.clear();
+      totalAmountController.clear();
+      update();
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal menyimpan penjualan');
+      print('Failed to store sale: $e');
+    }
+  }
+
+  void updateProductStock(String id, int newStock) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('product')
+          .doc(id)
+          .update({'stock': newStock});
+    } catch (e) {
+      print('Failed to update product stock: $e');
+    }
   }
 
   int getProductQuantity(String id) {

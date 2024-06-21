@@ -97,6 +97,7 @@ class SalesView extends GetView<SalesController> {
                         buttonText: 'Tambah Produk',
                         buttonWidth: 1,
                         onTap: () {
+                          // Get.snackbar("title", Get.arguments);
                           controller.addProduct();
                         },
                       ),
