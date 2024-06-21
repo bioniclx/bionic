@@ -2,8 +2,10 @@ import 'package:bionic/app/components/custom_button_icon.dart';
 import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/components/sidebar.dart';
+import 'package:bionic/app/models/sale.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -115,63 +117,66 @@ class HomeView extends GetView<HomeController> {
                 textWeight: FontWeight.w500,
               ),
             ),
-            Expanded(
-              child: Center(
-                  child: StreamBuilder(
-                      stream: controller.getSales(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: Text("Error"),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(paddingSmall),
-                                child: CustomListItem(
-                                  itemName: 'hahaha',
-                                  itemDate: '20 Mei 2024',
-                                  itemPrice: 'Rp. 2.400.00',
-                                  itemColor: controller.statusColor,
-                                ),
-                              );
-                            },
-                          );
-                        } else {
-                          return const Center(
-                            child: Text('Has No Data'),
-                          );
-                        }
-                      })
-                  // ListView.builder(
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   shrinkWrap: true,
-                  //   itemCount: 10,
-                  //   itemBuilder: (context, index) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.all(paddingSmall),
-                  //       child: CustomListItem(
-                  //         itemName: 'Endriardi',
-                  //         itemDate: '20 Mei 2024',
-                  //         itemPrice: 'Rp. 2.400.00',
-                  //         itemColor: controller.statusColor,
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  ),
-            ),
+            Center(
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance
+                        .collection('sales')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Error"),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        List<Sale> sales = snapshot.data!.docs.map((doc) {
+                          return Sale.fromJson(doc.data());
+                        }).toList();
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: sales.length,
+                          itemBuilder: (context, index) {
+                            Sale sale = sales[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(paddingSmall),
+                              child: CustomListItem(
+                                itemName: sale.name,
+                                itemDate: '20 Mei 2024',
+                                itemPrice: "Rp. ${sale.total}",
+                                itemColor: controller.statusColor,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Has No Data'),
+                        );
+                      }
+                    })
+                // ListView.builder(
+                //   physics: const NeverScrollableScrollPhysics(),
+                //   shrinkWrap: true,
+                //   itemCount: 10,
+                //   itemBuilder: (context, index) {
+                //     return Padding(
+                //       padding: const EdgeInsets.all(paddingSmall),
+                //       child: CustomListItem(
+                //         itemName: 'Endriardi',
+                //         itemDate: '20 Mei 2024',
+                //         itemPrice: 'Rp. 2.400.00',
+                //         itemColor: controller.statusColor,
+                //       ),
+                //     );
+                //   },
+                // ),
+                ),
           ],
         ),
       ),
