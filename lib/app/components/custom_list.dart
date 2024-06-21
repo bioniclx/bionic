@@ -21,64 +21,69 @@ class CustomListItem extends StatelessWidget {
   final String itemDate;
   final String itemPrice;
   final Color itemColor;
+  final Function()? onTap;
   const CustomListItem({
     super.key,
     required this.itemName,
     required this.itemDate,
     required this.itemPrice,
     required this.itemColor,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border(
-            left: BorderSide(
-              color: itemColor,
-              width: 15.0,
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 8,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border(
+              left: BorderSide(
+                color: itemColor,
+                width: 15.0,
+              ),
             ),
+            color: Colors.white,
           ),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: spaceVerySmall,
-            horizontal: paddingMedium,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: itemName,
-                    textSize: 20,
-                    textColor: Colors.black,
-                    textWeight: FontWeight.w500,
-                  ),
-                  const SizedBox(height: 23),
-                  CustomText(
-                    text: itemDate,
-                    textSize: 12,
-                    textColor: Colors.grey,
-                    textWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-              CustomText(
-                text: itemPrice,
-                textSize: 16,
-                textColor: Colors.black,
-                textWeight: FontWeight.w500,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: spaceVerySmall,
+              horizontal: paddingMedium,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: itemName,
+                      textSize: 20,
+                      textColor: Colors.black,
+                      textWeight: FontWeight.w500,
+                    ),
+                    const SizedBox(height: 23),
+                    CustomText(
+                      text: itemDate,
+                      textSize: 12,
+                      textColor: Colors.grey,
+                      textWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text: itemPrice,
+                  textSize: 16,
+                  textColor: Colors.black,
+                  textWeight: FontWeight.w500,
+                ),
+              ],
+            ),
           ),
         ),
       ),
