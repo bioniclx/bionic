@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:bionic/app/components/custom_button.dart';
 import 'package:bionic/app/components/custom_text_field.dart';
 import 'package:bionic/app/utils/utility.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/sales_controller.dart';
@@ -90,7 +89,6 @@ class SalesView extends GetView<SalesController> {
                     );
                   }
                 }),
-
                 const SizedBox(height: spaceSmall),
                 Row(
                   children: [
@@ -99,6 +97,7 @@ class SalesView extends GetView<SalesController> {
                         buttonText: 'Tambah Produk',
                         buttonWidth: 1,
                         onTap: () {
+                          // Get.snackbar("title", Get.arguments);
                           controller.addProduct();
                         },
                       ),
@@ -208,21 +207,19 @@ class SalesView extends GetView<SalesController> {
                     ),
                     CustomTextField(
                         textTitle: "Nama Pembeli",
-                        textFieldController: controller.nameTextFieldController,
+                        textFieldController: controller.productNameController,
                         textFieldType: TextInputType.text,
                         obsecureText: false),
                     const SizedBox(height: spaceSmall),
                     CustomTextField(
                         textTitle: "Alamat Pembeli",
-                        textFieldController:
-                            controller.adressTextFieldController,
+                        textFieldController: controller.productNameController,
                         textFieldType: TextInputType.text,
                         obsecureText: false),
                     const SizedBox(height: spaceSmall),
                     CustomTextField(
                         textTitle: "Nomor Telepon",
-                        textFieldController:
-                            controller.phoneTextFieldController,
+                        textFieldController: controller.productNameController,
                         textFieldType: TextInputType.number,
                         obsecureText: false),
                     const SizedBox(height: spaceMedium),
@@ -238,8 +235,7 @@ class SalesView extends GetView<SalesController> {
                     ),
                     CustomTextField(
                         textTitle: "Diskon",
-                        textFieldController:
-                            controller.diskonTextFieldController,
+                        textFieldController: controller.productNameController,
                         textFieldType: TextInputType.number,
                         obsecureText: false),
                     const SizedBox(height: 10),
@@ -258,19 +254,11 @@ class SalesView extends GetView<SalesController> {
                     const SizedBox(
                       height: spaceSmall,
                     ),
-                    Obx(() {
-                      if (controller.cartProducts.isNotEmpty) {
-                        return CustomTextField(
-                            textTitle: "Total Pembelian",
-                            textFieldController:
-                                controller.totalAmountController,
-                            textFieldType: TextInputType.number,
-                            enabled: false,
-                            obsecureText: false);
-                      } else {
-                        return const Text("Belum ada produk yang ditambahkan");
-                      }
-                    }),
+                    CustomTextField(
+                        textTitle: "Total Pembelian",
+                        textFieldController: controller.productNameController,
+                        textFieldType: TextInputType.number,
+                        obsecureText: false),
                     const SizedBox(
                       height: spaceMedium,
                     ),
@@ -278,11 +266,9 @@ class SalesView extends GetView<SalesController> {
                       children: [
                         Expanded(
                           child: CustomButton(
-                            buttonText: 'Simpan Penjualan',
+                            buttonText: 'Tambah Produk',
                             buttonWidth: 1,
-                            onTap: () {
-                              controller.storeSale();
-                            },
+                            onTap: () {},
                           ),
                         ),
                       ],

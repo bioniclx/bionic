@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bionic/app/models/product_cart.dart';
 import 'package:bionic/app/models/product_dropdown.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SalesController extends GetxController {
+  late TextEditingController productNameController;
+  late TextEditingController totalAmountController;
   late TextEditingController nameTextFieldController;
   late TextEditingController adressTextFieldController;
   late TextEditingController phoneTextFieldController;
   late TextEditingController diskonTextFieldController;
-  late TextEditingController totalAmountController;
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
   final storeId = Get.arguments;
@@ -26,12 +25,8 @@ class SalesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    nameTextFieldController = TextEditingController();
+    productNameController = TextEditingController();
     totalAmountController = TextEditingController();
-    adressTextFieldController = TextEditingController();
-    phoneTextFieldController = TextEditingController();
-    diskonTextFieldController = TextEditingController();
-
     fetchItems();
   }
 
@@ -50,7 +45,7 @@ class SalesController extends GetxController {
       isLoading(true);
       var snapshot = await FirebaseFirestore.instance
           .collection('product')
-          .where("store_id", isEqualTo: userId)
+          .where("store_id", isEqualTo: storeId)
           .where("stock", isGreaterThan: 0)
           .get();
       var data = snapshot.docs.map((doc) {
@@ -85,12 +80,7 @@ class SalesController extends GetxController {
             var existingProduct = cartProducts
                 .firstWhereOrNull((product) => product.id == doc.id);
             if (existingProduct != null) {
-              if (existingProduct.qty >= productData['stock']) {
-                Get.snackbar('Error',
-                    'Stok produk ${existingProduct.productName} tidak mencukupi');
-                return;
-              }
-              existingProduct.qty += 1;
+              updateProductQuantity(doc.id, existingProduct.qty + 1);
               update();
             } else {
               var newProduct = ProductCart(
@@ -119,7 +109,6 @@ class SalesController extends GetxController {
           'Success', 'Produk ${selectedItem.value!.name} berhasil ditambahkan');
       fetchItems();
       update();
-      updateTotal();
     } else {
       Get.snackbar('Error', 'Silahkan pilih item terlebih dahulu');
       print('No item selected');
@@ -129,14 +118,16 @@ class SalesController extends GetxController {
   void updateProductQuantity(String id, int newQty) {
     var product = cartProducts.firstWhere((product) => product.id == id);
     if (newQty > 0) {
-      if (newQty > product.productStock) {
+      print('Product quantity ${product.qty} updated to $newQty');
+      if (newQty > product.totalStock) {
         Get.snackbar(
-            'Error', 'Stok produk ${product.productName} tidak mencukupi');
+            'Error', 'Stock produk ${product.productName} tidak mencukupi');
+        newQty = product.totalStock;
         return;
       }
       product.qty = newQty;
+
       cartProducts.refresh();
-      updateTotal();
     } else {
       removeProduct(id);
     }
@@ -145,7 +136,7 @@ class SalesController extends GetxController {
   void removeProduct(String id) {
     cartProducts.removeWhere((product) => product.id == id);
     cartProducts.refresh();
-    updateTotal();
+    // updateTotal();
   }
 
   void clearAllProduct() {
@@ -170,7 +161,7 @@ class SalesController extends GetxController {
       'total': totalAmountController.text,
       'products': cartProducts.map((product) => product.toJson()).toList(),
       'created_at': FieldValue.serverTimestamp(),
-      'store_id': storeId
+      'store_id': storeId,
     };
     print(saleData);
     try {
