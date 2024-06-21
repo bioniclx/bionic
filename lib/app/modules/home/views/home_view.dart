@@ -127,27 +127,30 @@ class HomeView extends GetView<HomeController> {
                           );
                         }
                         if (snapshot.hasError) {
+                          print("${snapshot.error}");
                           return const Center(
                             child: Text("Error"),
                           );
                         }
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(paddingSmall),
-                                child: CustomListItem(
-                                  itemName: 'hahaha',
-                                  itemDate: '20 Mei 2024',
-                                  itemPrice: 'Rp. 2.400.00',
-                                  itemColor: controller.statusColor,
-                                ),
-                              );
-                            },
-                          );
+                          return Center(
+                              child: Text('Has Data ${snapshot.data!.length}'));
+                          // ListView.builder(
+                          //   physics: const NeverScrollableScrollPhysics(),
+                          //   shrinkWrap: true,
+                          //   itemCount: snapshot.data?.length,
+                          //   itemBuilder: (context, index) {
+                          //     return Padding(
+                          //       padding: const EdgeInsets.all(paddingSmall),
+                          //       child: CustomListItem(
+                          //         itemName: 'hahaha',
+                          //         itemDate: '20 Mei 2024',
+                          //         itemPrice: 'Rp. 2.400.00',
+                          //         itemColor: controller.statusColor,
+                          //       ),
+                          //     );
+                          //   },
+                          // );
                         } else {
                           return const Center(
                             child: Text('Has No Data'),
