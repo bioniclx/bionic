@@ -1,19 +1,9 @@
-/*
-
-Widget drawer for sidebar
-How to use : 
-  - call this widget on your context drawer
-  - open drawer by calling a scaffold context and open drawer
-    Scaffold.of(context).openDrawer();
-*/
-
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class NavigationSidebar extends StatelessWidget {
@@ -21,6 +11,7 @@ class NavigationSidebar extends StatelessWidget {
   final Color? isActived2;
   final String storeName;
   final String role;
+
   const NavigationSidebar({
     super.key,
     this.isActived1,
@@ -28,6 +19,18 @@ class NavigationSidebar extends StatelessWidget {
     required this.storeName,
     required this.role,
   });
+
+  Future<String?> _getProfilePhotoUrl() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userData = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .get();
+      return userData['photo_url'] as String?;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,35 +42,56 @@ class NavigationSidebar extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 150,
-                  child: DrawerHeader(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              text: storeName,
-                              textSize: textMedium,
-                              textColor: Colors.black,
-                              textWeight: FontWeight.w600,
-                            ),
-                            const SizedBox(height: paddingVerySmall),
-                            CustomText(
-                              text: role,
-                              textSize: textSmall,
-                              textColor: primary,
-                              textWeight: FontWeight.w600,
-                            ),
-                          ],
-                        ),
-                        const CircleAvatar(
-                          radius: 32,
-                          backgroundColor: Colors.grey,
-                        ),
-                      ],
+                  child: GestureDetector(
+                    child: DrawerHeader(
+                      child: FutureBuilder<String?>(
+                        future: _getProfilePhotoUrl(),
+                        builder: (context, snapshot) {
+                          String? photoUrl = snapshot.data;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomText(
+                                    text: storeName,
+                                    textSize: textMedium,
+                                    textColor: Colors.black,
+                                    textWeight: FontWeight.w600,
+                                  ),
+                                  const SizedBox(height: paddingVerySmall),
+                                  CustomText(
+                                    text: role,
+                                    textSize: textSmall,
+                                    textColor: primary,
+                                    textWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                              CircleAvatar(
+                                radius: 32,
+                                backgroundColor: Colors.grey,
+                                backgroundImage: photoUrl != null
+                                    ? NetworkImage(photoUrl)
+                                    : null,
+                                child: photoUrl == null
+                                    ? Icon(
+                                        Icons.person,
+                                        size: 32,
+                                        color: Colors.white,
+                                      )
+                                    : null,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
+                    onTap: () {
+                      Get.toNamed(Routes.PROFILE);
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -87,7 +111,9 @@ class NavigationSidebar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.EXAMPLE);
+                  },
                 ),
                 const Divider(),
                 GestureDetector(

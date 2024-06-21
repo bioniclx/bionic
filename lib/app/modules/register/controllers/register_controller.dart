@@ -9,7 +9,7 @@ class RegisterController extends GetxController {
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
   late TextEditingController storeNameController;
-  CollectionReference ref = FirebaseFirestore.instance.collection('store');
+  CollectionReference ref = FirebaseFirestore.instance.collection('user');
   var auth = FirebaseAuth.instance;
 
   @override
@@ -61,6 +61,7 @@ class RegisterController extends GetxController {
 
         var data = {
           'uid': newStore.user!.uid,
+          'store_id': newStore.user!.uid,
           'email': email,
           'store_name': storeName,
           'register_at': dateNow,
@@ -72,7 +73,7 @@ class RegisterController extends GetxController {
         Get.snackbar('Success', 'User created');
         Get.offAndToNamed(Routes.AUTH);
       } catch (e) {
-        Get.snackbar('title', 'message');
+        Get.snackbar('Error', 'Terjadi Kesalahan ${e.toString()}');
       }
     }
   }

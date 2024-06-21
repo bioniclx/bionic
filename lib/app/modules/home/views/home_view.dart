@@ -71,11 +71,16 @@ class HomeView extends GetView<HomeController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CustomButtonWithIcon(
+                      CustomButtonWithIcon(
                         buttonText: 'Penjualan',
                         buttonIcon: Icons.arrow_right_alt_outlined,
                         buttonHeight: 110,
                         buttonWidth: 110,
+                        onTap: () {
+                          // Get.snackbar("title", controller.storeId.value);
+                          Get.toNamed(Routes.SALES,
+                              arguments: controller.storeId.value);
+                        },
                       ),
                       CustomButtonWithIcon(
                         buttonText: 'Tambah Produk',
@@ -110,23 +115,62 @@ class HomeView extends GetView<HomeController> {
                 textWeight: FontWeight.w500,
               ),
             ),
-            Center(
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return CustomListItem(
-                    itemName: 'Endriardi',
-                    itemDate: '20 Mei 2024',
-                    itemPrice: 'Rp. 2.400.00',
-                    itemColor: controller.statusColor,
-                    onTap: () {
-                      Get.toNamed(Routes.DETAIL_SALE);
-                    },
-                  );
-                },
-              ),
+            Expanded(
+              child: Center(
+                  child: StreamBuilder(
+                      stream: controller.getSales(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text("Error"),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(paddingSmall),
+                                child: CustomListItem(
+                                  itemName: 'hahaha',
+                                  itemDate: '20 Mei 2024',
+                                  itemPrice: 'Rp. 2.400.00',
+                                  itemColor: controller.statusColor,
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(
+                            child: Text('Has No Data'),
+                          );
+                        }
+                      })
+                  // ListView.builder(
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   shrinkWrap: true,
+                  //   itemCount: 10,
+                  //   itemBuilder: (context, index) {
+                  //     return Padding(
+                  //       padding: const EdgeInsets.all(paddingSmall),
+                  //       child: CustomListItem(
+                  //         itemName: 'Endriardi',
+                  //         itemDate: '20 Mei 2024',
+                  //         itemPrice: 'Rp. 2.400.00',
+                  //         itemColor: controller.statusColor,
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  ),
             ),
           ],
         ),

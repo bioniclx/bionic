@@ -2,28 +2,30 @@ name: bionic
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
-  sdk: '>=3.3.0 <4.0.0'
+environment:
+  sdk: ">=3.3.0 <4.0.0"
 
-dependencies: 
+dependencies:
+  cached_network_image: ^3.3.1
   cupertino_icons: ^1.0.6
-  get: 4.6.6
-  firebase_core: 2.31.1
-  firebase_cloud_firestore: 4.17.3
+  dropdown_search: ^5.0.6
   firebase_auth: 4.19.6
-  flutter: 
+  firebase_cloud_firestore: 4.17.3
+  firebase_core: 2.31.1
+  firebase_storage: ^11.7.6
+  flutter:
     sdk: flutter
+  get: 4.6.6
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
-  firebase_storage: ^11.7.6
-  cached_network_image: ^3.3.1
+  intl: ^0.19.0
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: ^3.0.0
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
   uses-material-design: true
   assets:
     - assets/images/
