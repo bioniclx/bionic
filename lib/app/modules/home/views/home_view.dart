@@ -102,7 +102,8 @@ class HomeView extends GetView<HomeController> {
                         buttonHeight: 110,
                         buttonWidth: 110,
                         onTap: () {
-                          Get.toNamed(Routes.REPORT_SALES);
+                          Get.toNamed(Routes.REPORT_SALES,
+                              arguments: controller.storeId);
                         },
                       ),
                     ],
