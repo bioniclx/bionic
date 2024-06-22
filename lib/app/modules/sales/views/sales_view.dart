@@ -207,24 +207,26 @@ class SalesView extends GetView<SalesController> {
                     ),
                     CustomTextField(
                         textTitle: "Nama Pembeli",
-                        textFieldController: controller.productNameController,
+                        textFieldController: controller.nameTextFieldController,
                         textFieldType: TextInputType.text,
                         obsecureText: false),
                     const SizedBox(height: spaceSmall),
                     CustomTextField(
                         textTitle: "Alamat Pembeli",
-                        textFieldController: controller.productNameController,
+                        textFieldController:
+                            controller.adressTextFieldController,
                         textFieldType: TextInputType.text,
                         obsecureText: false),
                     const SizedBox(height: spaceSmall),
                     CustomTextField(
                         textTitle: "Nomor Telepon",
-                        textFieldController: controller.productNameController,
+                        textFieldController:
+                            controller.phoneTextFieldController,
                         textFieldType: TextInputType.number,
                         obsecureText: false),
                     const SizedBox(height: spaceMedium),
                     const Text(
-                      'Diskon',
+                      'Potongan Harga',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -234,13 +236,14 @@ class SalesView extends GetView<SalesController> {
                       height: spaceSmall,
                     ),
                     CustomTextField(
-                        textTitle: "Diskon",
-                        textFieldController: controller.productNameController,
+                        textTitle: "Potongan Harga",
+                        textFieldController:
+                            controller.diskonTextFieldController,
                         textFieldType: TextInputType.number,
                         obsecureText: false),
                     const SizedBox(height: 10),
                     const Text(
-                      "Isi kosong jika tidak ada diskon",
+                      "Isi kosong jika tidak ada Potongan Harga",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     const SizedBox(height: spaceMedium),
@@ -254,22 +257,47 @@ class SalesView extends GetView<SalesController> {
                     const SizedBox(
                       height: spaceSmall,
                     ),
-                    CustomTextField(
-                        textTitle: "Total Pembelian",
-                        textFieldController: controller.productNameController,
-                        textFieldType: TextInputType.number,
-                        obsecureText: false),
+                    Obx(() {
+                      if (controller.cartProducts.isEmpty) {
+                        return const Center(
+                          child: Text("Silakan pilih produk terlebih dahulu"),
+                        );
+                      } else {
+                        return CustomTextField(
+                            textTitle: "Total Pembelian",
+                            enabled: false,
+                            textFieldController:
+                                controller.totalAmountController,
+                            textFieldType: TextInputType.number,
+                            obsecureText: false);
+                      }
+                    }),
                     const SizedBox(
                       height: spaceMedium,
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: CustomButton(
-                            buttonText: 'Tambah Produk',
-                            buttonWidth: 1,
-                            onTap: () {},
-                          ),
+                          child: Obx(() {
+                            if (controller.cartProducts.isEmpty) {
+                              return CustomButton(
+                                buttonText: 'Tambah Produk',
+                                buttonWidth: 1,
+                                onTap: () {
+                                  Get.snackbar("Error",
+                                      "Silakan pilih produk terlebih dahulu");
+                                },
+                              );
+                            } else {
+                              return CustomButton(
+                                buttonText: 'Simpan Penjualan',
+                                buttonWidth: 1,
+                                onTap: () {
+                                  controller.storeSale();
+                                },
+                              );
+                            }
+                          }),
                         ),
                       ],
                     ),

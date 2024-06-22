@@ -101,7 +101,7 @@ class DetailSaleView extends GetView<DetailSaleController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CustomText(
-                    text: 'History Penjualan',
+                    text: 'Detail Penjualan',
                     textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class DetailSaleView extends GetView<DetailSaleController> {
                   ),
                   const SizedBox(height: spaceMedium),
                   const CustomText(
-                    text: 'History Penjualan',
+                    text: 'Produk yang Dibeli',
                     textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w600,
@@ -149,7 +149,10 @@ class DetailSaleView extends GetView<DetailSaleController> {
                       },
                     ),
                   ),
-                  Text("Total Pembelian : ${controller.sale.total}"),
+                  const SizedBox(height: spaceMedium),
+                  Text("Total Pembelian : Rp ${controller.sale.total}",
+                      style: const TextStyle(
+                          fontSize: textMedium, fontWeight: FontWeight.w600)),
                 ],
               ),
             ),

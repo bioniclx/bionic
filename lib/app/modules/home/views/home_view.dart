@@ -82,6 +82,7 @@ class HomeView extends GetView<HomeController> {
                         buttonWidth: 110,
                         onTap: () {
                           // Get.snackbar("title", controller.storeId.value);
+                          // Get.snackbar("title", controller.storeId.value);
                           Get.toNamed(Routes.SALES,
                               arguments: controller.storeId.value);
                         },
@@ -113,14 +114,14 @@ class HomeView extends GetView<HomeController> {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: paddingLarge,
-                vertical: paddingMedium,
+                horizontal: paddingMedium,
+                vertical: paddingVerySmall,
               ),
               child: CustomText(
                 text: 'History Penjualan',
-                textSize: textMedium,
+                textSize: 18,
                 textColor: Colors.black,
-                textWeight: FontWeight.w500,
+                textWeight: FontWeight.w600,
               ),
             ),
             Center(child: Obx(() {
