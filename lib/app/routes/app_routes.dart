@@ -1,6 +1,5 @@
 part of 'app_pages.dart';
 
-
 class Routes {
   static const HOME = '/home';
   static const SPLASH_SCREEN = '/splash-screen';
@@ -15,6 +14,7 @@ class Routes {
   static const SALES = '/sales';
   static const KARYAWAN = '/karyawan';
   static const DETAIL_SALE = '/detail-sale';
+  static const REPORT_SALES = '/report-sales';
 }
 
 class _Paths {

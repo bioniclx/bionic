@@ -7,7 +7,6 @@ import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +100,7 @@ class HomeView extends GetView<HomeController> {
                         buttonHeight: 110,
                         buttonWidth: 110,
                         onTap: () {
-                          Get.snackbar("title", controller.storeId.value);
+                          Get.toNamed(Routes.REPORT_SALES);
                         },
                       ),
                     ],
