@@ -29,20 +29,31 @@ class ReportSalesController extends GetxController {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSales(int index) {
-    if (index == 0) {
+    if (index == 1) {
       return FirebaseFirestore.instance
           .collection('sales')
           .where("store_id", isEqualTo: storeId.value)
+          .where("created_at",
+              isGreaterThan: DateTime.now().subtract(const Duration(days: 7)))
           .snapshots();
-    } else if (index == 1) {
+    } else if (index == 2) {
       return FirebaseFirestore.instance
           .collection('sales')
-          .where("name", isEqualTo: "test")
+          .where("store_id", isEqualTo: storeId.value)
+          .where("created_at",
+              isGreaterThan: DateTime.now().subtract(const Duration(days: 30)))
+          .snapshots();
+    } else if (index == 3) {
+      return FirebaseFirestore.instance
+          .collection('sales')
+          .where("store_id", isEqualTo: storeId.value)
+          .where("created_at",
+              isGreaterThan: DateTime.now().subtract(const Duration(days: 180)))
           .snapshots();
     } else {
       return FirebaseFirestore.instance
           .collection('sales')
-          .where("name", isEqualTo: "Liz")
+          .where("store_id", isEqualTo: storeId.value)
           .snapshots();
     }
   }
@@ -50,9 +61,29 @@ class ReportSalesController extends GetxController {
   List<Sale> sales(QuerySnapshot<Map<String, dynamic>> snapshot) {
     return snapshot.docs.map(
       (doc) {
-        return Sale.fromJson(doc.data());
+        return Sale.fromJson(
+          doc.data(),
+        );
       },
     ).toList();
+  }
+
+  int calculateTotalRevenue(List<Sale> salesData) {
+    int totalRevenue = 0;
+    for (var sale in salesData) {
+      totalRevenue += int.parse(sale.total);
+    }
+    return totalRevenue;
+  }
+
+  int calculateTotalItems(List<Sale> salesData) {
+    int totalItems = 0;
+    for (var sale in salesData) {
+      for (Products product in sale.products) {
+        totalItems += product.qty;
+      }
+    }
+    return totalItems;
   }
 
   @override

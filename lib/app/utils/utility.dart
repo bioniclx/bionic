@@ -23,6 +23,7 @@ const double textSmall = 10.0;
 const double textMedium = 16.0;
 const double textLarge = 32.0;
 const double textExtraLarge = 64.0;
+const double textTitle = 24.0;
 
 //text field width use it on sized box
 const double textFieldWidthLarge = 266;
@@ -59,18 +60,18 @@ Color getStatusColor(int status) {
 
 // make to color list of status
 List<Color> statusColorList = [
-  Color(0xff8d86c9),
-  Color(0xff22577a),
-  Color(0xff6eeb83),
-  Color(0xff861657),
-  Color(0xffdb5461),
-  Color(0xff3e92cc),
-  Color(0xff1b998b),
-  Color(0xff8963ba),
-  Color(0xffffb800),
-  Color(0xff197bbd),
-  Color(0xfffdf5bf),
-  Color(0xffc04abc)
+  const Color(0xff8d86c9),
+  const Color(0xff22577a),
+  const Color(0xff6eeb83),
+  const Color(0xff861657),
+  const Color(0xffdb5461),
+  const Color(0xff3e92cc),
+  const Color(0xff1b998b),
+  const Color(0xff8963ba),
+  const Color(0xffffb800),
+  const Color(0xff197bbd),
+  const Color(0xfffdf5bf),
+  const Color(0xffc04abc)
 ];
 
 String getRoleAccount(String role) {

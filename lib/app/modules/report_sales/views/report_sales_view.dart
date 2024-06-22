@@ -1,8 +1,6 @@
-import 'dart:math';
-
-import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_report_card.dart';
 import 'package:bionic/app/components/custom_report_catgory.dart';
+import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/models/sale.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
@@ -38,8 +36,13 @@ class ReportSalesView extends GetView<ReportSalesController> {
             Get.back();
           },
         ),
-        title: const Text('Tambah Produk'),
-        centerTitle: true,
+        title: const CustomText(
+          text: "Laporan Penjualan",
+          textSize: textTitle,
+          textColor: Colors.black,
+          textWeight: FontWeight.w600,
+        ),
+        centerTitle: false,
       ),
       body: ListView(
         shrinkWrap: true,
@@ -88,36 +91,6 @@ class ReportSalesView extends GetView<ReportSalesController> {
           Container(
             margin: const EdgeInsets.all(spaceVerySmall),
             width: double.infinity,
-            child: GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              crossAxisCount: 2,
-              childAspectRatio: (3 / 2),
-              children: const [
-                CustomReportCard(
-                  reportTitle: 'Total Penjualan',
-                  reportDetail: 13,
-                  reportBorderColor: Colors.green,
-                ),
-                CustomReportCard(
-                  reportTitle: 'Total Penjualan',
-                  reportDetail: 13,
-                  reportBorderColor: Colors.blue,
-                ),
-                CustomReportCard(
-                  reportTitle: 'Total Penjualan',
-                  reportDetail: 13,
-                  reportBorderColor: primary,
-                ),
-                CustomReportCard(
-                  reportTitle: 'Total Penjualan',
-                  reportDetail: 13,
-                  reportBorderColor: Colors.purple,
-                ),
-              ],
-            ),
-          ),
-          Center(
             child: Obx(
               () => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: controller.getSales(controller.selectedCategory.value),
@@ -134,29 +107,25 @@ class ReportSalesView extends GetView<ReportSalesController> {
                   }
                   if (snapshot.hasData) {
                     List<Sale> sales = controller.sales(snapshot.data!);
-                    // add sales store_id from list sales
-                    sales = sales
-                        .where((element) =>
-                            element.storeId == controller.storeId.value)
-                        .toList();
-                    return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
+                    int test = controller.calculateTotalRevenue(sales);
+                    int item = controller.calculateTotalItems(sales);
+                    return GridView.count(
                       shrinkWrap: true,
-                      itemCount: sales.length,
-                      itemBuilder: (context, index) {
-                        Sale sale = sales[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.all(paddingSmall),
-                          child: CustomListItem(
-                            itemName: sale.name,
-                            itemDate: sale.name,
-                            itemPrice: "Rp. ${sale.total}",
-                            itemColor: statusColorList[Random.secure()
-                                .nextInt(statusColorList.length)],
-                          ),
-                        );
-                      },
+                      primary: false,
+                      crossAxisCount: 2,
+                      childAspectRatio: (3 / 2),
+                      children: [
+                        CustomReportCard(
+                          reportTitle: 'Total Penjualan',
+                          reportDetail: test,
+                          reportBorderColor: Colors.green,
+                        ),
+                        CustomReportCard(
+                          reportTitle: 'Total item',
+                          reportDetail: item,
+                          reportBorderColor: Colors.blue,
+                        ),
+                      ],
                     );
                   } else {
                     return const Center(
