@@ -1,4 +1,4 @@
-import 'package:bionic/app/models/sales.dart';
+import 'package:bionic/app/models/sale.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
@@ -66,10 +66,20 @@ class HomeController extends GetxController {
     FirebaseAuth.instance.signOut();
   }
 
-  Stream<List<Sales>> getSales() {
-    return FirebaseFirestore.instance.collection('sales').snapshots().map(
-        (snapshot) =>
-            snapshot.docs.map((doc) => Sales.fromJson(doc.data())).toList());
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSales() {
+    return FirebaseFirestore.instance
+        .collection('sales')
+        .where("store_id", isEqualTo: storeId.value)
+        .snapshots();
+  }
+
+  //change query data to list
+  List<Sale> sales(QuerySnapshot<Map<String, dynamic>> snapshot) {
+    return snapshot.docs.map(
+      (doc) {
+        return Sale.fromJson(doc.data());
+      },
+    ).toList();
   }
 
   void increment() => itemCount.value++;

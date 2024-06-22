@@ -124,10 +124,7 @@ class HomeView extends GetView<HomeController> {
             ),
             Center(child: Obx(() {
               return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance
-                      .collection('sales')
-                      .where("store_id", isEqualTo: controller.storeId.value)
-                      .snapshots(),
+                  stream: controller.getSales(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -140,9 +137,7 @@ class HomeView extends GetView<HomeController> {
                       );
                     }
                     if (snapshot.hasData) {
-                      List<Sale> sales = snapshot.data!.docs.map((doc) {
-                        return Sale.fromJson(doc.data());
-                      }).toList();
+                      List<Sale> sales = controller.sales(snapshot.data!);
                       // add sales store_id from list sales
                       sales = sales
                           .where((element) =>
