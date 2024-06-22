@@ -1,7 +1,7 @@
 import 'package:bionic/app/models/product_cart.dart';
 import 'package:bionic/app/models/product_dropdown.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,16 +27,22 @@ class SalesController extends GetxController {
     super.onInit();
     productNameController = TextEditingController();
     totalAmountController = TextEditingController();
+    nameTextFieldController = TextEditingController();
+    adressTextFieldController = TextEditingController();
+    phoneTextFieldController = TextEditingController();
+    diskonTextFieldController = TextEditingController();
+
     fetchItems();
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
+    productNameController.dispose();
+    totalAmountController.dispose();
+    nameTextFieldController.dispose();
+    adressTextFieldController.dispose();
+    phoneTextFieldController.dispose();
+    diskonTextFieldController.dispose();
     super.onClose();
   }
 
@@ -80,7 +86,12 @@ class SalesController extends GetxController {
             var existingProduct = cartProducts
                 .firstWhereOrNull((product) => product.id == doc.id);
             if (existingProduct != null) {
-              updateProductQuantity(doc.id, existingProduct.qty + 1);
+              if (existingProduct.qty >= productData['stock']) {
+                Get.snackbar('Error',
+                    'Stok produk ${existingProduct.productName} tidak mencukupi');
+                return;
+              }
+              existingProduct.qty += 1;
               update();
             } else {
               var newProduct = ProductCart(
@@ -109,6 +120,7 @@ class SalesController extends GetxController {
           'Success', 'Produk ${selectedItem.value!.name} berhasil ditambahkan');
       fetchItems();
       update();
+      updateTotal();
     } else {
       Get.snackbar('Error', 'Silahkan pilih item terlebih dahulu');
       print('No item selected');
@@ -118,16 +130,14 @@ class SalesController extends GetxController {
   void updateProductQuantity(String id, int newQty) {
     var product = cartProducts.firstWhere((product) => product.id == id);
     if (newQty > 0) {
-      print('Product quantity ${product.qty} updated to $newQty');
-      if (newQty > product.totalStock) {
+      if (newQty > product.productStock) {
         Get.snackbar(
-            'Error', 'Stock produk ${product.productName} tidak mencukupi');
-        newQty = product.totalStock;
+            'Error', 'Stok produk ${product.productName} tidak mencukupi');
         return;
       }
       product.qty = newQty;
-
       cartProducts.refresh();
+      updateTotal();
     } else {
       removeProduct(id);
     }
@@ -136,7 +146,6 @@ class SalesController extends GetxController {
   void removeProduct(String id) {
     cartProducts.removeWhere((product) => product.id == id);
     cartProducts.refresh();
-    // updateTotal();
   }
 
   void clearAllProduct() {
@@ -145,9 +154,17 @@ class SalesController extends GetxController {
 
   void updateTotal() {
     int totalAmount = 0;
+    // int discount = 0;
     cartProducts.forEach((product) {
       totalAmount += product.productPrice * product.qty;
     });
+    // diskonTextFieldController.addListener(() {
+    //   discount = int.parse(diskonTextFieldController.text.isEmpty
+    //       ? "0"
+    //       : diskonTextFieldController.text);
+    //   totalAmount -= discount;
+    // });
+
     totalAmountController.text = totalAmount.toString();
     update();
   }
@@ -163,12 +180,11 @@ class SalesController extends GetxController {
       'created_at': FieldValue.serverTimestamp(),
       'store_id': storeId,
     };
-    print(saleData);
     try {
       await FirebaseFirestore.instance.collection('sales').add(saleData);
       Get.snackbar('Success', 'Penjualan berhasil disimpan');
       cartProducts.forEach((product) {
-        updateProductStock(product.id, product.totalStock);
+        updateProductStock(product.id, product.productStock - product.qty);
       });
       clearAllProduct();
       nameTextFieldController.clear();

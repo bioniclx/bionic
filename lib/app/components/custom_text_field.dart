@@ -22,12 +22,14 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController textFieldController;
   final TextInputType textFieldType;
   final bool obsecureText;
+  final bool enabled;
   const CustomTextField({
     super.key,
     required this.textTitle,
     required this.textFieldController,
     required this.textFieldType,
     required this.obsecureText,
+    this.enabled = true,
   });
 
   @override
@@ -54,6 +56,7 @@ class CustomTextField extends StatelessWidget {
           controller: textFieldController,
           keyboardType: textFieldType,
           obscureText: obsecureText,
+          enabled: enabled,
           decoration: const InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),

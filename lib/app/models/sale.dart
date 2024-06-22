@@ -34,7 +34,9 @@ class Sale {
       discount: json["discount"],
       name: json["name"],
       phone: json["phone"],
-      createdAt: (json["created_at"] as Timestamp).toDate(),
+      createdAt: (json['created_at'] != null)
+          ? (json['created_at'] as Timestamp).toDate()
+          : DateTime.now(),
       products: products,
     );
   }
