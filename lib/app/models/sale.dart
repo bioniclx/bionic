@@ -1,19 +1,23 @@
+import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
+
 class Sale {
-  String storeId;
+  late String storeId;
   String total;
   String address;
   String discount;
   String name;
   String phone;
+  DateTime createdAt;
   List<Products> products;
 
   Sale({
-    required this.storeId,
+    this.storeId = "",
     required this.total,
     required this.address,
     required this.discount,
     required this.name,
     required this.phone,
+    required this.createdAt,
     required this.products,
   });
 
@@ -30,6 +34,7 @@ class Sale {
       discount: json["discount"],
       name: json["name"],
       phone: json["phone"],
+      createdAt: (json["created_at"] as Timestamp).toDate(),
       products: products,
     );
   }
@@ -41,6 +46,7 @@ class Sale {
         "discount": discount,
         "name": name,
         "phone": phone,
+        'created_at': Timestamp.fromDate(createdAt),
         "products": products.map((product) => product.toJson()).toList(),
       };
 }

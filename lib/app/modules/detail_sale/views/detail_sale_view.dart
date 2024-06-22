@@ -6,6 +6,7 @@ import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/detail_sale_controller.dart';
 
@@ -107,14 +108,15 @@ class DetailSaleView extends GetView<DetailSaleController> {
                   ),
                   const SizedBox(height: spaceMedium),
                   CustomText(
-                    text: 'Nama Pembeli : ${controller.namaPembeli}',
+                    text: 'Nama Pembeli : ${controller.sale.name}',
                     textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w400,
                   ),
                   const SizedBox(height: spaceVerySmall),
                   CustomText(
-                    text: 'Tanggal Pembelian : ${controller.tanggalPembelian}',
+                    text:
+                        'Tanggal Pembelian : ${DateFormat.yMMMMEEEEd('id').format(controller.sale.createdAt)}',
                     textSize: textMedium,
                     textColor: Colors.black,
                     textWeight: FontWeight.w400,
@@ -129,7 +131,7 @@ class DetailSaleView extends GetView<DetailSaleController> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: GridView.builder(
-                      itemCount: 6,
+                      itemCount: controller.sale.products.length,
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate:
@@ -137,14 +139,17 @@ class DetailSaleView extends GetView<DetailSaleController> {
                         crossAxisCount: 2,
                       ),
                       itemBuilder: (context, index) {
-                        return const CustomGridItem(
-                          name: "Tes",
-                          price: "2000",
-                          stock: "2",
+                        final product = controller.sale.products[index];
+                        return CustomGridItem(
+                          name: product.name,
+                          total: (product.price * product.qty).toString(),
+                          stock: product.qty.toString(),
+                          image: product.image,
                         );
                       },
                     ),
-                  )
+                  ),
+                  Text("Total Pembelian : ${controller.sale.total}"),
                 ],
               ),
             ),

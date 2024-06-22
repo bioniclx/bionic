@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -93,12 +94,15 @@ class HomeView extends GetView<HomeController> {
                           Get.toNamed(Routes.ADD_PRODUCT);
                         },
                       ),
-                      const CustomButtonWithIcon(
+                      CustomButtonWithIcon(
                         buttonText: 'Laporan \nPenjualan',
                         buttonIcon: Icons.bar_chart_rounded,
                         buttonTextPaddingVertical: 10.0,
                         buttonHeight: 110,
                         buttonWidth: 110,
+                        onTap: () {
+                          Get.snackbar("title", controller.storeId.value);
+                        },
                       ),
                     ],
                   ),
@@ -117,66 +121,64 @@ class HomeView extends GetView<HomeController> {
                 textWeight: FontWeight.w500,
               ),
             ),
-            Center(
-                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: FirebaseFirestore.instance
-                        .collection('sales')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text("Error"),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        List<Sale> sales = snapshot.data!.docs.map((doc) {
-                          return Sale.fromJson(doc.data());
-                        }).toList();
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: sales.length,
-                          itemBuilder: (context, index) {
-                            Sale sale = sales[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(paddingSmall),
+            Center(child: Obx(() {
+              return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection('sales')
+                      .where("store_id", isEqualTo: controller.storeId.value)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Error"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      List<Sale> sales = snapshot.data!.docs.map((doc) {
+                        return Sale.fromJson(doc.data());
+                      }).toList();
+                      // add sales store_id from list sales
+                      sales = sales
+                          .where((element) =>
+                              element.storeId == controller.storeId.value)
+                          .toList();
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: sales.length,
+                        itemBuilder: (context, index) {
+                          Sale sale = sales[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.all(paddingSmall),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.DETAIL_SALE,
+                                    arguments: sale);
+                              },
                               child: CustomListItem(
                                 itemName: sale.name,
-                                itemDate: '20 Mei 2024',
+                                itemDate: DateFormat.yMMMMEEEEd('id')
+                                    .format(sale.createdAt),
                                 itemPrice: "Rp. ${sale.total}",
                                 itemColor: controller.statusColor,
                               ),
-                            );
-                          },
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Has No Data'),
-                        );
-                      }
-                    })
-                // ListView.builder(
-                //   physics: const NeverScrollableScrollPhysics(),
-                //   shrinkWrap: true,
-                //   itemCount: 10,
-                //   itemBuilder: (context, index) {
-                //     return Padding(
-                //       padding: const EdgeInsets.all(paddingSmall),
-                //       child: CustomListItem(
-                //         itemName: 'Endriardi',
-                //         itemDate: '20 Mei 2024',
-                //         itemPrice: 'Rp. 2.400.00',
-                //         itemColor: controller.statusColor,
-                //       ),
-                //     );
-                //   },
-                // ),
-                ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('Has No Data'),
+                      );
+                    }
+                  });
+            })),
           ],
         ),
       ),

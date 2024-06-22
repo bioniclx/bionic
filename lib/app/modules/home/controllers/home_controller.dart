@@ -14,7 +14,8 @@ class HomeController extends GetxController {
     FirebaseAuth.instance.authStateChanges().listen((currentUser) {
       userId = currentUser?.uid;
       if (userId != null) {
-        fetchStoreId(); // Fetch store ID when user is refreshed
+        fetchStoreId(FirebaseAuth
+            .instance.currentUser); // Fetch store ID when user is refreshed
       } else {
         storeId.value = userId.toString();
       }
@@ -25,6 +26,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchStoreId(FirebaseAuth.instance.currentUser);
     refreshUser();
   }
 
@@ -42,9 +44,8 @@ class HomeController extends GetxController {
     return FirebaseFirestore.instance.collection('user').doc(userId).get();
   }
 
-  void fetchStoreId() async {
+  void fetchStoreId(User? currentUser) async {
     try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         DocumentSnapshot userDoc = await getStoreProfile();
         if (userDoc.exists && userDoc.data() != null) {
@@ -66,11 +67,8 @@ class HomeController extends GetxController {
   }
 
   Stream<List<Sales>> getSales() {
-    return FirebaseFirestore.instance
-        .collection('sales')
-        .where("store_id", isEqualTo: storeId.value)
-        .snapshots()
-        .map((snapshot) =>
+    return FirebaseFirestore.instance.collection('sales').snapshots().map(
+        (snapshot) =>
             snapshot.docs.map((doc) => Sales.fromJson(doc.data())).toList());
   }
 

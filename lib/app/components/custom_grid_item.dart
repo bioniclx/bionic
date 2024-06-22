@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 
 class CustomGridItem extends StatelessWidget {
   final String name;
-  final String price;
+  final String total;
   final String stock;
+  final String image;
   const CustomGridItem({
     super.key,
     required this.name,
-    required this.price,
+    required this.total,
     required this.stock,
+    required this.image,
   });
 
   @override
@@ -24,11 +26,12 @@ class CustomGridItem extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
-              color: Colors.blue[200],
+              color: Colors.grey[200],
             ),
             child: ClipRRect(
-              child: Image.asset(
-                "assets/images/produk-1.jpg",
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -61,7 +64,7 @@ class CustomGridItem extends StatelessWidget {
                     ),
                     const SizedBox(height: paddingVerySmall),
                     CustomText(
-                      text: "Total: $price",
+                      text: "Total: $total",
                       textSize: textSmall,
                       textColor: Colors.black,
                       textWeight: FontWeight.w500,
