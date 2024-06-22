@@ -22,19 +22,21 @@ class CustomReportCategory extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
         height: 40,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(20.0),
           border: Border.all(color: borderColor),
         ),
-        child: Center(
-          child: CustomText(
-            text: text,
-            textSize: textMedium,
-            textColor: textColor,
-            textWeight: FontWeight.w500,
+        child: Padding(
+          padding: const EdgeInsets.all(paddingSmall),
+          child: Center(
+            child: CustomText(
+              text: text,
+              textSize: textMedium,
+              textColor: textColor,
+              textWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),

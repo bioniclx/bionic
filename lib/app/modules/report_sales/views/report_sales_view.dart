@@ -46,53 +46,34 @@ class ReportSalesView extends GetView<ReportSalesController> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  CustomReportCategory(
-                    text: "Test",
-                    backgroundColor: primary,
-                    borderColor: primary,
-                    textColor: Colors.white,
-                    onTap: () {
-                      Get.snackbar('title', 'Test 1');
-                    },
-                  ),
-                  const SizedBox(width: paddingSmall),
-                  CustomReportCategory(
-                    text: "Test 2",
-                    backgroundColor: Colors.white,
-                    borderColor: primary,
-                    textColor: primary,
-                    onTap: () {
-                      Get.snackbar('title', "Test 2");
-                    },
-                  ),
-                  const SizedBox(width: paddingSmall),
-                  CustomReportCategory(
-                    text: "Test 3",
-                    backgroundColor: Colors.white,
-                    borderColor: primary,
-                    textColor: primary,
-                    onTap: () {
-                      Get.snackbar('title', "Test 3");
-                    },
-                  ),
-                  const SizedBox(width: paddingSmall),
-                  CustomReportCategory(
-                    text: "Test 4",
-                    backgroundColor: Colors.white,
-                    borderColor: primary,
-                    textColor: primary,
-                    onTap: () {
-                      Get.snackbar('title', "Test 4");
-                    },
-                  ),
-                  const SizedBox(width: paddingSmall),
-                  CustomReportCategory(
-                    text: "Test 4",
-                    backgroundColor: Colors.white,
-                    borderColor: primary,
-                    textColor: primary,
-                    onTap: () {
-                      Get.snackbar('title', "Test 4");
+                  //generate list
+                  ...List.generate(
+                    //length list by srotedBy length
+                    controller.sortedBy.length,
+                    (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: paddingSmall),
+                        child: Obx(
+                          () => CustomReportCategory(
+                            text: controller.sortedBy[index],
+                            //change background color by index value
+                            backgroundColor: controller.isActivated(
+                              index,
+                              false,
+                            ),
+                            borderColor: primary,
+                            //change text color by index value
+                            textColor: controller.isActivated(
+                              index,
+                              true,
+                            ),
+                            onTap: () {
+                              //change selctedCategory value to clicked index
+                              controller.selectedCategory.value = index;
+                            },
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ],

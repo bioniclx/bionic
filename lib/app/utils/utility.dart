@@ -67,6 +67,22 @@ String getRoleAccount(String role) {
   }
 }
 
+Color activatedCategoryBackground(int isActivated, int index) {
+  if (isActivated == index) {
+    return primary;
+  } else {
+    return Colors.white;
+  }
+}
+
+Color activatedCategoryText(int isActivated, int index) {
+  if (isActivated == index) {
+    return Colors.white;
+  } else {
+    return primary;
+  }
+}
+
 Color setReportBorderColor(int type) {
   if (type == 0) {
     return primary;
