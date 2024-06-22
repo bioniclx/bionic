@@ -57,6 +57,22 @@ Color getStatusColor(int status) {
   }
 }
 
+// make to color list of status
+List<Color> statusColorList = [
+  Color(0xff8d86c9),
+  Color(0xff22577a),
+  Color(0xff6eeb83),
+  Color(0xff861657),
+  Color(0xffdb5461),
+  Color(0xff3e92cc),
+  Color(0xff1b998b),
+  Color(0xff8963ba),
+  Color(0xffffb800),
+  Color(0xff197bbd),
+  Color(0xfffdf5bf),
+  Color(0xffc04abc)
+];
+
 String getRoleAccount(String role) {
   if (role == "1") {
     return "Owner";

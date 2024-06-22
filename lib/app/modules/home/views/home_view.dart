@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bionic/app/components/custom_button_icon.dart';
 import 'package:bionic/app/components/custom_list.dart';
 import 'package:bionic/app/components/custom_text.dart';
@@ -165,7 +167,8 @@ class HomeView extends GetView<HomeController> {
                                 itemDate: DateFormat.yMMMMEEEEd('id')
                                     .format(sale.createdAt),
                                 itemPrice: "Rp. ${sale.total}",
-                                itemColor: controller.statusColor,
+                                itemColor: statusColorList[Random.secure()
+                                    .nextInt(statusColorList.length)],
                               ),
                             ),
                           );
