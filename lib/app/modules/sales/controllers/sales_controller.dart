@@ -33,6 +33,9 @@ class SalesController extends GetxController {
     diskonTextFieldController = TextEditingController();
 
     fetchItems();
+    diskonTextFieldController.addListener(() {
+      updateDiscountedTotal(total);
+    });
   }
 
   @override
@@ -154,18 +157,20 @@ class SalesController extends GetxController {
 
   void updateTotal() {
     int totalAmount = 0;
-    // int discount = 0;
     cartProducts.forEach((product) {
       totalAmount += product.productPrice * product.qty;
     });
-    // diskonTextFieldController.addListener(() {
-    //   discount = int.parse(diskonTextFieldController.text.isEmpty
-    //       ? "0"
-    //       : diskonTextFieldController.text);
-    //   totalAmount -= discount;
-    // });
-
     totalAmountController.text = totalAmount.toString();
+    updateDiscountedTotal(totalAmount);
+    update();
+  }
+
+  void updateDiscountedTotal(totalAmount) {
+    int discount = int.parse(diskonTextFieldController.text.isEmpty
+        ? "0"
+        : diskonTextFieldController.text);
+    int discountedTotal = totalAmount - discount;
+    totalAmountController.text = discountedTotal.toString();
     update();
   }
 
