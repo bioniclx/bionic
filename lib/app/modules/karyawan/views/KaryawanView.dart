@@ -1,12 +1,11 @@
-import 'package:bionic/app/modules/karyawan/controllers/KaryawanController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bionic/app/modules/karyawan/controllers/KaryawanController.dart';
 import 'package:bionic/app/components/custom_text.dart';
 import 'package:bionic/app/components/custom_text_field.dart';
-import 'package:bionic/app/utils/utility.dart';
 
 class KaryawanView extends GetView<KaryawanController> {
-  const KaryawanView({super.key});
+  const KaryawanView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +21,7 @@ class KaryawanView extends GetView<KaryawanController> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: spaceMedium,
-            vertical: spaceSmall,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,7 +31,7 @@ class KaryawanView extends GetView<KaryawanController> {
               Expanded(
                 child: Obx(() {
                   if (controller.karyawanList.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: CustomText(
                         text: 'Belum ada data karyawan.',
                         textSize: 14,
@@ -48,20 +44,25 @@ class KaryawanView extends GetView<KaryawanController> {
                       itemCount: controller.karyawanList.length,
                       itemBuilder: (context, index) {
                         var karyawan = controller.karyawanList[index];
+
+                        // Handling null value
+                        String fullName =
+                            karyawan['fullName'] ?? 'Nama Tidak Tersedia';
+                        String role =
+                            karyawan['position'] ?? 'Posisi Tidak Tersedia';
+                        String joinDate =
+                            karyawan['register_at'] ?? 'Tanggal Tidak Tersedia';
+
                         return Card(
                           child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              backgroundImage: karyawan['profileImageUrl'] !=
-                                      null
-                                  ? NetworkImage(karyawan['profileImageUrl'])
-                                  : null,
-                              child: karyawan['profileImageUrl'] == null
-                                  ? Icon(Icons.person, color: Colors.white)
-                                  : null,
+                            title: Text('$fullName'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Posisi: $role'),
+                                Text('Tanggal Masuk: $joinDate'),
+                              ],
                             ),
-                            title: Text(karyawan['fullName']),
-                            subtitle: Text(karyawan['email']),
                             trailing: IconButton(
                               icon: Icon(Icons.edit),
                               onPressed: () =>
