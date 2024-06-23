@@ -83,11 +83,22 @@ class CustomCatalogItem extends StatelessWidget {
                       textWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: paddingVerySmall),
-                    CustomText(
-                      text: '$productPrice',
-                      textSize: textSmall,
-                      textColor: Colors.black,
-                      textWeight: FontWeight.w500,
+                    Row(
+                      children: [
+                        CustomText(
+                          text: 'Price: $productPrice',
+                          textSize: textSmall,
+                          textColor: Colors.black,
+                          textWeight: FontWeight.w500,
+                        ),
+                        const SizedBox(width: spaceSmall),
+                        CustomText(
+                          text: 'Stock $productStock',
+                          textSize: textSmall,
+                          textColor: Colors.black,
+                          textWeight: FontWeight.w500,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: paddingSmall),
                     const SizedBox(

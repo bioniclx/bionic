@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CustomAddProductDialog extends StatelessWidget {
+class CustomUpdateProductDialog extends StatelessWidget {
   final TextEditingController productName;
   final TextEditingController productStock;
   final TextEditingController productCategory;
@@ -18,7 +18,7 @@ class CustomAddProductDialog extends StatelessWidget {
   final Rx<XFile> image;
   final Function()? onTap;
   final Function()? getImage;
-  const CustomAddProductDialog({
+  const CustomUpdateProductDialog({
     super.key,
     required this.productName,
     required this.productStock,

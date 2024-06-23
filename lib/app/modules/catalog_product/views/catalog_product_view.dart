@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bionic/app/components/custom_add_product_dialog.dart';
+import 'package:bionic/app/components/custom_update_product_dialog.dart';
 import 'package:bionic/app/components/custom_catalog_item.dart';
 import 'package:bionic/app/models/product.dart';
 import 'package:bionic/app/utils/utility.dart';
@@ -32,6 +32,7 @@ class CatalogProductView extends GetView<CatalogProductController> {
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(242, 242, 242, 1),
                     borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(color: Colors.grey),
                   ),
                   child: const Icon(Icons.arrow_back_rounded),
                 ),
@@ -109,7 +110,7 @@ class CatalogProductView extends GetView<CatalogProductController> {
                         controller.updateProductCategory.text =
                             "${snapshot.data?[index].productCategory}";
                         Get.dialog(
-                          CustomAddProductDialog(
+                          CustomUpdateProductDialog(
                             productImage:
                                 "${snapshot.data?[index].productImage}",
                             image: controller.image,
