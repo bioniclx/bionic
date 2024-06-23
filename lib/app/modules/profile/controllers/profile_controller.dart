@@ -14,12 +14,10 @@ class ProfileController extends GetxController {
 
   void fetchProfileData() async {
     // Assuming a collection 'users' and a document with ID 'profileID'
-    var doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc('profileID')
-        .get();
+    var doc =
+        await FirebaseFirestore.instance.collection('user').doc('uid').get();
     if (doc.exists) {
-      name.value = doc.data()?['name'];
+      name.value = doc.data()?['fullname'];
       role.value = doc.data()?['role'];
       imageUrl.value = doc.data()?['imageUrl'];
     }

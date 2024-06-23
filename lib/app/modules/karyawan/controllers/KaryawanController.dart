@@ -23,7 +23,11 @@ class KaryawanController extends GetxController {
 
   void fetchKaryawanList() async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('karyawan').get();
+      QuerySnapshot snapshot = await _firestore
+          .collection('user')
+          .where('store_id', isEqualTo: storeId)
+          .where('role', isEqualTo: '2')
+          .get();
       var list = snapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
@@ -52,7 +56,8 @@ class KaryawanController extends GetxController {
 
       await _firestore.collection('user').doc(uid).set({
         'email': email,
-        'store_name': fullName,
+        'fullName': fullName,
+        'position': position,
         'store_id': storeId,
         'register_at': dateNow,
         'role': '2',
@@ -68,7 +73,7 @@ class KaryawanController extends GetxController {
 
   void deleteKaryawan(String uid) async {
     try {
-      await _firestore.collection('karyawan').doc(uid).delete();
+      await _firestore.collection('user').doc(uid).delete();
       fetchKaryawanList();
       Get.snackbar('Success', 'Karyawan berhasil dihapus');
     } catch (e) {
@@ -78,7 +83,7 @@ class KaryawanController extends GetxController {
 
   void updateKaryawan(String uid, String fullName, String position) async {
     try {
-      await _firestore.collection('karyawan').doc(uid).update({
+      await _firestore.collection('user').doc(uid).update({
         'fullName': fullName,
         'position': position,
       });

@@ -80,6 +80,53 @@ class ProfileView extends GetView<ProfileController> {
     }
   }
 
+  int calculateTotalItems(List<Map<String, dynamic>> salesData) {
+    int totalItems = 0;
+    for (var sale in salesData) {
+      List<dynamic> products = sale['products'];
+      totalItems +=
+          products.fold<int>(0, (sum, item) => sum + (item['qty'] as int));
+    }
+    return totalItems;
+  }
+
+  double calculateTotalRevenue(List<Map<String, dynamic>> salesData) {
+    double totalRevenue = 0;
+    for (var sale in salesData) {
+      totalRevenue += double.parse(sale['total']);
+    }
+    return totalRevenue;
+  }
+
+  List<Map<String, dynamic>> filterSalesByDate(
+      List<Map<String, dynamic>> salesData,
+      DateTime startDate,
+      DateTime endDate) {
+    return salesData.where((sale) {
+      Timestamp saleTimestamp = sale['created_at'];
+      DateTime saleDate = saleTimestamp.toDate();
+      return saleDate.isAfter(startDate) && saleDate.isBefore(endDate);
+    }).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> _getSalesData(String storeId) async {
+    QuerySnapshot salesSnapshot = await _firestore
+        .collection('sales')
+        .where('store_id', isEqualTo: storeId)
+        .get();
+    return salesSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+  Future<List<Map<String, dynamic>>> _getEmployees() async {
+    QuerySnapshot employeesSnapshot =
+        await _firestore.collection('user').where('role', isEqualTo: '2').get();
+    return employeesSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,178 +150,211 @@ class ProfileView extends GetView<ProfileController> {
           if (!snapshot.hasData || snapshot.data == null) {
             return Center(child: Text("Error loading user data"));
           }
-          String name = snapshot.data!['store_name'] ?? 'User';
+          String name = snapshot.data!['store_name'] ?? 'fullName';
+          String storeId = snapshot.data!['store_id'] ?? '';
           String roleString = snapshot.data!['role'] ?? '2';
           int role = int.tryParse(roleString) ?? 2;
           String roleName = role == 1 ? 'Admin' : 'Karyawan';
           String? photoUrl = snapshot.data!['photo_url'];
           String email = snapshot.data!['email'] ?? '';
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  color: primaryColor,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10),
-                      CircleAvatar(
-                        radius: 100,
-                        backgroundColor: Colors.grey.shade300,
-                        backgroundImage:
-                            photoUrl != null ? NetworkImage(photoUrl) : null,
-                        child: photoUrl == null
-                            ? Icon(
-                                Icons.person,
-                                size: 100,
-                                color: Colors.grey.shade700,
-                              )
-                            : null,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        roleName,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.yellow,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                ),
+          return FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getSalesData(storeId),
+            builder: (context, salesSnapshot) {
+              if (salesSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (!salesSnapshot.hasData || salesSnapshot.data == null) {
+                return Center(child: Text("Error loading sales data"));
+              }
+              List<Map<String, dynamic>> salesData = salesSnapshot.data!;
 
-                // Profile body
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        if (role == 2) ...[
+              DateTime now = DateTime.now();
+              List<Map<String, dynamic>> dailySales = filterSalesByDate(
+                  salesData, now.subtract(Duration(days: 1)), now);
+              List<Map<String, dynamic>> monthlySales = filterSalesByDate(
+                  salesData, DateTime(now.year, now.month, 1), now);
+
+              int totalItems = calculateTotalItems(salesData);
+              double totalRevenue = calculateTotalRevenue(salesData);
+
+              int dailyItems = calculateTotalItems(dailySales);
+              double dailyRevenue = calculateTotalRevenue(dailySales);
+
+              int monthlyItems = calculateTotalItems(monthlySales);
+              double monthlyRevenue = calculateTotalRevenue(monthlySales);
+
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      color: primaryColor,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          CircleAvatar(
+                            radius: 100,
+                            backgroundColor: Colors.grey.shade300,
+                            backgroundImage: photoUrl != null
+                                ? NetworkImage(photoUrl)
+                                : null,
+                            child: photoUrl == null
+                                ? Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Colors.grey.shade700,
+                                  )
+                                : null,
+                          ),
+                          SizedBox(height: 10),
                           Text(
-                            'Laporan Penjualan Hari Ini',
+                            name,
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: primaryColor,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            roleName,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.yellow,
                             ),
                           ),
                           SizedBox(height: 20),
-                          CustomReportCard(
-                            reportTitle: 'Penjualan Hari Ini',
-                            reportDetail: 150,
-                            reportBorderColor: Colors.blue,
-                            reportCardWidth: 150,
-                          ),
-                          SizedBox(height: 40),
-                        ] else ...[
-                          Text(
-                            'Laporan Penjualan',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                CustomReportCard(
-                                  reportTitle: 'Penjualan Minggu Ini',
-                                  reportDetail: 1500,
-                                  reportBorderColor: Colors.blue,
-                                  reportCardWidth: 150,
-                                ),
-                                SizedBox(width: 10),
-                                CustomReportCard(
-                                  reportTitle: 'Penjualan Bulan Ini',
-                                  reportDetail: 5000,
-                                  reportBorderColor: Colors.green,
-                                  reportCardWidth: 150,
-                                ),
-                                SizedBox(width: 10),
-                                CustomReportCard(
-                                  reportTitle: 'Penjualan Tahun Ini',
-                                  reportDetail: 60000,
-                                  reportBorderColor: Colors.orange,
-                                  reportCardWidth: 150,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 40),
-                          buildButton('Karyawan', primaryColor, () {
-                            Get.toNamed(Routes.KARYAWAN);
-                          }),
                         ],
-                        buildButton('Edit Profile', primaryColor, () {
-                          showEditProfileDialog(context, email, name);
-                        }),
-                        buildButton('Ganti Kata Sandi', primaryColor, () {
-                          showChangePasswordDialog(context);
-                        }),
-                        buildButton('Logout', Colors.red, () {
-                          _auth.signOut();
-                        }),
-                      ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            if (role == 2) ...[
+                              Text(
+                                'Laporan Penjualan Hari Ini',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryColor,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              CustomReportCard(
+                                reportTitle: 'Penjualan Hari Ini',
+                                reportDetail: dailyRevenue.toInt(),
+                                reportBorderColor: Colors.blue,
+                                reportCardWidth: 200,
+                              ),
+                              CustomReportCard(
+                                reportTitle: 'Item Terjual Hari Ini',
+                                reportDetail: dailyItems,
+                                reportBorderColor: Colors.blue,
+                                reportCardWidth: 200,
+                              ),
+                              SizedBox(height: 40),
+                            ] else ...[
+                              Text(
+                                'Laporan Penjualan',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryColor,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: 10),
+                                    CustomReportCard(
+                                      reportTitle: 'Total Item Terjual',
+                                      reportDetail: totalItems,
+                                      reportBorderColor: Colors.purple,
+                                      reportCardWidth: 200,
+                                    ),
+                                    CustomReportCard(
+                                      reportTitle: 'Penjualan Hari Ini',
+                                      reportDetail: dailyRevenue.toInt(),
+                                      reportBorderColor: Colors.blue,
+                                      reportCardWidth: 200,
+                                    ),
+                                    CustomReportCard(
+                                      reportTitle: 'Penjualan Bulanan',
+                                      reportDetail: monthlyRevenue.toInt(),
+                                      reportBorderColor: Colors.orange,
+                                      reportCardWidth: 200,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CustomReportCard(
+                                      reportTitle: 'Total Penjualan',
+                                      reportDetail: totalRevenue.toInt(),
+                                      reportBorderColor: Colors.red,
+                                      reportCardWidth: 200,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 40),
+                              buildButton('Karyawan', primaryColor, () {
+                                Get.toNamed(Routes.KARYAWAN);
+                              }),
+                            ],
+                            buildButton('Edit Profil', primaryColor, () {
+                              _showEditProfileDialog(
+                                  context, email, name, photoUrl);
+                            }),
+                            buildButton('Logout', primaryColor, () {
+                              FirebaseAuth.instance.signOut();
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  void showEditProfileDialog(
-      BuildContext context, String currentEmail, String currentStoreName) {
-    TextEditingController emailController =
-        TextEditingController(text: currentEmail);
+  void _showEditProfileDialog(
+      BuildContext context, String email, String name, String? photoUrl) {
+    TextEditingController emailController = TextEditingController(text: email);
     TextEditingController storeNameController =
-        TextEditingController(text: currentStoreName);
-
+        TextEditingController(text: name);
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: Text('Edit Profile'),
           content: SingleChildScrollView(
             child: Column(
               children: [
+                if (photoUrl != null)
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(photoUrl),
+                  ),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(labelText: 'Email'),
                 ),
                 TextField(
                   controller: storeNameController,
-                  decoration: InputDecoration(labelText: 'Store Name'),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _pickAndUploadProfileImage(
-                        context, emailController, storeNameController);
-                  },
-                  child: Text('Pilih Foto Profil'),
+                  decoration: InputDecoration(labelText: 'Nama Toko'),
                 ),
               ],
             ),
@@ -282,11 +362,18 @@ class ProfileView extends GetView<ProfileController> {
           actions: [
             TextButton(
               onPressed: () {
+                _pickAndUploadProfileImage(
+                    context, emailController, storeNameController);
+              },
+              child: Text('Ubah Foto Profil'),
+            ),
+            TextButton(
+              onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text('Batal'),
             ),
-            ElevatedButton(
+            TextButton(
               onPressed: () async {
                 await _updateProfile(
                     emailController.text, storeNameController.text, null);
@@ -300,72 +387,22 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  void showChangePasswordDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Ganti Kata Sandi'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  decoration: InputDecoration(labelText: 'Kata Sandi Lama'),
-                  obscureText: true,
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Kata Sandi Baru'),
-                  obscureText: true,
-                ),
-                TextField(
-                  decoration:
-                      InputDecoration(labelText: 'Konfirmasi Kata Sandi Baru'),
-                  obscureText: true,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Batal'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Simpan'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget buildButton(String text, Color color, VoidCallback onPressed) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+  Widget buildButton(String text, Color color, VoidCallback onClicked) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: ElevatedButton(
-        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
           backgroundColor: color,
-          minimumSize: Size(double.infinity, 50),
-          side: BorderSide(
-            color: color,
-          ),
+          minimumSize: Size.fromHeight(40),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: 16,
-          ),
+          style: TextStyle(fontSize: 16),
         ),
+        onPressed: onClicked,
       ),
     );
   }
