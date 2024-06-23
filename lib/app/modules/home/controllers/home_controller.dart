@@ -1,4 +1,5 @@
 import 'package:bionic/app/models/sale.dart';
+import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
@@ -10,6 +11,8 @@ class HomeController extends GetxController {
   var itemName = ['test', 'test2', 'test3'];
   var userId = FirebaseAuth.instance.currentUser?.uid;
   var storeId = ''.obs;
+  var roleUser = ''.obs;
+  bool isOwner = true;
   String? refreshUser() {
     FirebaseAuth.instance.authStateChanges().listen((currentUser) {
       userId = currentUser?.uid;
@@ -53,6 +56,7 @@ class HomeController extends GetxController {
               userDoc.data() as Map<String, dynamic>;
           if (userData.containsKey('store_id')) {
             storeId.value = userData['store_id'];
+            roleUser.value = userData['role'];
           }
         }
       }
@@ -89,5 +93,34 @@ class HomeController extends GetxController {
     if (itemCount.value > 0) {
       itemCount.value--;
     } else {}
+  }
+
+  bool checkUserRole() {
+    if (roleUser.value == "1") {
+      return isOwner = true;
+    }
+    if (roleUser.value == "2") {
+      return isOwner = false;
+    } else {
+      return isOwner = false;
+    }
+  }
+
+  void buttonReportSaleClicked() {
+    checkUserRole();
+    if (isOwner) {
+      Get.toNamed(Routes.REPORT_SALES, arguments: storeId);
+    } else {
+      Get.snackbar('Invalid', 'User didn\'t have permission');
+    }
+  }
+
+  void buttonAddProductClicked() {
+    checkUserRole();
+    if (isOwner) {
+      Get.toNamed(Routes.ADD_PRODUCT);
+    } else {
+      Get.snackbar('Invalid', 'User didn\'t have permission');
+    }
   }
 }

@@ -93,7 +93,7 @@ class HomeView extends GetView<HomeController> {
                         buttonHeight: 110,
                         buttonWidth: 110,
                         onTap: () {
-                          Get.toNamed(Routes.ADD_PRODUCT);
+                          controller.buttonAddProductClicked();
                         },
                       ),
                       CustomButtonWithIcon(
@@ -102,9 +102,8 @@ class HomeView extends GetView<HomeController> {
                         buttonTextPaddingVertical: 10.0,
                         buttonHeight: 110,
                         buttonWidth: 110,
-                        onTap: () {
-                          Get.toNamed(Routes.REPORT_SALES,
-                              arguments: controller.storeId);
+                        onTap: () async {
+                          controller.buttonReportSaleClicked();
                         },
                       ),
                     ],
