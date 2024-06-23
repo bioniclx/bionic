@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 
 class ReportSalesController extends GetxController {
   //add reference collection
-  CollectionReference ref = FirebaseFirestore.instance.collection('sales');
+  late var ref = FirebaseFirestore.instance
+      .collection('sales')
+      .where("store_id", isEqualTo: storeId.value);
   //create list for category
   RxString storeId = Get.arguments;
   final sortedBy = [
@@ -30,31 +32,22 @@ class ReportSalesController extends GetxController {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSales(int index) {
     if (index == 1) {
-      return FirebaseFirestore.instance
-          .collection('sales')
-          .where("store_id", isEqualTo: storeId.value)
+      return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 7)))
           .snapshots();
     } else if (index == 2) {
-      return FirebaseFirestore.instance
-          .collection('sales')
-          .where("store_id", isEqualTo: storeId.value)
+      return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 30)))
           .snapshots();
     } else if (index == 3) {
-      return FirebaseFirestore.instance
-          .collection('sales')
-          .where("store_id", isEqualTo: storeId.value)
+      return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 180)))
           .snapshots();
     } else {
-      return FirebaseFirestore.instance
-          .collection('sales')
-          .where("store_id", isEqualTo: storeId.value)
-          .snapshots();
+      return ref.snapshots();
     }
   }
 
@@ -84,20 +77,5 @@ class ReportSalesController extends GetxController {
       }
     }
     return totalItems;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

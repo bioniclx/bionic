@@ -140,11 +140,7 @@ class HomeView extends GetView<HomeController> {
                     }
                     if (snapshot.hasData) {
                       List<Sale> sales = controller.sales(snapshot.data!);
-                      // add sales store_id from list sales
-                      sales = sales
-                          .where((element) =>
-                              element.storeId == controller.storeId.value)
-                          .toList();
+
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

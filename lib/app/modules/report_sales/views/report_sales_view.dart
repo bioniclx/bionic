@@ -114,21 +114,64 @@ class ReportSalesView extends GetView<ReportSalesController> {
                     List<Sale> sales = controller.sales(snapshot.data!);
                     int test = controller.calculateTotalRevenue(sales);
                     int item = controller.calculateTotalItems(sales);
-                    return GridView.count(
-                      shrinkWrap: true,
-                      primary: false,
-                      crossAxisCount: 2,
-                      childAspectRatio: (3 / 2),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomReportCard(
-                          reportTitle: 'Total Penjualan',
-                          reportDetail: test,
-                          reportBorderColor: Colors.green,
+                        GridView.count(
+                          shrinkWrap: true,
+                          primary: false,
+                          crossAxisCount: 2,
+                          childAspectRatio: (3 / 2),
+                          children: [
+                            CustomReportCard(
+                              reportTitle: 'Total Penjualan',
+                              reportDetail: test,
+                              reportBorderColor: Colors.green,
+                            ),
+                            CustomReportCard(
+                              reportTitle: 'Total item',
+                              reportDetail: item,
+                              reportBorderColor: Colors.blue,
+                            ),
+                          ],
                         ),
-                        CustomReportCard(
-                          reportTitle: 'Total item',
-                          reportDetail: item,
-                          reportBorderColor: Colors.blue,
+                        const SizedBox(height: spaceSmall),
+                        const Divider(),
+                        const SizedBox(height: spaceMedium),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              left: paddingMedium, bottom: paddingSmall),
+                          child: CustomText(
+                            text: 'Detail Laporan',
+                            textSize: textTitle,
+                            textColor: Colors.black,
+                            textWeight: FontWeight.w600,
+                          ),
+                        ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: sales.length,
+                          itemBuilder: (context, index) {
+                            Sale sale = sales[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(paddingSmall),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.DETAIL_SALE,
+                                      arguments: sale);
+                                },
+                                child: CustomListItem(
+                                  itemName: sale.name,
+                                  itemDate: DateFormat.yMMMMEEEEd('id')
+                                      .format(sale.createdAt),
+                                  itemPrice: "Rp. ${sale.total}",
+                                  itemColor: statusColorList[Random.secure()
+                                      .nextInt(statusColorList.length)],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     );
@@ -139,72 +182,6 @@ class ReportSalesView extends GetView<ReportSalesController> {
                   }
                 },
               ),
-            ),
-          ),
-          const SizedBox(height: spaceSmall),
-          const Divider(),
-          const SizedBox(height: spaceMedium),
-          const Padding(
-            padding: EdgeInsets.only(left: paddingMedium, bottom: paddingSmall),
-            child: CustomText(
-              text: 'Detail Laporan',
-              textSize: textTitle,
-              textColor: Colors.black,
-              textWeight: FontWeight.w600,
-            ),
-          ),
-          Obx(
-            () => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: controller.getSales(controller.selectedCategory.value),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text("Error"),
-                  );
-                }
-                if (snapshot.hasData) {
-                  List<Sale> sales = controller.sales(snapshot.data!);
-                  // add sales store_id from list sales
-                  sales = sales
-                      .where((element) =>
-                          element.storeId == controller.storeId.value)
-                      .toList();
-                  return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: sales.length,
-                    itemBuilder: (context, index) {
-                      Sale sale = sales[index];
-
-                      return Padding(
-                        padding: const EdgeInsets.all(paddingSmall),
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.DETAIL_SALE, arguments: sale);
-                          },
-                          child: CustomListItem(
-                            itemName: sale.name,
-                            itemDate: DateFormat.yMMMMEEEEd('id')
-                                .format(sale.createdAt),
-                            itemPrice: "Rp. ${sale.total}",
-                            itemColor: statusColorList[Random.secure()
-                                .nextInt(statusColorList.length)],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return const Center(
-                    child: Text('Has No Data'),
-                  );
-                }
-              },
             ),
           ),
         ],
