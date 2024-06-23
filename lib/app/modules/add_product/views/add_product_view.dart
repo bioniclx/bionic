@@ -113,7 +113,8 @@ class AddProductView extends GetView<AddProductController> {
             ),
             const SizedBox(height: spaceMedium),
             CustomTextField(
-              textTitle: 'Kategori',
+              maxLines: 4,
+              textTitle: 'Deskripsi',
               textFieldController: controller.productCategoryController,
               textFieldType: TextInputType.name,
               obsecureText: false,

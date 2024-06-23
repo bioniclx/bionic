@@ -70,6 +70,8 @@ class HomeController extends GetxController {
     return FirebaseFirestore.instance
         .collection('sales')
         .where("store_id", isEqualTo: storeId.value)
+        .orderBy("created_at", descending: true)
+        .limit(5)
         .snapshots();
   }
 

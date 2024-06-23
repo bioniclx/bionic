@@ -101,12 +101,11 @@ class CustomCatalogItem extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: paddingSmall),
-                    const SizedBox(
+                    SizedBox(
                       width: 150,
                       height: 60,
                       child: CustomText(
-                        text:
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet pretium sem, at cursus dolor. Donec et ligula faucibus, cursus neque in, sodales ante. Fusce pretium vestibulum nulla et consectetur.',
+                        text: productCategory,
                         textSize: textSmall,
                         textColor: Colors.black,
                         textWeight: FontWeight.w300,

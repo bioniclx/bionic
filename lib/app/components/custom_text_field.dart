@@ -23,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType textFieldType;
   final bool obsecureText;
   final bool enabled;
+  final int? maxLines;
   const CustomTextField({
     super.key,
     required this.textTitle,
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     required this.textFieldType,
     required this.obsecureText,
     this.enabled = true,
+    this.maxLines,
   });
 
   @override
@@ -57,6 +59,7 @@ class CustomTextField extends StatelessWidget {
           keyboardType: textFieldType,
           obscureText: obsecureText,
           enabled: enabled,
+          maxLines: maxLines ?? 1,
           decoration: const InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),

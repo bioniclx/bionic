@@ -121,7 +121,8 @@ class CustomUpdateProductDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: spaceVerySmall),
                   CustomTextField(
-                    textTitle: 'Kategori',
+                    maxLines: 4,
+                    textTitle: 'Deskripsi',
                     textFieldController: productCategory,
                     textFieldType: TextInputType.name,
                     obsecureText: false,

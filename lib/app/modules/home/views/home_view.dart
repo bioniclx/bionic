@@ -124,56 +124,61 @@ class HomeView extends GetView<HomeController> {
                 textWeight: FontWeight.w600,
               ),
             ),
-            Center(child: Obx(() {
-              return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: controller.getSales(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Error"),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      List<Sale> sales = controller.sales(snapshot.data!);
+            Center(
+              child: Obx(
+                () {
+                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: controller.getSales(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Error"),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        List<Sale> sales = controller.sales(snapshot.data!);
 
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: sales.length,
-                        itemBuilder: (context, index) {
-                          Sale sale = sales[index];
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: sales.length,
+                          itemBuilder: (context, index) {
+                            Sale sale = sales[index];
 
-                          return Padding(
-                            padding: const EdgeInsets.all(paddingSmall),
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.toNamed(Routes.DETAIL_SALE,
-                                    arguments: sale);
-                              },
-                              child: CustomListItem(
-                                itemName: sale.name,
-                                itemDate: DateFormat.yMMMMEEEEd('id')
-                                    .format(sale.createdAt),
-                                itemPrice: "Rp. ${sale.total}",
-                                itemColor: statusColorList[Random.secure()
-                                    .nextInt(statusColorList.length)],
+                            return Padding(
+                              padding: const EdgeInsets.all(paddingSmall),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.DETAIL_SALE,
+                                      arguments: sale);
+                                },
+                                child: CustomListItem(
+                                  itemName: sale.name,
+                                  itemDate: DateFormat.yMMMMEEEEd('id')
+                                      .format(sale.createdAt),
+                                  itemPrice: "Rp. ${sale.total}",
+                                  itemColor: statusColorList[Random.secure()
+                                      .nextInt(statusColorList.length)],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(
-                        child: Text('Has No Data'),
-                      );
-                    }
-                  });
-            })),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Has No Data'),
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

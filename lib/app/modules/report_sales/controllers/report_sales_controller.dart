@@ -35,16 +35,19 @@ class ReportSalesController extends GetxController {
       return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 7)))
+          .orderBy("created_at", descending: true)
           .snapshots();
     } else if (index == 2) {
       return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 30)))
+          .orderBy("created_at", descending: true)
           .snapshots();
     } else if (index == 3) {
       return ref
           .where("created_at",
               isGreaterThan: DateTime.now().subtract(const Duration(days: 180)))
+          .orderBy("created_at", descending: true)
           .snapshots();
     } else {
       return ref.snapshots();
