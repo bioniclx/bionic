@@ -72,7 +72,7 @@ class HomeController extends GetxController {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSales() {
-    checkUserRole();
+    checkUserRole(roleUser.value);
 
     if (isOwner) {
       return FirebaseFirestore.instance
