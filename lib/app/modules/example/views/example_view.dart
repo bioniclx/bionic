@@ -21,6 +21,7 @@ class ExampleView extends GetView<ExampleController> {
     return Scaffold(
       //Add a drawer
       drawer: const NavigationSidebar(
+        storeId: 'storeId',
         storeName: 'test',
         role: 'role',
       ),

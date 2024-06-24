@@ -11,6 +11,7 @@ class NavigationSidebar extends StatelessWidget {
   final Color? isActived2;
   final String storeName;
   final String role;
+  final String storeId;
 
   const NavigationSidebar({
     super.key,
@@ -18,6 +19,7 @@ class NavigationSidebar extends StatelessWidget {
     this.isActived2,
     required this.storeName,
     required this.role,
+    required this.storeId,
   });
 
   Future<String?> _getProfilePhotoUrl() async {
@@ -136,7 +138,7 @@ class NavigationSidebar extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Get.toNamed(Routes.CATALOG_PRODUCT);
+                    Get.toNamed(Routes.CATALOG_PRODUCT, arguments: storeId);
                   },
                 ),
                 const Divider(),

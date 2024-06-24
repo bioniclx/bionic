@@ -30,6 +30,7 @@ class HomeView extends GetView<HomeController> {
           } else if (snapshot.hasData) {
             Map<String, dynamic>? store = snapshot.data!.data();
             return NavigationSidebar(
+              storeId: controller.storeId.value,
               storeName: "${store!['store_name']}",
               role: getRoleAccount(store['role']),
             );

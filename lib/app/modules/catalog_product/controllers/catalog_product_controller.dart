@@ -19,6 +19,7 @@ class CatalogProductController extends GetxController {
 
   //Get the current user id from auth
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  final storeId = Get.arguments;
   CollectionReference ref = FirebaseFirestore.instance.collection('product');
 
   @override
@@ -44,7 +45,7 @@ class CatalogProductController extends GetxController {
     return FirebaseFirestore.instance
         .collection('product')
         //get all the product where store id is same with currect user id
-        .where("store_id", isEqualTo: userId)
+        .where("store_id", isEqualTo: storeId)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
