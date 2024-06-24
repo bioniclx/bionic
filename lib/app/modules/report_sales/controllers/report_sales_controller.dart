@@ -2,6 +2,7 @@ import 'package:bionic/app/models/sale.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ReportSalesController extends GetxController {
   //add reference collection
@@ -62,6 +63,21 @@ class ReportSalesController extends GetxController {
         );
       },
     ).toList();
+  }
+
+  Map<String, List<Sale>> groupSalesByDate(List<Sale> sales) {
+    Map<String, List<Sale>> groupedSales = {};
+
+    for (var sale in sales) {
+      String date = DateFormat.yMMMMd('id').format(sale.createdAt);
+      if (groupedSales.containsKey(date)) {
+        groupedSales[date]!.add(sale);
+      } else {
+        groupedSales[date] = [sale];
+      }
+    }
+
+    return groupedSales;
   }
 
   int calculateTotalRevenue(List<Sale> salesData) {

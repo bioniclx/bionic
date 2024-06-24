@@ -20,9 +20,10 @@ class ExampleView extends GetView<ExampleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       //Add a drawer
-      drawer: const NavigationSidebar(
+      drawer: NavigationSidebar(
         storeName: 'test',
         role: 'role',
+        storeId: 'store_id',
       ),
       appBar: AppBar(
         //Triger scaffold context to open Drawer

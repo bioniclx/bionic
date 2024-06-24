@@ -1,24 +1,27 @@
-import 'package:bionic/app/components/custom_text.dart';
-import 'package:bionic/app/routes/app_pages.dart';
-import 'package:bionic/app/utils/utility.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'package:bionic/app/components/custom_text.dart';
+import 'package:bionic/app/routes/app_pages.dart';
+import 'package:bionic/app/utils/utility.dart';
 
 class NavigationSidebar extends StatelessWidget {
   final Color? isActived1;
   final Color? isActived2;
   final String storeName;
   final String role;
-
-  const NavigationSidebar({
+  final RxString storeId;
+  NavigationSidebar({
     super.key,
     this.isActived1,
     this.isActived2,
     required this.storeName,
     required this.role,
-  });
+    required String storeId,
+  }) : storeId = storeId.obs;
 
   Future<String?> _getProfilePhotoUrl() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -136,7 +139,8 @@ class NavigationSidebar extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Get.toNamed(Routes.CATALOG_PRODUCT);
+                    Get.toNamed(Routes.CATALOG_PRODUCT,
+                        arguments: storeId.value);
                   },
                 ),
                 const Divider(),
