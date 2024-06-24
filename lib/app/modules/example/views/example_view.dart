@@ -23,7 +23,8 @@ class ExampleView extends GetView<ExampleController> {
       drawer: NavigationSidebar(
         storeName: 'test',
         role: 'role',
-        storeId: 'store_id',
+        storeId: 'store_id'.obs,
+        photoUrl: 'ssss',
       ),
       appBar: AppBar(
         //Triger scaffold context to open Drawer

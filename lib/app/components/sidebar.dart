@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,26 +13,16 @@ class NavigationSidebar extends StatelessWidget {
   final String storeName;
   final String role;
   final RxString storeId;
-  NavigationSidebar({
+  final String photoUrl;
+  const NavigationSidebar({
     super.key,
     this.isActived1,
     this.isActived2,
     required this.storeName,
     required this.role,
-    required String storeId,
-  }) : storeId = storeId.obs;
-
-  Future<String?> _getProfilePhotoUrl() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance
-          .collection('user')
-          .doc(user.uid)
-          .get();
-      return userData['photo_url'] as String?;
-    }
-    return null;
-  }
+    required this.storeId,
+    required this.photoUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,54 +31,45 @@ class NavigationSidebar extends StatelessWidget {
         children: [
           Flexible(
             child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 SizedBox(
                   height: 150,
                   child: GestureDetector(
                     child: DrawerHeader(
-                      child: FutureBuilder<String?>(
-                        future: _getProfilePhotoUrl(),
-                        builder: (context, snapshot) {
-                          String? photoUrl = snapshot.data;
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    text: storeName,
-                                    textSize: textMedium,
-                                    textColor: Colors.black,
-                                    textWeight: FontWeight.w600,
-                                  ),
-                                  const SizedBox(height: paddingVerySmall),
-                                  CustomText(
-                                    text: role,
-                                    textSize: textSmall,
-                                    textColor: primary,
-                                    textWeight: FontWeight.w600,
-                                  ),
-                                ],
+                              CustomText(
+                                text: storeName,
+                                textSize: textMedium,
+                                textColor: Colors.black,
+                                textWeight: FontWeight.w600,
                               ),
-                              CircleAvatar(
-                                radius: 32,
-                                backgroundColor: Colors.grey,
-                                backgroundImage: photoUrl != null
-                                    ? NetworkImage(photoUrl)
-                                    : null,
-                                child: photoUrl == null
-                                    ? Icon(
-                                        Icons.person,
-                                        size: 32,
-                                        color: Colors.white,
-                                      )
-                                    : null,
+                              const SizedBox(height: paddingVerySmall),
+                              CustomText(
+                                text: role,
+                                textSize: textSmall,
+                                textColor: primary,
+                                textWeight: FontWeight.w600,
                               ),
                             ],
-                          );
-                        },
+                          ),
+                          CircleAvatar(
+                            radius: 32,
+                            backgroundColor: Colors.grey,
+                            backgroundImage: NetworkImage(photoUrl),
+                            child: const Icon(
+                              Icons.person,
+                              size: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     onTap: () {
@@ -97,28 +77,6 @@ class NavigationSidebar extends StatelessWidget {
                     },
                   ),
                 ),
-                GestureDetector(
-                  child: const SizedBox(
-                    height: tileNormal,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingMedium),
-                        child: CustomText(
-                          text: 'Example',
-                          textSize: textMedium,
-                          textColor: primary,
-                          textWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(Routes.EXAMPLE);
-                  },
-                ),
-                const Divider(),
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
@@ -153,28 +111,6 @@ class NavigationSidebar extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomText(
-                              text: 'History',
-                              textSize: textMedium,
-                              textColor: primary,
-                              textWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  onTap: () {},
-                ),
-                const Divider(),
-                GestureDetector(
-                  child: const SizedBox(
-                    height: tileNormal,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomText(
                               text: 'Laporan',
                               textSize: textMedium,
                               textColor: primary,
@@ -185,7 +121,9 @@ class NavigationSidebar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.REPORT_SALES, arguments: storeId);
+                  },
                 ),
                 const Divider(),
                 GestureDetector(
@@ -207,7 +145,9 @@ class NavigationSidebar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.SALES, arguments: storeId.value);
+                  },
                 ),
                 const Divider(),
                 GestureDetector(
@@ -229,12 +169,15 @@ class NavigationSidebar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.ADD_PRODUCT);
+                  },
                 ),
               ],
             ),
           ),
           ListView(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
               const Divider(color: primary, height: 2.0),
@@ -262,7 +205,9 @@ class NavigationSidebar extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.KARYAWAN);
+                },
               ),
               const Divider(),
               GestureDetector(

@@ -27,6 +27,7 @@ class AddProductView extends GetView<AddProductController> {
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(242, 242, 242, 1),
                 borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey),
               ),
               child: const Icon(Icons.arrow_back_rounded),
             ),

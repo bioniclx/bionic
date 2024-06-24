@@ -30,9 +30,10 @@ class HomeView extends GetView<HomeController> {
           } else if (snapshot.hasData) {
             Map<String, dynamic>? store = snapshot.data!.data();
             return NavigationSidebar(
-              storeId: controller.storeId.value,
+              storeId: controller.storeId,
               storeName: "${store!['store_name']}",
               role: getRoleAccount(store['role']),
+              photoUrl: '${store['photo_url']}',
             );
           } else {
             return const Text('Has no data');

@@ -134,7 +134,7 @@ class ProfileView extends GetView<ProfileController> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Get.toNamed(Routes.HOME);
+            Get.back();
           },
         ),
         backgroundColor: primaryColor,
@@ -234,6 +234,7 @@ class ProfileView extends GetView<ProfileController> {
                           topRight: Radius.circular(30.0),
                         ),
                       ),
+                      height: Get.height / 1.5,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -315,6 +316,7 @@ class ProfileView extends GetView<ProfileController> {
                             }),
                             buildButton('Logout', primaryColor, () {
                               FirebaseAuth.instance.signOut();
+                              Get.toNamed(Routes.AUTH);
                             }),
                           ],
                         ),

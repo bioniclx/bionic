@@ -14,7 +14,7 @@ class SalesController extends GetxController {
   late TextEditingController diskonTextFieldController;
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
-  final storeId = Get.arguments;
+  final String storeId = Get.arguments;
   CollectionReference refProduct =
       FirebaseFirestore.instance.collection('product');
   List<ProductDropdown> productDropdown = [];
