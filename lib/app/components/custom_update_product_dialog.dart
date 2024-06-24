@@ -6,6 +6,7 @@ import 'package:bionic/app/components/custom_text_field.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,7 +37,7 @@ class CustomUpdateProductDialog extends StatelessWidget {
       children: [
         Dialog(
           child: Container(
-            width: 430,
+            width: Get.width * 0.9,
             decoration: BoxDecoration(
               color: const Color.fromRGBO(217, 217, 217, 1),
               borderRadius: BorderRadius.circular(20.0),
@@ -48,11 +49,26 @@ class CustomUpdateProductDialog extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const CustomText(
-                    text: 'Edit',
-                    textSize: textMedium,
-                    textColor: primary,
-                    textWeight: FontWeight.w600,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      const SizedBox(
+                        width: spaceSmall,
+                      ),
+                      const Center(
+                        child: CustomText(
+                          text: 'Edit',
+                          textSize: textMedium,
+                          textColor: primary,
+                          textWeight: FontWeight.w600,
+                        ),
+                      ), // Add an empty SizedBox to center the content
+                    ],
                   ),
                   const SizedBox(height: spaceMedium),
                   Obx(
@@ -66,9 +82,8 @@ class CustomUpdateProductDialog extends StatelessWidget {
                                   width: 150,
                                   height: 150,
                                   child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(8.0),
-                                      bottomLeft: Radius.circular(8.0),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8.0),
                                     ),
                                     child: CachedNetworkImage(
                                       imageUrl: productImage,

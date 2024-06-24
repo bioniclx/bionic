@@ -94,45 +94,58 @@ class CatalogProductView extends GetView<CatalogProductController> {
                         productCategory:
                             "${snapshot.data?[index].productCategory}",
                         productImage: "${snapshot.data?[index].productImage}",
+                        isDelete: checkUserRole(
+                            controller.homeController.roleUser.value),
                         onTap: () {
                           controller
                               .deleteProduct("${snapshot.data?[index].id}");
                         },
                       ),
                       onTap: () {
-                        //Change text field text by product index value
-                        controller.updateProductNameController.text =
-                            "${snapshot.data?[index].productName}";
-                        controller.updateProductPrice.text =
-                            "${snapshot.data?[index].productPrice}";
-                        controller.updateProductStock.text =
-                            "${snapshot.data?[index].productStock}";
-                        controller.updateProductCategory.text =
-                            "${snapshot.data?[index].productCategory}";
-                        Get.dialog(
-                          CustomUpdateProductDialog(
-                            productImage:
-                                "${snapshot.data?[index].productImage}",
-                            image: controller.image,
-                            productName: controller.updateProductNameController,
-                            productCategory: controller.updateProductCategory,
-                            productPrice: controller.updateProductPrice,
-                            productStock: controller.updateProductStock,
-                            onTap: () {
-                              controller.updateProduct(
-                                snapshot.data![index].id.toString(),
-                                controller.updateProductNameController.text,
-                                controller.updateProductCategory.text,
-                                int.parse(controller.updateProductStock.text),
-                                int.parse(controller.updateProductPrice.text),
-                                File(controller.image.value.path),
-                              );
-                            },
-                            getImage: () async {
-                              await controller.getImage(true);
-                            },
-                          ),
-                        );
+                        if (checkUserRole(
+                            controller.homeController.roleUser.value)) {
+                          controller.updateProductNameController.text =
+                              "${snapshot.data?[index].productName}";
+                          controller.updateProductPrice.text =
+                              "${snapshot.data?[index].productPrice}";
+                          controller.updateProductStock.text =
+                              "${snapshot.data?[index].productStock}";
+                          controller.updateProductCategory.text =
+                              "${snapshot.data?[index].productCategory}";
+                          Get.dialog(
+                            CustomUpdateProductDialog(
+                              productImage:
+                                  "${snapshot.data?[index].productImage}",
+                              image: controller.image,
+                              productName:
+                                  controller.updateProductNameController,
+                              productCategory: controller.updateProductCategory,
+                              productPrice: controller.updateProductPrice,
+                              productStock: controller.updateProductStock,
+                              onTap: () {
+                                controller.updateProduct(
+                                  snapshot.data![index].id.toString(),
+                                  controller.updateProductNameController.text,
+                                  controller.updateProductCategory.text,
+                                  int.parse(controller.updateProductStock.text),
+                                  int.parse(controller.updateProductPrice.text),
+                                  File(controller.image.value.path),
+                                );
+                              },
+                              getImage: () async {
+                                await controller.getImage(true);
+                              },
+                            ),
+                          );
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            'You dont have permission to update this product',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
                       },
                     ),
                   );

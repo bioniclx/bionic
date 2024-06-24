@@ -184,7 +184,7 @@ class ExampleView extends GetView<ExampleController> {
               textWeight: FontWeight.w400,
             ),
 
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: spaceSmall),
               child: Column(
                 children: [

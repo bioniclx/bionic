@@ -1,7 +1,9 @@
-import 'package:bionic/app/components/custom_text.dart';
-import 'package:bionic/app/utils/utility.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bionic/app/components/custom_text.dart';
+import 'package:bionic/app/utils/utility.dart';
 
 class CustomCatalogItem extends StatelessWidget {
   final String productName;
@@ -10,14 +12,17 @@ class CustomCatalogItem extends StatelessWidget {
   final int productStock;
   final String productImage;
   final Function()? onTap;
+  final bool isDelete;
+
   const CustomCatalogItem({
     super.key,
     required this.productName,
     required this.productPrice,
     required this.productCategory,
     required this.productStock,
-    this.onTap,
     required this.productImage,
+    this.onTap,
+    this.isDelete = false,
   });
 
   @override
@@ -41,16 +46,18 @@ class CustomCatalogItem extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.all(paddingSmall),
-              child: GestureDetector(
-                onTap: onTap,
-                child: const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 243, 127, 118),
-                  child: Icon(
-                    Icons.delete_forever,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              child: isDelete == true
+                  ? GestureDetector(
+                      onTap: onTap,
+                      child: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 243, 127, 118),
+                        child: Icon(
+                          Icons.delete_forever,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
             ),
           ),
           Row(

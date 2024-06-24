@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bionic/app/models/product.dart';
+import 'package:bionic/app/modules/home/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,6 +15,7 @@ class CatalogProductController extends GetxController {
   late TextEditingController updateProductCategory;
   late TextEditingController updateProductPrice;
 
+  HomeController homeController = Get.find<HomeController>();
   //image picker setup
   var image = XFile('').obs;
 
