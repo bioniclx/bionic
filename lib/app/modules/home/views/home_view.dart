@@ -130,10 +130,15 @@ class HomeView extends GetView<HomeController> {
                       }
                       if (snapshot.hasError) {
                         return const Center(
-                          child: Text("Error"),
+                          child: Text("asdasdsada"),
                         );
                       }
                       if (snapshot.hasData) {
+                        if (snapshot.data!.docs.isEmpty) {
+                          return const Center(
+                            child: Text('Belum ada data penjualan'),
+                          );
+                        }
                         List<Sale> sales = controller.sales(snapshot.data!);
 
                         return ListView.builder(
