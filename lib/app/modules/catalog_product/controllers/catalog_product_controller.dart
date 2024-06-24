@@ -17,6 +17,7 @@ class CatalogProductController extends GetxController {
   //image picker setup
   var image = XFile('').obs;
 
+  String storeId = Get.arguments;
   //Get the current user id from auth
   final userId = FirebaseAuth.instance.currentUser!.uid;
   final storeId = Get.arguments;

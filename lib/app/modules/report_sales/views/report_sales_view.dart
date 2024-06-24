@@ -112,8 +112,10 @@ class ReportSalesView extends GetView<ReportSalesController> {
                   }
                   if (snapshot.hasData) {
                     List<Sale> sales = controller.sales(snapshot.data!);
-                    int test = controller.calculateTotalRevenue(sales);
-                    int item = controller.calculateTotalItems(sales);
+                    int totalRevenue = controller.calculateTotalRevenue(sales);
+                    int totalItems = controller.calculateTotalItems(sales);
+                    var groupedSales = groupSalesByDate(sales);
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -125,12 +127,12 @@ class ReportSalesView extends GetView<ReportSalesController> {
                           children: [
                             CustomReportCard(
                               reportTitle: 'Total Penjualan',
-                              reportDetail: test,
+                              reportDetail: totalRevenue,
                               reportBorderColor: Colors.green,
                             ),
                             CustomReportCard(
                               reportTitle: 'Total item',
-                              reportDetail: item,
+                              reportDetail: totalItems,
                               reportBorderColor: Colors.blue,
                             ),
                           ],
@@ -151,25 +153,50 @@ class ReportSalesView extends GetView<ReportSalesController> {
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: sales.length,
+                          itemCount: groupedSales.length,
                           itemBuilder: (context, index) {
-                            Sale sale = sales[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(paddingSmall),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(Routes.DETAIL_SALE,
-                                      arguments: sale);
-                                },
-                                child: CustomListItem(
-                                  itemName: sale.name,
-                                  itemDate: DateFormat.yMMMMEEEEd('id')
-                                      .format(sale.createdAt),
-                                  itemPrice: "Rp. ${sale.total}",
-                                  itemColor: statusColorList[Random.secure()
-                                      .nextInt(statusColorList.length)],
+                            String date = groupedSales.keys.elementAt(index);
+                            List<Sale> salesForDate = groupedSales[date]!;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  child: Text(
+                                    date,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: salesForDate.length,
+                                  itemBuilder: (context, saleIndex) {
+                                    Sale sale = salesForDate[saleIndex];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(Routes.DETAIL_SALE,
+                                              arguments: sale);
+                                        },
+                                        child: CustomListItem(
+                                          itemName: sale.name,
+                                          itemDate: DateFormat.yMMMMEEEEd('id')
+                                              .format(sale.createdAt),
+                                          itemPrice: "Rp. ${sale.total}",
+                                          itemColor: statusColorList[Random()
+                                              .nextInt(statusColorList.length)],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             );
                           },
                         ),
@@ -188,4 +215,19 @@ class ReportSalesView extends GetView<ReportSalesController> {
       ),
     );
   }
+}
+
+Map<String, List<Sale>> groupSalesByDate(List<Sale> sales) {
+  Map<String, List<Sale>> groupedSales = {};
+
+  for (var sale in sales) {
+    String date = DateFormat.yMMMMd('id').format(sale.createdAt);
+    if (groupedSales.containsKey(date)) {
+      groupedSales[date]!.add(sale);
+    } else {
+      groupedSales[date] = [sale];
+    }
+  }
+
+  return groupedSales;
 }

@@ -33,6 +33,7 @@ class HomeView extends GetView<HomeController> {
               storeId: controller.storeId.value,
               storeName: "${store!['store_name']}",
               role: getRoleAccount(store['role']),
+              storeId: store['store_id'],
             );
           } else {
             return const Text('Has no data');
@@ -88,15 +89,7 @@ class HomeView extends GetView<HomeController> {
                               arguments: controller.storeId.value);
                         },
                       ),
-                      CustomButtonWithIcon(
-                        buttonText: 'Tambah Produk',
-                        buttonIcon: Icons.add,
-                        buttonHeight: 110,
-                        buttonWidth: 110,
-                        onTap: () {
-                          controller.buttonAddProductClicked();
-                        },
-                      ),
+                      Obx(() => controller.buttonAddProductClicked()),
                       CustomButtonWithIcon(
                         buttonText: 'Laporan \nPenjualan',
                         buttonIcon: Icons.bar_chart_rounded,
