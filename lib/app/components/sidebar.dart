@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,7 @@ class NavigationSidebar extends StatelessWidget {
   final Color? isActived1;
   final Color? isActived2;
   final String storeName;
-  final String role;
+  final RxString role;
   final RxString storeId;
   final String photoUrl;
   const NavigationSidebar({
@@ -52,7 +51,7 @@ class NavigationSidebar extends StatelessWidget {
                               ),
                               const SizedBox(height: paddingVerySmall),
                               CustomText(
-                                text: role,
+                                text: role.value,
                                 textSize: textSmall,
                                 textColor: primary,
                                 textWeight: FontWeight.w600,
@@ -102,30 +101,44 @@ class NavigationSidebar extends StatelessWidget {
                   },
                 ),
                 const Divider(),
-                GestureDetector(
-                  child: const SizedBox(
-                    height: tileNormal,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
+                Obx(
+                  () {
+                    if (role.value == "Owner") {
+                      return Column(
                         children: [
-                          Expanded(
-                            child: CustomText(
-                              text: 'Laporan',
-                              textSize: textMedium,
-                              textColor: primary,
-                              textWeight: FontWeight.w500,
+                          GestureDetector(
+                            child: const SizedBox(
+                              height: tileNormal,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: paddingMedium),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomText(
+                                        text: 'Laporan',
+                                        textSize: textMedium,
+                                        textColor: primary,
+                                        textWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
+                            onTap: () {
+                              Get.toNamed(Routes.REPORT_SALES,
+                                  arguments: storeId);
+                            },
                           ),
+                          const Divider(),
                         ],
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(Routes.REPORT_SALES, arguments: storeId);
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   },
                 ),
-                const Divider(),
                 GestureDetector(
                   child: const SizedBox(
                     height: tileNormal,
@@ -150,27 +163,36 @@ class NavigationSidebar extends StatelessWidget {
                   },
                 ),
                 const Divider(),
-                GestureDetector(
-                  child: const SizedBox(
-                    height: tileNormal,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomText(
-                              text: 'Tambah Produk',
-                              textSize: textMedium,
-                              textColor: primary,
-                              textWeight: FontWeight.w500,
+                Obx(
+                  () {
+                    if (role.value == "Owner") {
+                      return GestureDetector(
+                        child: const SizedBox(
+                          height: tileNormal,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: paddingMedium),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: CustomText(
+                                    text: 'Tambah Produk',
+                                    textSize: textMedium,
+                                    textColor: primary,
+                                    textWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(Routes.ADD_PRODUCT);
+                        ),
+                        onTap: () {
+                          Get.toNamed(Routes.ADD_PRODUCT);
+                        },
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   },
                 ),
               ],
@@ -181,35 +203,49 @@ class NavigationSidebar extends StatelessWidget {
             shrinkWrap: true,
             children: [
               const Divider(color: primary, height: 2.0),
-              GestureDetector(
-                child: const SizedBox(
-                  height: tileNormal,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: paddingMedium),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Obx(
+                () {
+                  if (role.value == "Owner") {
+                    return Column(
                       children: [
-                        Expanded(
-                          child: CustomText(
-                            text: 'Tambah Karyawan',
-                            textSize: textMedium,
-                            textColor: primary,
-                            textWeight: FontWeight.w500,
+                        GestureDetector(
+                          child: const SizedBox(
+                            height: tileNormal,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: paddingMedium),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: CustomText(
+                                      text: 'Tambah Karyawan',
+                                      textSize: textMedium,
+                                      textColor: primary,
+                                      textWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.person_add,
+                                    color: primary,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+                          onTap: () {
+                            Get.toNamed(Routes.KARYAWAN);
+                          },
                         ),
-                        Icon(
-                          Icons.person_add,
-                          color: primary,
-                        ),
+                        const Divider(),
                       ],
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Get.toNamed(Routes.KARYAWAN);
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
                 },
               ),
-              const Divider(),
               GestureDetector(
                 child: const SizedBox(
                   height: tileNormal,

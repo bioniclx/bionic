@@ -32,7 +32,7 @@ class HomeView extends GetView<HomeController> {
             return NavigationSidebar(
               storeId: controller.storeId,
               storeName: "${store!['store_name']}",
-              role: getRoleAccount(store['role']),
+              role: RxString(getRoleAccount(store['role'])),
               photoUrl: '${store['photo_url']}',
             );
           } else {

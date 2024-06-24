@@ -22,7 +22,7 @@ class ExampleView extends GetView<ExampleController> {
       //Add a drawer
       drawer: NavigationSidebar(
         storeName: 'test',
-        role: 'role',
+        role: 'role'.obs,
         storeId: 'store_id'.obs,
         photoUrl: 'ssss',
       ),
