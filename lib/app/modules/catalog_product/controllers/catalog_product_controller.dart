@@ -20,7 +20,6 @@ class CatalogProductController extends GetxController {
   String storeId = Get.arguments;
   //Get the current user id from auth
   final userId = FirebaseAuth.instance.currentUser!.uid;
-  final storeId = Get.arguments;
   CollectionReference ref = FirebaseFirestore.instance.collection('product');
 
   @override

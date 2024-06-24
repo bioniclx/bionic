@@ -33,7 +33,6 @@ class HomeView extends GetView<HomeController> {
               storeId: controller.storeId.value,
               storeName: "${store!['store_name']}",
               role: getRoleAccount(store['role']),
-              storeId: store['store_id'],
             );
           } else {
             return const Text('Has no data');
