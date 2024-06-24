@@ -141,192 +141,195 @@ class ProfileView extends GetView<ProfileController> {
         elevation: 0,
       ),
       backgroundColor: primaryColor,
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _getUserData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text("Error loading user data"));
-          }
-          String name = snapshot.data!['store_name'] ?? 'fullName';
-          String storeId = snapshot.data!['store_id'] ?? '';
-          String roleString = snapshot.data!['role'] ?? '2';
-          int role = int.tryParse(roleString) ?? 2;
-          String roleName = role == 1 ? 'Admin' : 'Karyawan';
-          String? photoUrl = snapshot.data!['photo_url'];
-          String email = snapshot.data!['email'] ?? '';
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: _getUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData || snapshot.data == null) {
+              return Center(child: Text("Error loading user data"));
+            }
+            String name = snapshot.data!['store_name'] ?? 'fullName';
+            String storeId = snapshot.data!['store_id'] ?? '';
+            String roleString = snapshot.data!['role'] ?? '2';
+            int role = int.tryParse(roleString) ?? 2;
+            String roleName = role == 1 ? 'Admin' : 'Karyawan';
+            String? photoUrl = snapshot.data!['photo_url'];
+            String email = snapshot.data!['email'] ?? '';
 
-          return FutureBuilder<List<Map<String, dynamic>>>(
-            future: _getSalesData(storeId),
-            builder: (context, salesSnapshot) {
-              if (salesSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (!salesSnapshot.hasData || salesSnapshot.data == null) {
-                return Center(child: Text("Error loading sales data"));
-              }
-              List<Map<String, dynamic>> salesData = salesSnapshot.data!;
+            return FutureBuilder<List<Map<String, dynamic>>>(
+              future: _getSalesData(storeId),
+              builder: (context, salesSnapshot) {
+                if (salesSnapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!salesSnapshot.hasData || salesSnapshot.data == null) {
+                  return Center(child: Text("Error loading sales data"));
+                }
+                List<Map<String, dynamic>> salesData = salesSnapshot.data!;
 
-              DateTime now = DateTime.now();
-              List<Map<String, dynamic>> dailySales = filterSalesByDate(
-                  salesData, now.subtract(Duration(days: 1)), now);
-              List<Map<String, dynamic>> monthlySales = filterSalesByDate(
-                  salesData, DateTime(now.year, now.month, 1), now);
+                DateTime now = DateTime.now();
+                List<Map<String, dynamic>> dailySales = filterSalesByDate(
+                    salesData, now.subtract(Duration(days: 1)), now);
+                List<Map<String, dynamic>> monthlySales = filterSalesByDate(
+                    salesData, DateTime(now.year, now.month, 1), now);
 
-              int totalItems = calculateTotalItems(salesData);
-              double totalRevenue = calculateTotalRevenue(salesData);
+                int totalItems = calculateTotalItems(salesData);
+                double totalRevenue = calculateTotalRevenue(salesData);
 
-              int dailyItems = calculateTotalItems(dailySales);
-              double dailyRevenue = calculateTotalRevenue(dailySales);
+                int dailyItems = calculateTotalItems(dailySales);
+                double dailyRevenue = calculateTotalRevenue(dailySales);
 
-              double monthlyRevenue = calculateTotalRevenue(monthlySales);
+                double monthlyRevenue = calculateTotalRevenue(monthlySales);
 
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      color: primaryColor,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10),
-                          CircleAvatar(
-                            radius: 100,
-                            backgroundColor: Colors.grey.shade300,
-                            backgroundImage: photoUrl != null
-                                ? NetworkImage(photoUrl)
-                                : null,
-                            child: photoUrl == null
-                                ? Icon(
-                                    Icons.person,
-                                    size: 100,
-                                    color: Colors.grey.shade700,
-                                  )
-                                : null,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            name,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            roleName,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.yellow,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
-                      ),
-                      height: Get.height / 1.5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        color: primaryColor,
                         child: Column(
                           children: [
-                            if (role == 2) ...[
-                              Text(
-                                'Laporan Penjualan Hari Ini',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: primaryColor,
-                                ),
+                            SizedBox(height: 10),
+                            CircleAvatar(
+                              radius: 100,
+                              backgroundColor: Colors.grey.shade300,
+                              backgroundImage: photoUrl != null
+                                  ? NetworkImage(photoUrl)
+                                  : null,
+                              child: photoUrl == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 100,
+                                      color: Colors.grey.shade700,
+                                    )
+                                  : null,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              SizedBox(height: 20),
-                              CustomReportCard(
-                                reportTitle: 'Penjualan Hari Ini',
-                                reportDetail: dailyRevenue.toInt(),
-                                reportBorderColor: Colors.blue,
-                                reportCardWidth: 200,
+                            ),
+                            Text(
+                              roleName,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.yellow,
                               ),
-                              CustomReportCard(
-                                reportTitle: 'Item Terjual Hari Ini',
-                                reportDetail: dailyItems,
-                                reportBorderColor: Colors.blue,
-                                reportCardWidth: 200,
-                              ),
-                              SizedBox(height: 40),
-                            ] else ...[
-                              Text(
-                                'Laporan Penjualan',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    SizedBox(width: 10),
-                                    CustomReportCard(
-                                      reportTitle: 'Total Item Terjual',
-                                      reportDetail: totalItems,
-                                      reportBorderColor: Colors.purple,
-                                      reportCardWidth: 200,
-                                    ),
-                                    CustomReportCard(
-                                      reportTitle: 'Penjualan Hari Ini',
-                                      reportDetail: dailyRevenue.toInt(),
-                                      reportBorderColor: Colors.blue,
-                                      reportCardWidth: 200,
-                                    ),
-                                    CustomReportCard(
-                                      reportTitle: 'Penjualan Bulanan',
-                                      reportDetail: monthlyRevenue.toInt(),
-                                      reportBorderColor: Colors.orange,
-                                      reportCardWidth: 200,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CustomReportCard(
-                                      reportTitle: 'Total Penjualan',
-                                      reportDetail: totalRevenue.toInt(),
-                                      reportBorderColor: Colors.red,
-                                      reportCardWidth: 200,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 40),
-                              buildButton('Karyawan', primaryColor, () {
-                                Get.toNamed(Routes.KARYAWAN);
-                              }),
-                            ],
-                            buildButton('Edit Profil', primaryColor, () {
-                              _showEditProfileDialog(
-                                  context, email, name, photoUrl);
-                            }),
-                            buildButton('Logout', primaryColor, () {
-                              FirebaseAuth.instance.signOut();
-                              Get.toNamed(Routes.AUTH);
-                            }),
+                            ),
+                            SizedBox(height: 20),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                          ),
+                        ),
+                        // height: Get.height / 1.5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              if (role == 2) ...[
+                                Text(
+                                  'Laporan Penjualan Hari Ini',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                CustomReportCard(
+                                  reportTitle: 'Penjualan Hari Ini',
+                                  reportDetail: dailyRevenue.toInt(),
+                                  reportBorderColor: Colors.blue,
+                                  reportCardWidth: 200,
+                                ),
+                                CustomReportCard(
+                                  reportTitle: 'Item Terjual Hari Ini',
+                                  reportDetail: dailyItems,
+                                  reportBorderColor: Colors.blue,
+                                  reportCardWidth: 200,
+                                ),
+                                SizedBox(height: 40),
+                              ] else ...[
+                                Text(
+                                  'Laporan Penjualan',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 10),
+                                      CustomReportCard(
+                                        reportTitle: 'Total Item Terjual',
+                                        reportDetail: totalItems,
+                                        reportBorderColor: Colors.purple,
+                                        reportCardWidth: 200,
+                                      ),
+                                      CustomReportCard(
+                                        reportTitle: 'Penjualan Hari Ini',
+                                        reportDetail: dailyRevenue.toInt(),
+                                        reportBorderColor: Colors.blue,
+                                        reportCardWidth: 200,
+                                      ),
+                                      CustomReportCard(
+                                        reportTitle: 'Penjualan Bulanan',
+                                        reportDetail: monthlyRevenue.toInt(),
+                                        reportBorderColor: Colors.orange,
+                                        reportCardWidth: 200,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CustomReportCard(
+                                        reportTitle: 'Total Penjualan',
+                                        reportDetail: totalRevenue.toInt(),
+                                        reportBorderColor: Colors.red,
+                                        reportCardWidth: 200,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 40),
+                                buildButton('Karyawan', primaryColor, () {
+                                  Get.toNamed(Routes.KARYAWAN);
+                                }),
+                              ],
+                              buildButton('Edit Profil', primaryColor, () {
+                                _showEditProfileDialog(
+                                    context, email, name, photoUrl);
+                              }),
+                              buildButton('Logout', primaryColor, () {
+                                FirebaseAuth.instance.signOut();
+                                Get.toNamed(Routes.AUTH);
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
