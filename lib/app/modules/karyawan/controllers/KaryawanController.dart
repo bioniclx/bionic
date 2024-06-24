@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,8 @@ class KaryawanController extends GetxController {
     required String confirmPassword,
   }) async {
     if (password != confirmPassword) {
-      Get.snackbar('Error', 'Password and Confirm Password do not match');
+      showWarningSnackbar(
+          'Kesalahan', 'Password dan Konfirmasi Password tidak cocok');
       return;
     }
     try {
@@ -74,8 +76,6 @@ class KaryawanController extends GetxController {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       String uid = userCredential.user!.uid;
-
-      print('Registering karyawan with store_name: ${storeName.value}');
 
       await _firestore.collection('user').doc(uid).set({
         'email': email,
@@ -88,9 +88,9 @@ class KaryawanController extends GetxController {
       });
 
       fetchKaryawanList();
-      Get.snackbar('Success', 'Karyawan berhasil ditambahkan');
+      showSuccessSnackbar('Success', 'Karyawan berhasil ditambahkan');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to register account: $e');
+      showErrorSnackbar('Error', 'Failed to register account: $e');
     }
   }
 
@@ -98,9 +98,9 @@ class KaryawanController extends GetxController {
     try {
       await _firestore.collection('user').doc(uid).delete();
       fetchKaryawanList();
-      Get.snackbar('Success', 'Karyawan berhasil dihapus');
+      showSuccessSnackbar('Success', 'Karyawan berhasil dihapus');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete karyawan: $e');
+      showErrorSnackbar('Error', 'Failed to delete karyawan: $e');
     }
   }
 
@@ -111,9 +111,9 @@ class KaryawanController extends GetxController {
         'position': position,
       });
       fetchKaryawanList();
-      Get.snackbar('Success', 'Karyawan berhasil diperbarui');
+      showSuccessSnackbar('Success', 'Karyawan berhasil diperbarui');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update karyawan: $e');
+      showErrorSnackbar('Error', 'Failed to update karyawan: $e');
     }
   }
 }

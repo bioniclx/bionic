@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
@@ -69,11 +70,10 @@ class RegisterController extends GetxController {
         };
 
         await ref.doc(data['uid']).set(data);
-
-        Get.snackbar('Success', 'User created');
+        showSuccessSnackbar('Success', 'User Successfully Registered');
         Get.offAndToNamed(Routes.AUTH);
       } catch (e) {
-        Get.snackbar('Error', 'Terjadi Kesalahan ${e.toString()}');
+        showErrorSnackbar('Error', 'Terjadi Kesalahan ${e.toString()}');
       }
     }
   }

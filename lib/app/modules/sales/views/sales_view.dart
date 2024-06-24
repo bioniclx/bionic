@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -284,8 +285,8 @@ class SalesView extends GetView<SalesController> {
                                 buttonText: 'Tambah Produk',
                                 buttonWidth: 1,
                                 onTap: () {
-                                  Get.snackbar("Error",
-                                      "Silakan pilih produk terlebih dahulu");
+                                  showWarningSnackbar('Kesalahan',
+                                      'Silakan pilih produk terlebih dahulu');
                                 },
                               );
                             } else {

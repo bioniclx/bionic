@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -47,34 +48,58 @@ class AddProductController extends GetxController {
     String category,
     File image,
   ) async {
-    if (name.isNotEmpty &&
-        productPriceController.text.isNotEmpty &&
-        productCountController.text.isNotEmpty &&
-        category.isNotEmpty &&
-        image.path.isNotEmpty) {
-      final User? user = auth.currentUser;
-      final uid = user!.uid;
-      try {
-        String imageUrl = await uploadFile(image);
-        String dateNow = DateTime.now().toString();
-        final refDoc = ref.doc();
-        final data = {
-          'id': refDoc.id,
-          'store_id': uid,
-          'name': name,
-          'price': price,
-          'stock': stock,
-          'category': category,
-          'created_at': dateNow,
-          'image': imageUrl,
-        };
-        refDoc.set(data);
-        Get.back();
-      } catch (e) {
-        Get.snackbar('Fail', 'Somthing went wrong');
-      }
-    } else {
-      Get.snackbar('Error', 'missing parameter');
+    if (name.isEmpty) {
+      showErrorSnackbar('Kesalahan', 'Nama produk tidak boleh kosong');
+      return;
+    }
+    if (productPriceController.text.isEmpty) {
+      showErrorSnackbar('Kesalahan', 'Harga tidak boleh kosong');
+      return;
+    }
+    if (price.isNegative) {
+      showErrorSnackbar('Kesalahan', 'Harga tidak boleh negatif');
+      return;
+    }
+    if (price == 0) {
+      showErrorSnackbar('Kesalahan', 'Harga tidak boleh 0');
+      return;
+    }
+    if (productCountController.text.isEmpty) {
+      showErrorSnackbar('Kesalahan', 'Stok produk tidak boleh kosong');
+      return;
+    }
+    if (stock.isNegative) {
+      showErrorSnackbar('Kesalahan', 'Stok produk tidak boleh negatif');
+      return;
+    }
+    if (category.isEmpty) {
+      showErrorSnackbar('Kesalahan', 'Kategori produk tidak boleh kosong');
+      return;
+    }
+    if (image.path.isEmpty) {
+      showErrorSnackbar('Kesalahan', 'Gambar produk tidak boleh kosong');
+      return;
+    }
+    final uid = auth.currentUser!.uid;
+    try {
+      String imageUrl = await uploadFile(image);
+      String dateNow = DateTime.now().toString();
+      final refDoc = ref.doc();
+      final data = {
+        'id': refDoc.id,
+        'store_id': uid,
+        'name': name,
+        'price': price,
+        'stock': stock,
+        'category': category,
+        'created_at': dateNow,
+        'image': imageUrl,
+      };
+      refDoc.set(data);
+      Get.back();
+      showSuccessSnackbar('Berhasil', 'Produk berhasil ditambahkan');
+    } catch (e) {
+      showErrorSnackbar('Gagal', 'Terjadi kesalahan : $e');
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -272,6 +273,7 @@ class NavigationSidebar extends StatelessWidget {
                 ),
                 onTap: () {
                   FirebaseAuth.instance.signOut();
+                  showSuccessSnackbar('Success', 'Logout success');
                 },
               ),
               const Divider(color: primary, height: 2.0),

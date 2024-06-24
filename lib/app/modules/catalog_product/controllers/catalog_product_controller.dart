@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/models/product.dart';
 import 'package:bionic/app/modules/home/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,9 +84,11 @@ class CatalogProductController extends GetxController {
         };
         refDoc.update(data);
       }
-
       Get.back();
-    } catch (e) {}
+      showSuccessSnackbar('Success', 'Product updated successfully');
+    } catch (e) {
+      showErrorSnackbar('Error', 'Failed to update product : $e');
+    }
   }
 
   Future<void> deleteProduct(String id) async {
@@ -103,7 +106,7 @@ class CatalogProductController extends GetxController {
           onPressed: () {
             ref.doc(id).delete();
             Get.back();
-            Get.snackbar('Deleted', "Your data has been removed");
+            showSuccessSnackbar('Success', 'Product deleted successfully');
           },
           child: const Text('Yes'),
         ),

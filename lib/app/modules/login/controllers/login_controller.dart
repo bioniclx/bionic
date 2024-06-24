@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -34,13 +35,15 @@ class LoginController extends GetxController {
         email: emailController.text,
         password: passwordController.text,
       );
+      showSuccessSnackbar('Success', 'Login Success');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'channel-error') {
-        Get.snackbar('Invalid Empty', 'Please fill your data');
+        showWarningSnackbar('Invalid Empty', 'Please fill your data');
       } else if (e.code == "invalid-email") {
-        Get.snackbar('Invalid Email', 'Please enter a valid email address');
+        showWarningSnackbar(
+            'Invalid Email', 'Please enter a valid email address');
       } else if (e.code == "invalid-credential") {
-        Get.snackbar('Wrong Input', 'wrong username & password');
+        showWarningSnackbar('Wrong Input', 'wrong username & password');
       }
     }
   }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +45,9 @@ class ProfileView extends GetView<ProfileController> {
           .collection('user')
           .doc(_auth.currentUser!.uid)
           .update(updatedData);
+      showSuccessSnackbar('Success', 'Profile updated successfully');
     } catch (e) {
-      print('Error updating profile: $e');
+      showErrorSnackbar('Error', 'Error updating profile: $e');
     }
   }
 
@@ -59,7 +61,7 @@ class ProfileView extends GetView<ProfileController> {
         return await uploadTask.ref.getDownloadURL();
       }
     } catch (e) {
-      print('Error uploading profile image: $e');
+      showErrorSnackbar('Error', 'Error uploading profile image: $e');
     }
     return null;
   }
@@ -132,7 +134,7 @@ class ProfileView extends GetView<ProfileController> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Get.back();
           },
@@ -147,10 +149,10 @@ class ProfileView extends GetView<ProfileController> {
           future: _getUserData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             if (!snapshot.hasData || snapshot.data == null) {
-              return Center(child: Text("Error loading user data"));
+              return const Center(child: Text("Error loading user data"));
             }
             String name = snapshot.data!['store_name'] ?? 'fullName';
             String storeId = snapshot.data!['store_id'] ?? '';
@@ -164,16 +166,16 @@ class ProfileView extends GetView<ProfileController> {
               future: _getSalesData(storeId),
               builder: (context, salesSnapshot) {
                 if (salesSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (!salesSnapshot.hasData || salesSnapshot.data == null) {
-                  return Center(child: Text("Error loading sales data"));
+                  return const Center(child: Text("Error loading sales data"));
                 }
                 List<Map<String, dynamic>> salesData = salesSnapshot.data!;
 
                 DateTime now = DateTime.now();
                 List<Map<String, dynamic>> dailySales = filterSalesByDate(
-                    salesData, now.subtract(Duration(days: 1)), now);
+                    salesData, now.subtract(const Duration(days: 1)), now);
                 List<Map<String, dynamic>> monthlySales = filterSalesByDate(
                     salesData, DateTime(now.year, now.month, 1), now);
 
@@ -192,7 +194,7 @@ class ProfileView extends GetView<ProfileController> {
                         color: primaryColor,
                         child: Column(
                           children: [
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             CircleAvatar(
                               radius: 100,
                               backgroundColor: Colors.grey.shade300,
@@ -207,10 +209,10 @@ class ProfileView extends GetView<ProfileController> {
                                     )
                                   : null,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
                               name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -218,17 +220,17 @@ class ProfileView extends GetView<ProfileController> {
                             ),
                             Text(
                               roleName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.yellow,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                           ],
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
@@ -241,7 +243,7 @@ class ProfileView extends GetView<ProfileController> {
                           child: Column(
                             children: [
                               if (role == 2) ...[
-                                Text(
+                                const Text(
                                   'Laporan Penjualan Hari Ini',
                                   style: TextStyle(
                                     fontSize: 22,
@@ -249,7 +251,7 @@ class ProfileView extends GetView<ProfileController> {
                                     color: primaryColor,
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 CustomReportCard(
                                   reportTitle: 'Penjualan Hari Ini',
                                   reportDetail: dailyRevenue.toInt(),
@@ -262,9 +264,9 @@ class ProfileView extends GetView<ProfileController> {
                                   reportBorderColor: Colors.blue,
                                   reportCardWidth: 200,
                                 ),
-                                SizedBox(height: 40),
+                                const SizedBox(height: 40),
                               ] else ...[
-                                Text(
+                                const Text(
                                   'Laporan Penjualan',
                                   style: TextStyle(
                                     fontSize: 22,
@@ -272,12 +274,12 @@ class ProfileView extends GetView<ProfileController> {
                                     color: primaryColor,
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
                                     children: [
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       CustomReportCard(
                                         reportTitle: 'Total Item Terjual',
                                         reportDetail: totalItems,
@@ -296,7 +298,7 @@ class ProfileView extends GetView<ProfileController> {
                                         reportBorderColor: Colors.orange,
                                         reportCardWidth: 200,
                                       ),
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       CustomReportCard(
                                         reportTitle: 'Total Penjualan',
                                         reportDetail: totalRevenue.toInt(),
@@ -306,7 +308,7 @@ class ProfileView extends GetView<ProfileController> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 40),
+                                const SizedBox(height: 40),
                                 buildButton('Karyawan', primaryColor, () {
                                   Get.toNamed(Routes.KARYAWAN);
                                 }),
@@ -343,7 +345,7 @@ class ProfileView extends GetView<ProfileController> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Profile'),
+          title: const Text('Edit Profile'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -354,11 +356,11 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 TextField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                 ),
                 TextField(
                   controller: storeNameController,
-                  decoration: InputDecoration(labelText: 'Nama Toko'),
+                  decoration: const InputDecoration(labelText: 'Nama Toko'),
                 ),
               ],
             ),
@@ -369,13 +371,13 @@ class ProfileView extends GetView<ProfileController> {
                 _pickAndUploadProfileImage(
                     context, emailController, storeNameController);
               },
-              child: Text('Ubah Foto Profil'),
+              child: const Text('Ubah Foto Profil'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Batal'),
+              child: const Text('Batal'),
             ),
             TextButton(
               onPressed: () async {
@@ -383,7 +385,7 @@ class ProfileView extends GetView<ProfileController> {
                     emailController.text, storeNameController.text, null);
                 Navigator.of(context).pop();
               },
-              child: Text('Simpan'),
+              child: const Text('Simpan'),
             ),
           ],
         );
@@ -393,18 +395,18 @@ class ProfileView extends GetView<ProfileController> {
 
   Widget buildButton(String text, Color color, VoidCallback onClicked) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          minimumSize: Size.fromHeight(40),
+          minimumSize: const Size.fromHeight(40),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(
           text,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
         onPressed: onClicked,
       ),

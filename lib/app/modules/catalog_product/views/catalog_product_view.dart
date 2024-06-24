@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/components/custom_update_product_dialog.dart';
 import 'package:bionic/app/components/custom_catalog_item.dart';
 import 'package:bionic/app/models/product.dart';
+import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -138,13 +140,8 @@ class CatalogProductView extends GetView<CatalogProductController> {
                             ),
                           );
                         } else {
-                          Get.snackbar(
-                            'Error',
-                            'You dont have permission to update this product',
-                            snackPosition: SnackPosition.TOP,
-                            backgroundColor: Colors.red,
-                            colorText: Colors.white,
-                          );
+                          showErrorSnackbar('Error',
+                              'Kamu tidak memiliki akses untuk mengedit produk');
                         }
                       },
                     ),
@@ -157,6 +154,16 @@ class CatalogProductView extends GetView<CatalogProductController> {
               );
             }
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primary,
+        onPressed: () {
+          Get.toNamed(Routes.ADD_PRODUCT);
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
     );

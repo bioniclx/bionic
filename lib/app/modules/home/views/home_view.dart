@@ -83,8 +83,6 @@ class HomeView extends GetView<HomeController> {
                         buttonHeight: 110,
                         buttonWidth: 110,
                         onTap: () {
-                          // Get.snackbar("title", controller.storeId.value);
-                          // Get.snackbar("title", controller.storeId.value);
                           Get.toNamed(Routes.SALES,
                               arguments: controller.storeId.value);
                         },

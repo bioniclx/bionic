@@ -1,3 +1,4 @@
+import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/models/product_cart.dart';
 import 'package:bionic/app/models/product_dropdown.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -90,7 +91,7 @@ class SalesController extends GetxController {
                 .firstWhereOrNull((product) => product.id == doc.id);
             if (existingProduct != null) {
               if (existingProduct.qty >= productData['stock']) {
-                Get.snackbar('Error',
+                showWarningSnackbar('Kesalahan',
                     'Stok produk ${existingProduct.productName} tidak mencukupi');
                 return;
               }
@@ -118,14 +119,13 @@ class SalesController extends GetxController {
       } catch (e) {
         print('Failed to add product: $e');
       }
-
-      Get.snackbar(
+      showSuccessSnackbar(
           'Success', 'Produk ${selectedItem.value!.name} berhasil ditambahkan');
       fetchItems();
       update();
       updateTotal();
     } else {
-      Get.snackbar('Error', 'Silahkan pilih item terlebih dahulu');
+      showWarningSnackbar('Kesalahan', 'Silahkan pilih item terlebih dahulu');
       print('No item selected');
     }
   }
@@ -134,8 +134,8 @@ class SalesController extends GetxController {
     var product = cartProducts.firstWhere((product) => product.id == id);
     if (newQty > 0) {
       if (newQty > product.productStock) {
-        Get.snackbar(
-            'Error', 'Stok produk ${product.productName} tidak mencukupi');
+        showWarningSnackbar(
+            'Kesalahan', 'Stok produk ${product.productName} tidak mencukupi');
         return;
       }
       product.qty = newQty;
@@ -175,6 +175,33 @@ class SalesController extends GetxController {
   }
 
   Future<void> storeSale() async {
+    if (nameTextFieldController.text.isEmpty) {
+      showWarningSnackbar('Kesalahan', 'Nama tidak boleh kosong');
+      return;
+    }
+
+    if (adressTextFieldController.text.isEmpty) {
+      showWarningSnackbar('Kesalahan', 'Alamat tidak boleh kosong');
+      return;
+    }
+
+    if (phoneTextFieldController.text.isEmpty) {
+      showWarningSnackbar('Kesalahan', 'Nomor telepon tidak boleh kosong');
+      return;
+    }
+    if (phoneTextFieldController.text.length < 10) {
+      showWarningSnackbar('Kesalahan', 'Nomor telepon tidak valid');
+      return;
+    }
+    //check in phone is value number
+    if (int.tryParse(phoneTextFieldController.text) == null) {
+      showWarningSnackbar('Kesalahan', 'Nomor telepon tidak valid');
+      return;
+    }
+    if (cartProducts.isEmpty) {
+      showWarningSnackbar('Kesalahan', 'Keranjang belanja kosong');
+      return;
+    }
     var saleData = {
       'name': nameTextFieldController.text,
       'address': adressTextFieldController.text,
@@ -188,7 +215,7 @@ class SalesController extends GetxController {
     };
     try {
       await FirebaseFirestore.instance.collection('sales').add(saleData);
-      Get.snackbar('Success', 'Penjualan berhasil disimpan');
+      showSuccessSnackbar('Success', 'Penjualan berhasil disimpan');
       cartProducts.forEach((product) {
         updateProductStock(product.id, product.productStock - product.qty);
       });
@@ -200,7 +227,7 @@ class SalesController extends GetxController {
       totalAmountController.clear();
       update();
     } catch (e) {
-      Get.snackbar('Error', 'Gagal menyimpan penjualan');
+      showErrorSnackbar('Error', 'Gagal menyimpan penjualan');
       print('Failed to store sale: $e');
     }
   }

@@ -114,8 +114,7 @@ class AddProductView extends GetView<AddProductController> {
             ),
             const SizedBox(height: spaceMedium),
             CustomTextField(
-              maxLines: 4,
-              textTitle: 'Deskripsi',
+              textTitle: 'Kategori',
               textFieldController: controller.productCategoryController,
               textFieldType: TextInputType.name,
               obsecureText: false,
@@ -137,8 +136,12 @@ class AddProductView extends GetView<AddProductController> {
                     onTap: () {
                       controller.addProduct(
                         controller.productNameController.text,
-                        int.parse(controller.productPriceController.text),
-                        int.parse(controller.productCountController.text),
+                        controller.productPriceController.text.isEmpty
+                            ? 0
+                            : int.parse(controller.productPriceController.text),
+                        controller.productCountController.text.isEmpty
+                            ? 0
+                            : int.parse(controller.productCountController.text),
                         controller.productCategoryController.text,
                         File(controller.image.value.path),
                       );
