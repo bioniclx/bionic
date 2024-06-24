@@ -47,7 +47,7 @@ class KaryawanView extends GetView<KaryawanController> {
 
                         // Handling null value
                         String fullName =
-                            karyawan['fullName'] ?? 'Nama Tidak Tersedia';
+                            karyawan['store_name'] ?? 'Nama Tidak Tersedia';
                         String role =
                             karyawan['position'] ?? 'Posisi Tidak Tersedia';
                         String joinDate =
@@ -90,7 +90,7 @@ class KaryawanView extends GetView<KaryawanController> {
   void _showEditDeleteDialog(
       BuildContext context, Map<String, dynamic> karyawan) {
     TextEditingController fullNameController =
-        TextEditingController(text: karyawan['fullName']);
+        TextEditingController(text: karyawan['store_name']);
     TextEditingController positionController =
         TextEditingController(text: karyawan['position']);
 
