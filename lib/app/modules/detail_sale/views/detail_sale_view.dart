@@ -1,7 +1,6 @@
 import 'package:bionic/app/components/custom_button_icon.dart';
 import 'package:bionic/app/components/custom_grid_item.dart';
 import 'package:bionic/app/components/custom_text.dart';
-import 'package:bionic/app/routes/app_pages.dart';
 import 'package:bionic/app/utils/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -70,22 +69,16 @@ class DetailSaleView extends GetView<DetailSaleController> {
                         buttonHeight: 110,
                         buttonWidth: 110,
                       ),
+                      Obx(() => controller.buttonAddProductClicked()),
                       CustomButtonWithIcon(
-                        buttonText: 'Tambah Produk',
-                        buttonIcon: Icons.add,
-                        buttonHeight: 110,
-                        buttonWidth: 110,
-                        onTap: () {
-                          Get.toNamed(Routes.ADD_PRODUCT);
-                        },
-                      ),
-                      const CustomButtonWithIcon(
-                        buttonText: 'Laporan \nPenjualan',
-                        buttonIcon: Icons.bar_chart_rounded,
-                        buttonTextPaddingVertical: 10.0,
-                        buttonHeight: 110,
-                        buttonWidth: 110,
-                      ),
+                          buttonText: 'Laporan \nPenjualan',
+                          buttonIcon: Icons.bar_chart_rounded,
+                          buttonTextPaddingVertical: 10.0,
+                          buttonHeight: 110,
+                          buttonWidth: 110,
+                          onTap: () {
+                            controller.buttonReportSalesClicked();
+                          }),
                     ],
                   ),
                 ),

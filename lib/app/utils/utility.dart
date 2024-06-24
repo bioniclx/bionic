@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 
 /*
 
-Custom 
+Global variable
 
 */
+bool isOwner = true;
 
 //color
 const Color primary = Color.fromRGBO(54, 183, 189, 1);
@@ -109,5 +110,16 @@ Color setReportBorderColor(int type) {
     return const Color.fromRGBO(34, 182, 228, 1);
   } else {
     return const Color.fromRGBO(163, 188, 249, 1);
+  }
+}
+
+bool checkUserRole(String roleUser) {
+  if (roleUser == "1") {
+    return isOwner = true;
+  }
+  if (roleUser == "2") {
+    return isOwner = false;
+  } else {
+    return isOwner = false;
   }
 }

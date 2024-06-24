@@ -181,7 +181,6 @@ class ProfileView extends GetView<ProfileController> {
               int dailyItems = calculateTotalItems(dailySales);
               double dailyRevenue = calculateTotalRevenue(dailySales);
 
-              int monthlyItems = calculateTotalItems(monthlySales);
               double monthlyRevenue = calculateTotalRevenue(monthlySales);
 
               return SingleChildScrollView(

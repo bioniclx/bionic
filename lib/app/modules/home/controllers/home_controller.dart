@@ -14,7 +14,6 @@ class HomeController extends GetxController {
   var userId = FirebaseAuth.instance.currentUser?.uid;
   var storeId = ''.obs;
   var roleUser = ''.obs;
-  bool isOwner = true;
   String? refreshUser() {
     FirebaseAuth.instance.authStateChanges().listen((currentUser) {
       userId = currentUser?.uid;
@@ -97,19 +96,8 @@ class HomeController extends GetxController {
     } else {}
   }
 
-  bool checkUserRole() {
-    if (roleUser.value == "1") {
-      return isOwner = true;
-    }
-    if (roleUser.value == "2") {
-      return isOwner = false;
-    } else {
-      return isOwner = false;
-    }
-  }
-
   void buttonReportSaleClicked() {
-    checkUserRole();
+    checkUserRole(roleUser.value);
     if (isOwner) {
       Get.toNamed(Routes.REPORT_SALES, arguments: storeId);
     } else {
@@ -118,7 +106,7 @@ class HomeController extends GetxController {
   }
 
   Widget buttonAddProductClicked() {
-    checkUserRole();
+    checkUserRole(roleUser.value);
     if (isOwner) {
       return CustomButtonWithIcon(
         buttonText: 'Tambah Produk',

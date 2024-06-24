@@ -147,8 +147,12 @@ class HomeView extends GetView<HomeController> {
                               padding: const EdgeInsets.all(paddingSmall),
                               child: GestureDetector(
                                 onTap: () {
+                                  var data = {
+                                    'sale': sale,
+                                    'role': controller.roleUser
+                                  };
                                   Get.toNamed(Routes.DETAIL_SALE,
-                                      arguments: sale);
+                                      arguments: data);
                                 },
                                 child: CustomListItem(
                                   itemName: sale.name,
