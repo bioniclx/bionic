@@ -184,6 +184,7 @@ class SalesController extends GetxController {
       'products': cartProducts.map((product) => product.toJson()).toList(),
       'created_at': FieldValue.serverTimestamp(),
       'store_id': storeId,
+      'stored_by': userId,
     };
     try {
       await FirebaseFirestore.instance.collection('sales').add(saleData);

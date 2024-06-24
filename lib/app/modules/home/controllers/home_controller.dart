@@ -73,12 +73,24 @@ class HomeController extends GetxController {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSales() {
-    return FirebaseFirestore.instance
-        .collection('sales')
-        .where("store_id", isEqualTo: storeId.value)
-        .orderBy("created_at", descending: true)
-        .limit(5)
-        .snapshots();
+    checkUserRole();
+
+    if (isOwner) {
+      return FirebaseFirestore.instance
+          .collection('sales')
+          .where("store_id", isEqualTo: storeId.value)
+          .orderBy("created_at", descending: true)
+          .limit(5)
+          .snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection('sales')
+          .where("store_id", isEqualTo: storeId.value)
+          .where("stored_by", isEqualTo: userId)
+          .orderBy("created_at", descending: true)
+          .limit(5)
+          .snapshots();
+    }
   }
 
   //change query data to list

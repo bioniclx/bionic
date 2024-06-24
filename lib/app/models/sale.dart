@@ -8,6 +8,7 @@ class Sale {
   String name;
   String phone;
   DateTime createdAt;
+  String stored_by;
   List<Products> products;
 
   Sale({
@@ -19,6 +20,7 @@ class Sale {
     required this.phone,
     required this.createdAt,
     required this.products,
+    required this.stored_by,
   });
 
   factory Sale.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class Sale {
       discount: json["discount"],
       name: json["name"],
       phone: json["phone"],
+      stored_by: json["stored_by"],
       createdAt: (json['created_at'] != null)
           ? (json['created_at'] as Timestamp).toDate()
           : DateTime.now(),
@@ -48,6 +51,7 @@ class Sale {
         "discount": discount,
         "name": name,
         "phone": phone,
+        "stored_by": stored_by,
         'created_at': Timestamp.fromDate(createdAt),
         "products": products.map((product) => product.toJson()).toList(),
       };
