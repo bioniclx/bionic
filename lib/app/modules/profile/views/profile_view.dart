@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:bionic/app/components/custom_snackbar.dart';
 import 'package:bionic/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:bionic/app/modules/profile/controllers/profile_controller.dart';
 import 'package:bionic/app/components/custom_report_card.dart';
@@ -313,10 +315,14 @@ class ProfileView extends GetView<ProfileController> {
                                   Get.toNamed(Routes.KARYAWAN);
                                 }),
                               ],
-                              buildButton('Edit Profil', primaryColor, () {
-                                _showEditProfileDialog(
-                                    context, email, name, photoUrl);
-                              }),
+                              if (role == 1) ...[
+                                buildButton('Edit Profil', primaryColor, () {
+                                  _showEditProfileDialog(
+                                      context, email, name, photoUrl);
+                                }),
+                              ] else ...[
+                                Container(),
+                              ],
                               buildButton('Logout', primaryColor, () {
                                 FirebaseAuth.instance.signOut();
                                 Get.toNamed(Routes.AUTH);
@@ -341,6 +347,8 @@ class ProfileView extends GetView<ProfileController> {
     TextEditingController emailController = TextEditingController(text: email);
     TextEditingController storeNameController =
         TextEditingController(text: name);
+    TextEditingController paswordController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) {
@@ -355,13 +363,13 @@ class ProfileView extends GetView<ProfileController> {
                     backgroundImage: NetworkImage(photoUrl),
                   ),
                 TextField(
+                  enabled: false,
                   controller: emailController,
                   decoration: const InputDecoration(labelText: 'Email'),
                 ),
                 TextField(
-                  controller: storeNameController,
-                  decoration: const InputDecoration(labelText: 'Nama Toko'),
-                ),
+                    controller: storeNameController,
+                    decoration: const InputDecoration(labelText: 'Nama Toko'))
               ],
             ),
           ),

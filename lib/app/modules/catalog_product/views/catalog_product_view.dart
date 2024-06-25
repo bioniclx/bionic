@@ -18,69 +18,61 @@ class CatalogProductView extends GetView<CatalogProductController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: Colors.white,
-            leading: GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: paddingSmall,
-                  top: paddingVerySmall,
-                  bottom: paddingVerySmall,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(242, 242, 242, 1),
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(color: Colors.grey),
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  backgroundColor: Colors.white,
+                  leading: GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: paddingSmall,
+                        top: paddingVerySmall,
+                        bottom: paddingVerySmall,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(242, 242, 242, 1),
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: const Icon(Icons.arrow_back_rounded),
+                      ),
+                    ),
+                    onTap: () {
+                      Get.back();
+                    },
                   ),
-                  child: const Icon(Icons.arrow_back_rounded),
-                ),
-              ),
-              onTap: () {
-                Get.back();
-              },
-            ),
-            title: const Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(140, 140, 140, 1),
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: controller.searchController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(140, 140, 140, 1),
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.all(1),
+                            border: OutlineInputBorder(),
+                            hintText: 'search',
+                            prefixIcon: Icon(Icons.search),
+                          ),
                         ),
                       ),
-                      contentPadding: EdgeInsets.all(1),
-                      border: OutlineInputBorder(),
-                      hintText: 'search',
-                      prefixIcon: Icon(Icons.search),
-                    ),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-        body: StreamBuilder<List<Product>>(
-          stream: controller.getProductItem(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+          body: Obx(() {
+            if (controller.productList.isEmpty) {
+              return Center(child: Text('No products found'));
             }
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text("Error"),
-              );
-            }
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data?.length,
+            return ListView.builder(
+                itemCount: controller.productList.length,
                 itemBuilder: (context, index) {
+                  final product = controller.productList[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: paddingSmall,
@@ -88,36 +80,31 @@ class CatalogProductView extends GetView<CatalogProductController> {
                     ),
                     child: GestureDetector(
                       child: CustomCatalogItem(
-                        productName: "${snapshot.data?[index].productName}",
-                        productPrice:
-                            int.parse("${snapshot.data?[index].productPrice}"),
-                        productStock:
-                            int.parse("${snapshot.data?[index].productStock}"),
-                        productCategory:
-                            "${snapshot.data?[index].productCategory}",
-                        productImage: "${snapshot.data?[index].productImage}",
+                        productName: "${product.productName}",
+                        productPrice: int.parse("${product.productPrice}"),
+                        productStock: int.parse("${product.productStock}"),
+                        productCategory: "${product.productCategory}",
+                        productImage: "${product.productImage}",
                         isDelete: checkUserRole(
                             controller.homeController.roleUser.value),
                         onTap: () {
-                          controller
-                              .deleteProduct("${snapshot.data?[index].id}");
+                          controller.deleteProduct("${product.id}");
                         },
                       ),
                       onTap: () {
                         if (checkUserRole(
                             controller.homeController.roleUser.value)) {
                           controller.updateProductNameController.text =
-                              "${snapshot.data?[index].productName}";
+                              "${product.productName}";
                           controller.updateProductPrice.text =
-                              "${snapshot.data?[index].productPrice}";
+                              "${product.productPrice}";
                           controller.updateProductStock.text =
-                              "${snapshot.data?[index].productStock}";
+                              "${product.productStock}";
                           controller.updateProductCategory.text =
-                              "${snapshot.data?[index].productCategory}";
+                              "${product.productCategory}";
                           Get.dialog(
                             CustomUpdateProductDialog(
-                              productImage:
-                                  "${snapshot.data?[index].productImage}",
+                              productImage: "${product.productImage}",
                               image: controller.image,
                               productName:
                                   controller.updateProductNameController,
@@ -126,7 +113,7 @@ class CatalogProductView extends GetView<CatalogProductController> {
                               productStock: controller.updateProductStock,
                               onTap: () {
                                 controller.updateProduct(
-                                  snapshot.data![index].id.toString(),
+                                  product.id.toString(),
                                   controller.updateProductNameController.text,
                                   controller.updateProductCategory.text,
                                   int.parse(controller.updateProductStock.text),
@@ -146,16 +133,8 @@ class CatalogProductView extends GetView<CatalogProductController> {
                       },
                     ),
                   );
-                },
-              );
-            } else {
-              return const Center(
-                child: Text('Has No Data'),
-              );
-            }
-          },
-        ),
-      ),
+                });
+          })),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primary,
         onPressed: () {

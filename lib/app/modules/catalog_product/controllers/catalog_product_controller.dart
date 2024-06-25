@@ -16,6 +16,8 @@ class CatalogProductController extends GetxController {
   late TextEditingController updateProductCategory;
   late TextEditingController updateProductPrice;
 
+  late TextEditingController searchController;
+
   HomeController homeController = Get.find<HomeController>();
   //image picker setup
   var image = XFile('').obs;
@@ -25,6 +27,8 @@ class CatalogProductController extends GetxController {
   final userId = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference ref = FirebaseFirestore.instance.collection('product');
 
+  var productList = <Product>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -32,6 +36,14 @@ class CatalogProductController extends GetxController {
     updateProductStock = TextEditingController();
     updateProductCategory = TextEditingController();
     updateProductPrice = TextEditingController();
+    searchController = TextEditingController();
+    searchController.addListener(() {
+      filterProducts(searchController.text);
+    });
+
+    getProductItem().listen((products) {
+      productList.value = products;
+    });
   }
 
   @override
@@ -44,14 +56,30 @@ class CatalogProductController extends GetxController {
     super.onClose();
   }
 
-  Stream<List<Product>> getProductItem() {
+  Stream<List<Product>> getProductItem({String query = ''}) {
     return FirebaseFirestore.instance
         .collection('product')
         //get all the product where store id is same with currect user id
         .where("store_id", isEqualTo: storeId)
         .snapshots()
         .map((snapshot) =>
-            snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
+            snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList())
+        .map((products) {
+      if (query.isNotEmpty) {
+        return products
+            .where((product) => product.productName
+                .toLowerCase()
+                .contains(searchController.text.toLowerCase()))
+            .toList();
+      }
+      return products;
+    });
+  }
+
+  void filterProducts(String query) {
+    getProductItem(query: query).listen((products) {
+      productList.value = products;
+    });
   }
 
   Future updateProduct(

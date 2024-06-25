@@ -131,7 +131,7 @@ class ReportSalesView extends GetView<ReportSalesController> {
                               reportBorderColor: Colors.green,
                             ),
                             CustomReportCard(
-                              reportTitle: 'Total item',
+                              reportTitle: 'Total Item Terjual',
                               reportDetail: totalItems,
                               reportBorderColor: Colors.blue,
                             ),

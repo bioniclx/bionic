@@ -277,31 +277,24 @@ class NavigationSidebar extends StatelessWidget {
                 },
               ),
               const Divider(color: primary, height: 2.0),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingMedium),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       children: [
-                        CircleAvatar(),
-                        CustomText(
-                          text: 'Bionic, Inc.',
-                          textSize: textSmall,
-                          textColor: Colors.grey,
-                          textWeight: FontWeight.w400,
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CircleAvatar(),
-                        CustomText(
-                          text: 'Rohand, Co.',
-                          textSize: textSmall,
-                          textColor: Colors.grey,
-                          textWeight: FontWeight.w400,
-                        )
+                        Row(
+                          children: [
+                            Image.asset('assets/images/logo.png'),
+                            CustomText(
+                              text: 'Bionic, Inc.',
+                              textSize: textSmall,
+                              textColor: Colors.grey,
+                              textWeight: FontWeight.w400,
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ],
