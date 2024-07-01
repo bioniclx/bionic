@@ -78,7 +78,7 @@ class SalesController extends GetxController {
   void addProduct() async {
     if (selectedItem.value != null) {
       try {
-        print("Produk id e: ${selectedItem.value!.id}");
+        isLoading(true);
         var doc = await FirebaseFirestore.instance
             .collection('product')
             .doc(selectedItem.value!.id)
@@ -93,10 +93,11 @@ class SalesController extends GetxController {
               if (existingProduct.qty >= productData['stock']) {
                 showWarningSnackbar('Kesalahan',
                     'Stok produk ${existingProduct.productName} tidak mencukupi');
+                isLoading(false);
                 return;
               }
               existingProduct.qty += 1;
-              update();
+              cartProducts.refresh();
             } else {
               var newProduct = ProductCart(
                 id: doc.id,
@@ -110,14 +111,12 @@ class SalesController extends GetxController {
               cartProducts.add(newProduct);
             }
             update(); // Ensure the controller is updated
-          } else {
-            print('Product data is null');
           }
-        } else {
-          print('Product not found');
         }
       } catch (e) {
-        print('Failed to add product: $e');
+        showWarningSnackbar('Error', 'Failed to add product: $e');
+      } finally {
+        isLoading(false);
       }
       showSuccessSnackbar(
           'Success', 'Produk ${selectedItem.value!.name} berhasil ditambahkan');
@@ -149,6 +148,7 @@ class SalesController extends GetxController {
   void removeProduct(String id) {
     cartProducts.removeWhere((product) => product.id == id);
     cartProducts.refresh();
+    showSuccessSnackbar("Sukses", "Produk berhasil dihapus");
   }
 
   void clearAllProduct() {
@@ -214,6 +214,7 @@ class SalesController extends GetxController {
       'stored_by': userId,
     };
     try {
+      isLoading(true);
       await FirebaseFirestore.instance.collection('sales').add(saleData);
       showSuccessSnackbar('Success', 'Penjualan berhasil disimpan');
       cartProducts.forEach((product) {
@@ -229,6 +230,8 @@ class SalesController extends GetxController {
     } catch (e) {
       showErrorSnackbar('Error', 'Gagal menyimpan penjualan');
       print('Failed to store sale: $e');
+    } finally {
+      isLoading(false);
     }
   }
 

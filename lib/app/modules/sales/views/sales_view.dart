@@ -76,7 +76,7 @@ class SalesView extends GetView<SalesController> {
                                 color: primary,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 18, horizontal: 18),
                             hintText: "Pilih Produk",
                             hintStyle: const TextStyle(
@@ -135,6 +135,8 @@ class SalesView extends GetView<SalesController> {
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
                             controller.clearAllProduct();
+                            showSuccessSnackbar("Sukses",
+                                "Produk berhasil kosongkan keranjang");
                           },
                         ),
                       ],
@@ -145,10 +147,10 @@ class SalesView extends GetView<SalesController> {
                     LayoutBuilder(builder: (context, constraints) {
                       return Obx(() {
                         if (controller.cartProducts.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(
                                 vertical: spaceLarge, horizontal: spaceMedium),
-                            child: const Center(
+                            child: Center(
                               child: Text('Belum ada produk yang ditambahkan'),
                             ),
                           );
@@ -157,7 +159,7 @@ class SalesView extends GetView<SalesController> {
                             if (controller.cartProducts.length < 3) {
                               return ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: controller.cartProducts.length,
                                 itemBuilder: (context, index) {
                                   var product = controller.cartProducts[index];
@@ -293,9 +295,11 @@ class SalesView extends GetView<SalesController> {
                               return CustomButton(
                                 buttonText: 'Simpan Penjualan',
                                 buttonWidth: 1,
-                                onTap: () {
-                                  controller.storeSale();
-                                },
+                                onTap: controller.isLoading.value
+                                    ? null
+                                    : () {
+                                        controller.storeSale();
+                                      },
                               );
                             }
                           }),

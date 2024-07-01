@@ -62,7 +62,9 @@ class CustomListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: itemName,
+                      text: itemName.length > 20
+                          ? '${itemName.substring(0, 20)}...'
+                          : itemName,
                       textSize: 20,
                       textColor: Colors.black,
                       textWeight: FontWeight.w500,

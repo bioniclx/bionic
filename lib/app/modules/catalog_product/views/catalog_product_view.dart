@@ -138,7 +138,12 @@ class CatalogProductView extends GetView<CatalogProductController> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: primary,
         onPressed: () {
-          Get.toNamed(Routes.ADD_PRODUCT);
+          if (checkUserRole(controller.homeController.roleUser.value)) {
+            Get.toNamed(Routes.ADD_PRODUCT);
+          } else {
+            showErrorSnackbar(
+                'Error', 'Kamu tidak memiliki akses untuk menambahkan produk');
+          }
         },
         child: const Icon(
           Icons.add,

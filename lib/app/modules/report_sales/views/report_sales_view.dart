@@ -166,7 +166,7 @@ class ReportSalesView extends GetView<ReportSalesController> {
                                       vertical: 8.0, horizontal: 16.0),
                                   child: Text(
                                     date,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -181,8 +181,12 @@ class ReportSalesView extends GetView<ReportSalesController> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: GestureDetector(
                                         onTap: () {
+                                          var data = {
+                                            'sale': sale,
+                                            'role': RxString('1')
+                                          };
                                           Get.toNamed(Routes.DETAIL_SALE,
-                                              arguments: sale);
+                                              arguments: data);
                                         },
                                         child: CustomListItem(
                                           itemName: sale.name,

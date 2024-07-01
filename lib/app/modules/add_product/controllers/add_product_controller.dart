@@ -16,6 +16,7 @@ class AddProductController extends GetxController {
 
   //Image picker setup
   var image = XFile("").obs;
+  var isLoading = false.obs;
 
   //Inisialisasi firebase
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -82,6 +83,7 @@ class AddProductController extends GetxController {
     }
     final uid = auth.currentUser!.uid;
     try {
+      isLoading.value = true;
       String imageUrl = await uploadFile(image);
       String dateNow = DateTime.now().toString();
       final refDoc = ref.doc();
@@ -100,6 +102,8 @@ class AddProductController extends GetxController {
       showSuccessSnackbar('Berhasil', 'Produk berhasil ditambahkan');
     } catch (e) {
       showErrorSnackbar('Gagal', 'Terjadi kesalahan : $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 

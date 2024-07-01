@@ -127,29 +127,35 @@ class AddProductView extends GetView<AddProductController> {
               obsecureText: false,
             ),
             const SizedBox(height: spaceLarge),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    buttonText: 'Tambah Produk',
-                    buttonWidth: 1,
-                    onTap: () {
-                      controller.addProduct(
-                        controller.productNameController.text,
-                        controller.productPriceController.text.isEmpty
-                            ? 0
-                            : int.parse(controller.productPriceController.text),
-                        controller.productCountController.text.isEmpty
-                            ? 0
-                            : int.parse(controller.productCountController.text),
-                        controller.productCategoryController.text,
-                        File(controller.image.value.path),
-                      );
-                    },
+            Obx(() {
+              return Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      buttonText: 'Tambah Produk',
+                      buttonWidth: 1,
+                      onTap: controller.isLoading.value
+                          ? null
+                          : () {
+                              controller.addProduct(
+                                controller.productNameController.text,
+                                controller.productPriceController.text.isEmpty
+                                    ? 0
+                                    : int.parse(
+                                        controller.productPriceController.text),
+                                controller.productCountController.text.isEmpty
+                                    ? 0
+                                    : int.parse(
+                                        controller.productCountController.text),
+                                controller.productCategoryController.text,
+                                File(controller.image.value.path),
+                              );
+                            },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
             const SizedBox(height: spaceLarge),
           ],
         ),
